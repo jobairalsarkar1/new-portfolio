@@ -1,26 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  /* Global resets */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Typing effect */
+  .typing-effect {
+    display: inline-block;
+    border-right: 2px solid black;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 3s steps(30, end), blink 0.5s step-end infinite alternate;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes blink {
+    from {
+      border-color: transparent;
+    }
+    to {
+      border-color: black;
+    }
+  }
+
+  /* Gradients */
+  .black-gradient {
+    background: linear-gradient(to right, #434343, #000000);
+  }
+
+  /* Spin animations */
+  @keyframes spin-slow {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-reverse {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+  .animate-spin-reverse {
+    animation: spin-reverse 6s linear infinite;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Header */
+  .header {
+    @apply flex justify-between items-center sm:px-12 px-8 py-4 max-w-6xl mx-auto absolute top-0 w-full z-50;
+  }
+
+  /* Container */
+  .max-container {
+    @apply max-w-6xl mx-auto sm:p-10 pb-12 pt-[100px] px-8 min-h-[calc(100vh-0px)];
+  }
+
+  /* Headings */
+  .head-text {
+    @apply sm:text-4xl text-3xl font-semibold sm:leading-snug font-mono;
+  }
+
+  .subhead-text {
+    @apply font-normal sm:text-2xl text-lg relative;
+  }
+
+  /* Inputs */
+  .input {
+    @apply bg-gray-600 border border-gray-400 text-white text-[0.9rem] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal;
+  }
+
+  .textarea {
+    @apply block p-2.5 w-full text-[0.9rem] text-white bg-gray-600 rounded-lg border border-gray-400 focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply text-blue-200 border border-blue-200 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[0.9rem] w-full sm:w-auto px-5 py-2.5 text-center;
+  }
+
+  .btn-main {
+    @apply text-blue-100 border border-gray-600 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[0.9rem] w-full sm:w-auto px-5 py-2.5 text-center;
+  }
+
+  /* Section */
+  .section {
+    @apply h-screen w-full bg-black;
+  }
 }
