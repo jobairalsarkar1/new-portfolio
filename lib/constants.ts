@@ -29,35 +29,35 @@ import {
     cloudinary,
     redaxify, } from "@/public/assets";
     
-import * as THREE from "three";
+// import * as THREE from "three";
 import { Project } from "./types";
 
-export const textures = {
-  earth: {
-    texture: new THREE.TextureLoader().load("/earth/earthmap.jpg"),
-    bump: new THREE.TextureLoader().load("/earth/earthbump.jpg"),
-  },
-  jupiter: {
-    texture: new THREE.TextureLoader().load("/jupiter/jupitermap.jpg"),
-  },
-  mars: {
-    texture: new THREE.TextureLoader().load("/mars/marsmap.jpg"),
-    bump: new THREE.TextureLoader().load("/mars/marsbump.jpg"),
-  },
-  mercury: {
-    texture: new THREE.TextureLoader().load("/mercury/mercurymap.jpg"),
-    bump: new THREE.TextureLoader().load("/mercury/mercurybump.jpg"),
-  },
-  saturn: {
-    texture: new THREE.TextureLoader().load("/saturn/saturnmap.jpg"),
-  },
-  uranus: {
-    texture: new THREE.TextureLoader().load("/uranus/uranus.jpg"),
-  },
-  sun: {
-    texture: new THREE.TextureLoader().load("/sun/sunmap.jpg"),
-  },
-};
+// export const textures = {
+//   earth: {
+//     texture: new THREE.TextureLoader().load("/earth/earthmap.jpg"),
+//     bump: new THREE.TextureLoader().load("/earth/earthbump.jpg"),
+//   },
+//   jupiter: {
+//     texture: new THREE.TextureLoader().load("/jupiter/jupitermap.jpg"),
+//   },
+//   mars: {
+//     texture: new THREE.TextureLoader().load("/mars/marsmap.jpg"),
+//     bump: new THREE.TextureLoader().load("/mars/marsbump.jpg"),
+//   },
+//   mercury: {
+//     texture: new THREE.TextureLoader().load("/mercury/mercurymap.jpg"),
+//     bump: new THREE.TextureLoader().load("/mercury/mercurybump.jpg"),
+//   },
+//   saturn: {
+//     texture: new THREE.TextureLoader().load("/saturn/saturnmap.jpg"),
+//   },
+//   uranus: {
+//     texture: new THREE.TextureLoader().load("/uranus/uranus.jpg"),
+//   },
+//   sun: {
+//     texture: new THREE.TextureLoader().load("/sun/sunmap.jpg"),
+//   },
+// };
 
 export const techs = [
   { name: "HTML 5", icon: html },

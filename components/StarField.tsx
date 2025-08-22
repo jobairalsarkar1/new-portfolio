@@ -3,6 +3,7 @@
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, useLoader } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 interface StarFieldProps {
   numStars?: number;
@@ -59,6 +60,8 @@ const StarField = ({ numStars = 500 }: StarFieldProps) => {
 
   return (
     <>
+      {/* OrbitControls to rotate the starfield */}
+      <OrbitControls enableZoom={false} />
       <points ref={ref}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />

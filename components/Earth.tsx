@@ -1,14 +1,12 @@
-"use client";
-
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
-type EarthProps = {
+interface EarthProps {
   scale?: number;
   rotationSpeed?: number;
-};
+}
 
 const Earth = ({ scale = 1.5, rotationSpeed = 0.001 }: EarthProps) => {
   const earthGroupRef = useRef<THREE.Group>(null);
@@ -49,7 +47,6 @@ const Earth = ({ scale = 1.5, rotationSpeed = 0.001 }: EarthProps) => {
           map={cityLightMap}
           blending={THREE.AdditiveBlending} // Blend for lights effect
           side={THREE.BackSide} // Show only on the dark side of Earth
-          // transparent={true}
         />
       </mesh>
 

@@ -79,7 +79,7 @@
 
   /* Container */
   .max-container {
-    @apply max-w-6xl mx-auto sm:p-10 pb-12 pt-[100px] px-8 min-h-[calc(100vh-0px)];
+    @apply max-w-6xl mx-auto min-h-[calc(100vh-0px)];
   }
 
   /* Headings */

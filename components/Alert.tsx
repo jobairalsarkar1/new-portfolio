@@ -1,11 +1,11 @@
 import { close } from "@/public/assets";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
-type AlertProps = {
+interface AlertProps {
   type: "danger" | "success";
   text: string;
-  setAlert: (is: boolean) => void;
-};
+  setAlert: (show: boolean) => void;
+}
 
 const Alert = ({ type, text, setAlert }: AlertProps) => {
   return (
@@ -22,11 +22,11 @@ const Alert = ({ type, text, setAlert }: AlertProps) => {
           onClick={() => setAlert(false)}
         >
           <Image
-            src={close as StaticImageData}
+            src={close}
             alt="close"
-            className="w-5 h-5 cursor-pointer"
             width={20}
             height={20}
+            className="w-5 h-5 cursor-pointer"
           />
         </button>
       </div>

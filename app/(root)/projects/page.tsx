@@ -22,7 +22,7 @@ const Projects = () => {
   };
 
   return (
-    <section className="relative max-container text-white z-30">
+    <section className="relative py-12 px-8 text-white z-30">
       <div className="px-1 sm:px-4 py-4 rounded-lg mt-8">
         <h3 className="head-text">
           My{" "}
