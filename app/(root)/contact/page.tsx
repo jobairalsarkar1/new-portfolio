@@ -124,9 +124,13 @@ const Contact = () => {
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-6 w-full">
         {/* Form Container */}
-        <div className="w-full lg:w-1/2 flex flex-col  p-4 rounded-2xl">
+        <div className="w-full lg:w-1/2 flex flex-col p-0 sm:p-4 rounded-2xl">
           <h1 className="head-text text-white mb-4 text-center lg:text-left">
-            Start Your Project Here
+            Start Your{" "}
+            <span className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text font-extrabold">
+              Project
+            </span>{" "}
+            Here
           </h1>
 
           {/* FORM */}

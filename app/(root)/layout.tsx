@@ -22,9 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
 
       {/* Main Content */}
-      <main className="relative z-10 w-full max-container bg-green-500">
-        {children}
-      </main>
+      <main className="relative z-10 w-full max-container">{children}</main>
     </div>
   );
 }

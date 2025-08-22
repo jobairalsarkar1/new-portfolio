@@ -47,7 +47,7 @@ const StarField = ({ numStars = 500 }: StarFieldProps) => {
   useFrame(({ clock }) => {
     if (!ref.current) return;
     const time = clock.getElapsedTime();
-    const speed = 0.02;
+    const speed = 0.005;
     const positionsArray = ref.current.geometry.attributes.position
       .array as Float32Array;
 
