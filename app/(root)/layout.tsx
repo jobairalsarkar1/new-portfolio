@@ -2,9 +2,9 @@
 
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import Navbar from "@/components/Navbar";
-import StarField from "@/components/StarField";
-import Loader from "@/components/Loader";
+import Navbar from "@/components/headers/Navbar";
+import StarField from "@/components/3d/StarField";
+import Loader from "@/components/loaders/Loader";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

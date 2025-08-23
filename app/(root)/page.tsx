@@ -5,9 +5,8 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
-import Loader from "@/components/Loader";
-import SolarSystem from "@/components/SolarSystem";
-// import StarField from "../components/StarField";
+import Loader from "@/components/loaders/Loader";
+import SolarSystem from "@/components/3d/SolarSystem";
 
 const Home = () => {
   return (
@@ -50,11 +49,6 @@ const Home = () => {
         className="z-20"
       >
         <ambientLight intensity={0.4} />
-        {/* <hemisphereLight
-          skyColor="#ffffff"
-          groundColor="#b9b9b9"
-          intensity={0.3}
-        /> */}
         <hemisphereLight args={[0xffffff, 0xb9b9b9, 0.3]} />
         <pointLight position={[20, 20, 20]} intensity={2.5} />
         <directionalLight

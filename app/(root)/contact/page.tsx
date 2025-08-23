@@ -15,9 +15,9 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import Loader from "@/components/Loader";
-import Earth from "@/components/Earth";
-import Alert from "@/components/Alert";
+import Loader from "@/components/loaders/Loader";
+import Earth from "@/components/3d/Earth";
+import Alert from "@/components/popups/Alert";
 
 interface FormState {
   name: string;
