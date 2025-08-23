@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.jobairalsarkar.site"),
   title: "Jobair Al Sarkar | Full-Stack Developer | Software Engineer",
   description:
     "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer. Explore projects, skills, and contact for collaboration.",
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jobair Al Sarkar | Full-Stack Developer | Software Engineer",
     description:
-      "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer. Explore projects, skills, and contact for collaboration.",
-    url: "https://www.jobairalsarkar.site",
+      "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer...",
+    url: "/",
     siteName: "Jobair Al Sarkar Portfolio",
     images: [
       {

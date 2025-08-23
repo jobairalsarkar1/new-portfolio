@@ -5,14 +5,19 @@ import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaFacebook,
+  FaTwitter,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaEnvelope,
+} from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { facebook, linkedin } from "@/public/assets";
 import Loader from "@/components/Loader";
 import Earth from "@/components/Earth";
 import Alert from "@/components/Alert";
-import Image from "next/image";
 
 interface FormState {
   name: string;
@@ -45,9 +50,6 @@ const Contact = () => {
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  const handleFocus = () => {};
-  const handleBlur = () => {};
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,7 +99,7 @@ const Contact = () => {
 
   return (
     <section className="relative py-12 px-8 text-white z-30">
-      {/* Header section matching Projects page */}
+      {/* Header */}
       <div className="px-1 sm:px-4 py-4 rounded-lg mt-8 mb-2">
         <h3 className="head-text">
           Let’s Build Something Amazing{" "}
@@ -122,10 +124,10 @@ const Contact = () => {
         />
       )}
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-6 w-full">
-        {/* Form Container */}
-        <div className="w-full lg:w-1/2 flex flex-col p-0 sm:p-4 rounded-2xl">
-          <h1 className="head-text text-white mb-4 text-center lg:text-left">
+      <div className="flex flex-col lg:flex-row items-start justify-center gap-6 w-full">
+        {/* Form */}
+        <div className="w-full lg:w-1/2 flex flex-col mt-0 sm:mt-5 p-0 sm:p-4 rounded-2xl">
+          <h1 className="head-text text-white mb-6 text-center lg:text-left">
             Start Your{" "}
             <span className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text font-extrabold">
               Project
@@ -133,64 +135,46 @@ const Contact = () => {
             Here
           </h1>
 
-          {/* FORM */}
-          <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
+          <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
             {/* Name + Email row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="text-white font-medium text-sm">
-                Name
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                  value={form.name}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  className="mt-1.5 w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                />
-              </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                required
+                value={form.name}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+              />
 
-              <label className="text-white font-medium text-sm">
-                Email
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="example@gmail.com"
-                  required
-                  value={form.email}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  className="mt-1.5 w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-                />
-              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                value={form.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+              />
             </div>
 
             {/* Message */}
-            <label className="text-white font-medium text-sm">
-              Message
-              <textarea
-                name="message"
-                placeholder="Tell me about your project, goals, or challenges — I’ll get back to you with solutions."
-                rows={4}
-                required
-                value={form.message}
-                onChange={handleChange}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="mt-1.5 w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
-              />
-            </label>
+            <textarea
+              name="message"
+              placeholder="Tell me about your project, goals, or challenges — I’ll get back to you with solutions."
+              rows={5}
+              required
+              value={form.message}
+              onChange={handleChange}
+              className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none transition resize-none"
+            />
 
             {/* Button */}
             <button
               type="submit"
               disabled={isLoading}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              className="btn-main mt-2 text-white bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300 flex items-center justify-center gap-2"
+              className="btn-main mt-1 text-lg text-white bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -203,70 +187,67 @@ const Contact = () => {
             </button>
           </form>
 
-          {/* SOCIAL LINKS */}
-          <div className="w-full mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <Link
-              href="https://www.linkedin.com/in/jobair-al-sarkar/"
-              target="_blank"
-              className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition"
-            >
-              <Image
-                src={linkedin}
-                alt="LinkedIn"
-                width={28}
-                height={28}
-                className="w-7 h-7 rounded-full"
-              />
-              <span className="text-gray-300 text-sm hidden sm:inline">
-                LinkedIn
-              </span>
-            </Link>
+          {/* Contact Info + Socials */}
+          <div className="w-full mt-6 sm:mt-7 flex flex-col gap-4">
+            {/* Row 1: Phone + Address */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-300">
+              <div className="flex items-center gap-2 bg-gray-800 border border-gray-600 rounded-lg px-3 py-2">
+                <FaPhoneAlt className="text-green-400 mt-0.5" />
+                <span className="text-base">+8801766961460</span>
+              </div>
+              <div className="flex items-center gap-2 bg-gray-800 border border-gray-600 rounded-lg px-3 py-2">
+                <FaMapMarkerAlt className="text-red-400 mt-0.5" />
+                <span className="text-base">Dhaka, Bangladesh</span>
+              </div>
+            </div>
 
-            <Link
-              href="https://github.com/jobairalsarkar1"
-              target="_blank"
-              className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition"
-            >
-              <FaGithub className="w-7 h-7 text-gray-200" />
-              <span className="text-gray-300 text-sm hidden sm:inline">
-                GitHub
-              </span>
-            </Link>
+            {/* Row 2: Email + Socials */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-300 items-center">
+              {/* Email */}
+              <div className="flex items-center gap-2 bg-gray-800 border border-gray-600 rounded-lg px-3 py-2">
+                <FaEnvelope className="text-yellow-400 mt-1" />
+                <span className="text-base">jobair.a.sarkar@gmail.com</span>
+              </div>
 
-            <Link
-              href="https://www.facebook.com/profile.php?id=100081410426667"
-              target="_blank"
-              className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition"
-            >
-              <Image
-                src={facebook}
-                alt="Facebook"
-                width={28}
-                height={28}
-                className="w-7 h-7 rounded-full"
-              />
-              <span className="text-gray-300 text-sm hidden sm:inline">
-                Facebook
-              </span>
-            </Link>
-
-            <Link
-              href="https://x.com/jobairalsarkar"
-              target="_blank"
-              className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition"
-            >
-              <FaXTwitter className="w-7 h-7 text-gray-200" />
-              <span className="text-gray-300 text-sm hidden sm:inline">
-                Twitter
-              </span>
-            </Link>
+              {/* Social links (icons only) */}
+              <div className="flex items-center justify-center gap-3">
+                <Link
+                  href="https://www.linkedin.com/in/jobair-al-sarkar/"
+                  target="_blank"
+                  className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+                >
+                  <FaLinkedin className="text-blue-600 w-7 h-7" />
+                </Link>
+                <Link
+                  href="https://github.com/jobairalsarkar1"
+                  target="_blank"
+                  className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+                >
+                  <FaGithub className="text-gray-200 w-7 h-7" />
+                </Link>
+                <Link
+                  href="https://www.facebook.com/profile.php?id=100081410426667"
+                  target="_blank"
+                  className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+                >
+                  <FaFacebook className="text-blue-500 w-7 h-7" />
+                </Link>
+                <Link
+                  href="https://x.com/jobairalsarkar"
+                  target="_blank"
+                  className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+                >
+                  <FaTwitter className="text-sky-400 w-7 h-7" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Earth Model Container */}
+        {/* Earth */}
         <div className="w-full lg:w-1/2 h-[400px] md:h-[500px] lg:h-[550px] flex-shrink-0">
           <Canvas
-            camera={{ position: [0, 0, 5], fov: 75, near: 0.1, far: 1000 }}
+            camera={{ position: [0, 0, 5], fov: 75 }}
             className="w-full h-full"
           >
             <directionalLight intensity={2.5} position={[0, 0, 1]} />
@@ -274,7 +255,11 @@ const Contact = () => {
             <Suspense fallback={<Loader />}>
               <Earth scale={1.7} rotationSpeed={rotationSpeed} />
             </Suspense>
-            <OrbitControls enableZoom={true} minDistance={2} maxDistance={10} />
+            <OrbitControls
+              enableZoom={false}
+              minDistance={2}
+              maxDistance={10}
+            />
           </Canvas>
         </div>
       </div>

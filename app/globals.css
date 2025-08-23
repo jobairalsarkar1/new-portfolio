@@ -84,7 +84,7 @@
 
   /* Headings */
   .head-text {
-    @apply sm:text-4xl text-3xl font-semibold sm:leading-snug font-mono;
+    @apply sm:text-4xl text-3xl font-semibold sm:leading-normal font-mono;
   }
 
   .subhead-text {
