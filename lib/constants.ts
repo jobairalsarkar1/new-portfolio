@@ -30,7 +30,7 @@ import {
     redaxify, } from "@/public/assets";
     
 // import * as THREE from "three";
-import { Project } from "./types";
+import { Project } from "../types/types";
 
 // export const textures = {
 //   earth: {

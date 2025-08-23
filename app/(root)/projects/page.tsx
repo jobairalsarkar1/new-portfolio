@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/constants";
-import { Project } from "@/lib/types";
+import { Project } from "@/types/types";
 import { FiExternalLink } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa";
 
