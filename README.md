@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jobair Al Sarkar - Developer Portfolio
 
-## Getting Started
+Hi, I'm **Jobair Al Sarkar**, a passionate full-stack developer specializing in modern, interactive web experiences. This is my personal portfolio, built to showcase my skills, projects, and approach to crafting scalable and visually appealing applications.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 About This Portfolio
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This portfolio is designed with a strong focus on interactivity and modern web technologies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **3D Visuals with Three.js** – Interactive 3D models and effects to give a dynamic feel.
+- **Email Sending via Resend** – Fully functional contact form to directly reach me.
+- **OAuth Authentication** – Secure login flows for showcasing private projects or demos.
+- **Responsive and Animated UI** – Smooth animations, hover effects, and clean layouts to enhance user experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+It’s fully built with **Next.js 15**, **React**, and **Tailwind CSS**, providing a performant and modern web experience.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 💻 Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Interactive 3D Section
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Built with **Three.js** and `@react-three/fiber`.
+- Users can rotate and explore 3D objects interactively.
 
-## Deploy on Vercel
+### 2. Contact Form
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Sends messages directly using **Resend**.
+- Live form validation and animated feedback.
+- Loading state with animated dots for better user experience.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Authentication
+
+- OAuth login integration for secure access.
+- Role-based page access (for future private content).
+
+### 4. Project Showcases
+
+- Projects displayed in cards with smooth hover effects.
+- Markdown support for project descriptions.
+- Individual loaders for each project card for better UX.
+
+### 5. Animated UI
+
+- Floating shapes and gradient effects.
+- Custom loaders and notifications.
+- Fully responsive and mobile-friendly.
+
+---
+
+## 💻 Tech Stack
+
+| Frontend     | Backend         | Other Tools  |
+| ------------ | --------------- | ------------ |
+| Next.js 15   | Node.js         | Three.js     |
+| React        | Resend (Email)  | Tailwind CSS |
+| TypeScript   | OAuth Providers | React-Icons  |
+| Tailwind CSS |                 | EmailJS      |
+
+---
+
+## 💚 Contact Me
+
+I’m always excited to collaborate on innovative projects or discuss new ideas. You can reach me via:
+
+- **Email:** [jobair.a.sarkar@gmail.com](mailto:jobair.a.sarkar@gmail.com)
+- **Phone:** +8801766961460
+- **Location:** Dhaka, Bangladesh
+
+**Social Profiles:**
+
+- [LinkedIn](https://www.linkedin.com/in/jobair-al-sarkar/)
+- [GitHub](https://github.com/jobairalsarkar1)
+- [Facebook](https://www.facebook.com/profile.php?id=100081410426667)
+- [X / Twitter](https://x.com/jobairalsarkar)
+
+Or directly use the contact form in this portfolio to get in touch.
+
+---
+
+## 🎨 Design Philosophy
+
+I believe a portfolio should not only showcase skills but also reflect creativity. This portfolio combines **visual appeal**, **usability**, and **interactivity** to provide an engaging experience for visitors and potential collaborators.
+
+---
+
+## 📌 License
+
+This portfolio is personal and all rights are reserved. Feel free to contact me for collaborations or references.

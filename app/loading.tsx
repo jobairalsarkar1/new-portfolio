@@ -22,14 +22,12 @@ export default function Loading() {
 
           <h1 className="text-4xl font-bold text-gray-100 mb-3">
             <span className="bg-gradient-to-r from-gray-400 to-gray-200 bg-clip-text text-transparent">
-              DataForge
+              Jobair Al Sarkar
             </span>{" "}
             Loading
           </h1>
 
-          <p className="text-gray-400 mb-8">
-            Preparing your developer playground...
-          </p>
+          <p className="text-gray-400 mb-8">Have patience please...</p>
 
           {/* Animated progress dots */}
           <div className="flex justify-center space-x-2">
