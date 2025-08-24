@@ -4,12 +4,12 @@ import SignInWithGoogle from "@/components/auth-buttons/SignInWithGoogle";
 
 const Page = () => {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#05070d] text-white relative overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0a0f1a] text-white relative overflow-hidden">
       {/* Background Shapes */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute w-[600px] h-[800px] bg-gradient-to-br from-orange-700/30 to-orange-900/30 rounded-[10%] -top-40 -left-60 rotate-[-20deg] opacity-60"></div>
-        <div className="absolute w-[700px] h-[600px] bg-gradient-to-tr from-orange-500/30 to-orange-700/30 rounded-[8%] -top-20 -right-40 rotate-[30deg] opacity-50"></div>
-        <div className="absolute w-[400px] h-[500px] bg-gradient-to-b from-orange-400/30 to-orange-600/30 rounded-[12%] bottom-[-150px] left-1/3 rotate-[15deg] opacity-40"></div>
+        <div className="absolute w-[600px] h-[800px] bg-gradient-to-br from-gray-800/40 to-blue-900/30 rounded-[10%] -top-40 -left-60 rotate-[-20deg] opacity-70"></div>
+        <div className="absolute w-[700px] h-[600px] bg-gradient-to-tr from-gray-700/30 to-gray-900/20 rounded-[8%] -top-20 -right-40 rotate-[30deg] opacity-60"></div>
+        <div className="absolute w-[400px] h-[500px] bg-gradient-to-b from-gray-600/20 to-blue-800/30 rounded-[12%] bottom-[-150px] left-1/3 rotate-[15deg] opacity-50"></div>
       </div>
 
       {/* Sign-in Form */}
