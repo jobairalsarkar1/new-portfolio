@@ -9,10 +9,17 @@ import dynamic from "next/dynamic";
 import GradientButton from "@/components/dashboard/GradientButton";
 import ActionLoader from "@/components/loaders/ActionLoader";
 
-// Use dynamic import for Markdown preview
+// Markdown preview
 const MarkdownPreview = dynamic(() => import("@uiw/react-markdown-preview"), {
   ssr: false,
 });
+
+type Skill = {
+  id: string;
+  name: string;
+  iconUrl: string;
+  needsBg: boolean;
+};
 
 type Project = {
   id: string;
@@ -22,6 +29,7 @@ type Project = {
   gitLink?: string;
   description: string;
   createdAt: string;
+  skills: Skill[];
 };
 
 const ProjectsPage = () => {
@@ -178,6 +186,7 @@ const ProjectsPage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-2xl font-bold mb-4">{viewProject.name}</h2>
+
             {viewProject.coverImage && (
               <div className="mb-4">
                 <Image
@@ -189,6 +198,35 @@ const ProjectsPage = () => {
                 />
               </div>
             )}
+
+            {/* skills */}
+            {viewProject.skills?.length > 0 && (
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold mb-2">Skills</h3>
+                <div className="flex flex-wrap gap-2">
+                  {viewProject.skills.map((skill) => (
+                    <div
+                      key={skill.id}
+                      className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
+                        skill.needsBg
+                          ? "bg-gray-700 border-gray-600"
+                          : "bg-transparent border-gray-500"
+                      }`}
+                    >
+                      <Image
+                        src={skill.iconUrl}
+                        alt={skill.name}
+                        width={20}
+                        height={20}
+                        className="rounded"
+                      />
+                      <span className="text-sm">{skill.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {viewProject.link && (
               <p className="mb-2">
                 Link:{" "}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -10,6 +10,11 @@ import ActionLoader from "@/components/loaders/ActionLoader";
 // Dynamically import MDEditor for SSR support
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
+type Skill = {
+  id: string;
+  name: string;
+};
+
 const CreateProjectPage = () => {
   const [form, setForm] = useState({
     name: "",
@@ -17,9 +22,24 @@ const CreateProjectPage = () => {
     link: "",
     gitLink: "",
     description: "",
+    skillIds: [] as string[],
   });
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const fetchSkills = async () => {
+    try {
+      const { data } = await axios.get("/api/skills");
+      if (data.success) setSkills(data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchSkills();
+  }, []);
 
   const isFormValid =
     form.name.trim() && form.coverImage.trim() && form.description.trim();
@@ -31,7 +51,7 @@ const CreateProjectPage = () => {
     try {
       const { data } = await axios.post("/api/projects", form);
       if (data.success) {
-        router.push("/projects");
+        router.push("/jas-dashboard/projects");
       } else {
         alert(data.error || "Failed to create project");
       }
@@ -42,14 +62,26 @@ const CreateProjectPage = () => {
     }
   };
 
+  const handleSkillToggle = (skillId: string) => {
+    setForm((prev) => {
+      const isSelected = prev.skillIds.includes(skillId);
+      return {
+        ...prev,
+        skillIds: isSelected
+          ? prev.skillIds.filter((id) => id !== skillId)
+          : [...prev.skillIds, skillId],
+      };
+    });
+  };
+
   return (
     <div className="min-h-screen bg-black text-white p-6 flex flex-col">
       {/* Header */}
       <header className="mb-6 w-full max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold">Creates New Project</h1>
+        <h1 className="text-3xl font-bold">Create New Project</h1>
       </header>
 
-      {/* Full-page Form */}
+      {/* Form */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-6 w-full max-w-6xl mx-auto"
@@ -106,6 +138,30 @@ const CreateProjectPage = () => {
           </div>
         </div>
 
+        {/* Skills Multi-select */}
+        <div>
+          <label className="block mb-2 text-gray-300">Select Skills</label>
+          <div className="flex flex-wrap gap-2">
+            {skills.map((skill) => {
+              const isSelected = form.skillIds.includes(skill.id);
+              return (
+                <button
+                  type="button"
+                  key={skill.id}
+                  onClick={() => handleSkillToggle(skill.id)}
+                  className={`px-3 py-1 rounded-full border ${
+                    isSelected
+                      ? "bg-green-600 border-green-500"
+                      : "bg-gray-800 border-gray-700"
+                  } text-sm text-gray-200 transition`}
+                >
+                  {skill.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Markdown Editor */}
         <div>
           <label className="block mb-1 text-gray-300">
@@ -124,7 +180,7 @@ const CreateProjectPage = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <div className="flex justify-end mt-4">
           <GradientButton type="submit" disabled={!isFormValid || loading}>
             {loading ? (
