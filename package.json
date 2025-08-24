@@ -16,6 +16,8 @@
     "@react-three/fiber": "^9.3.0",
     "@react-three/postprocessing": "^3.0.4",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@uiw/react-markdown-preview": "^5.1.5",
+    "@uiw/react-md-editor": "^4.0.8",
     "axios": "^1.11.0",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",

@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
+import { AiOutlineDashboard } from "react-icons/ai";
 
 export default function DashboardSidebar({
   collapsed,
@@ -26,6 +27,11 @@ export default function DashboardSidebar({
   const pathname = usePathname();
 
   const navLinks = [
+    {
+      title: "Overview",
+      icon: <AiOutlineDashboard size={20} />,
+      href: "/jas-dashboard",
+    },
     {
       title: "Users",
       icon: <FaUsers size={20} />,
@@ -125,7 +131,7 @@ export default function DashboardSidebar({
           {!collapsed ? (
             <>
               <div className="flex items-center gap-3 w-full">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-lg">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-lg">
                   {session.user.name?.charAt(0) ||
                     session.user.email?.charAt(0) ||
                     "U"}

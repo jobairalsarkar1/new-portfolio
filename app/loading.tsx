@@ -1,45 +1,51 @@
-"use client";
+import { FiLoader } from "react-icons/fi";
 
-import { Html, useProgress } from "@react-three/drei";
-
-const Loader = () => {
-  const { progress } = useProgress();
-
+export default function Loading() {
   return (
-    <Html center>
-      <div className="flex flex-col justify-center items-center space-y-3">
-        <div className="relative w-20 h-20 flex items-center justify-center">
-          {/* Center nucleus */}
-          <div className="absolute w-5 h-5 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-full shadow-lg shadow-indigo-500/50 animate-pulse" />
+    <div className="relative min-h-screen bg-gray-950 overflow-hidden">
+      {/* Animated grid background */}
+      <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(to_bottom,transparent,black)]" />
 
-          {/* Orbit 1 */}
-          <div className="absolute w-12 h-12 border border-gray-500 rounded-full animate-spin-slow">
-            <div className="w-2.5 h-2.5 bg-yellow-400 rounded-full absolute -top-1 left-1/2 -translate-x-1/2 shadow-md shadow-yellow-300" />
+      {/* Floating orbs */}
+      <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-orange-500/10 rounded-full filter blur-xl animate-float" />
+      <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-blue-500/5 rounded-full filter blur-xl animate-float-delay" />
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="text-center max-w-md mx-auto">
+          {/* Animated loader with orbit */}
+          <div className="relative w-24 h-24 mx-auto mb-8">
+            <div className="absolute inset-0 rounded-full border-2 border-orange-400/20 animate-spin-slow" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-400 rounded-full" />
+            <FiLoader className="w-12 h-12 text-orange-400 animate-spin absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           </div>
 
-          {/* Orbit 2 */}
-          <div className="absolute w-16 h-16 border border-gray-400 rounded-full animate-spin-reverse">
-            <div className="w-3 h-3 bg-pink-500 rounded-full absolute -top-1.5 left-1/2 -translate-x-1/2 shadow-md shadow-pink-400" />
-          </div>
+          <h1 className="text-4xl font-bold text-gray-100 mb-3">
+            <span className="bg-gradient-to-r from-orange-200 to-orange-400 bg-clip-text text-transparent">
+              DataForge
+            </span>{" "}
+            Loading
+          </h1>
 
-          {/* Orbit 3 */}
-          <div className="absolute w-20 h-20 border border-gray-300 rounded-full animate-spin-slow">
-            <div className="w-2 h-2 bg-cyan-400 rounded-full absolute -top-1 left-1/2 -translate-x-1/2 shadow-md shadow-cyan-300" />
-          </div>
+          <p className="text-gray-400 mb-8">
+            Preparing your developer playground...
+          </p>
 
-          {/* Percentage in center */}
-          <span className="absolute text-white font-bold text-sm">
-            {Math.round(progress)}%
-          </span>
+          {/* Animated progress dots */}
+          <div className="flex justify-center space-x-2">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="w-3 h-3 bg-orange-400 rounded-full"
+                style={{
+                  animation: `pulse 1.5s infinite`,
+                  animationDelay: `${i * 0.2}s`,
+                }}
+              />
+            ))}
+          </div>
         </div>
-
-        {/* Optional loading text */}
-        <p className="text-gray-300 text-xs text-center tracking-wide">
-          Loading 3D scene...
-        </p>
       </div>
-    </Html>
+    </div>
   );
-};
-
-export default Loader;
+}
