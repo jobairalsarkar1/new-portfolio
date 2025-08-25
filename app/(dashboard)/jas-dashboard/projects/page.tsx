@@ -81,16 +81,16 @@ const ProjectsPage = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-zinc-900 rounded-lg shadow overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-black/40 backdrop-blur-2xl shadow-xl text-sm sm:text-base text-gray-300">
-            <tr>
-              <th className="px-3 py-2 ">Name</th>
-              <th className="px-3 py-2">Cover</th>
-              <th className="px-3 py-2">Actions</th>
+      <div className="rounded-xl overflow-x-auto border border-zinc-800 shadow-lg bg-gradient-to-b from-zinc-950 to-zinc-900">
+        <table className="w-full text-left min-w-[600px] table-auto">
+          <thead>
+            <tr className="text-xs sm:text-sm text-zinc-400 uppercase tracking-wider bg-zinc-900 border-b border-zinc-800">
+              <th className="px-4 py-3 font-semibold">Name</th>
+              <th className="px-4 py-3 font-semibold">Cover</th>
+              <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm sm:text-base text-zinc-300">
             {loading ? (
               <tr>
                 <td colSpan={3} className="text-center p-6">
@@ -99,7 +99,7 @@ const ProjectsPage = () => {
               </tr>
             ) : projects.length === 0 ? (
               <tr>
-                <td colSpan={3} className="text-center p-4 text-gray-500">
+                <td colSpan={3} className="text-center p-4 text-zinc-500">
                   No projects available
                 </td>
               </tr>
@@ -107,32 +107,30 @@ const ProjectsPage = () => {
               projects.map((project) => (
                 <tr
                   key={project.id}
-                  className="border-t border-zinc-800 hover:bg-zinc-800"
+                  className="border-b border-zinc-800 hover:bg-zinc-800 transition duration-200"
                 >
-                  <td className="px-3 py-2 text-sm sm:text-base">
-                    {project.name}
-                  </td>
-                  <td className="px-3 py-2">
+                  <td className="px-4 py-3">{project.name}</td>
+                  <td className="px-4 py-3">
                     <Image
                       src={project.coverImage}
                       alt={project.name}
                       width={48}
                       height={48}
-                      className="rounded"
+                      className="rounded object-cover"
                     />
                   </td>
-                  <td className="px-3 py-2">
-                    <div className="h-full flex items-center gap-3 justify-start min-h-[48px]">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-4">
                       <button
                         onClick={() => setViewProject(project)}
-                        className="text-blue-400 hover:text-blue-600 cursor-pointer"
+                        className="text-blue-400 hover:text-blue-600 cursor-pointer transition"
                         title="View Project"
                       >
                         <FaEye className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => setDeleteId(project.id)}
-                        className="text-red-400 hover:text-red-600 cursor-pointer"
+                        className="text-red-400 hover:text-red-600 cursor-pointer transition"
                         title="Delete Project"
                       >
                         <FaTrash className="w-5 h-5" />

@@ -59,83 +59,77 @@ const UsersPage = () => {
     <div className="min-h-screen bg-black text-white p-6">
       <h1 className="text-2xl font-bold mb-6">Users ({users.length})</h1>
 
-      <div className="bg-zinc-900 rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-black/40 backdrop-blur-2xl shadow-xl text-sm sm:text-base text-gray-300">
+      <div className="rounded-xl overflow-x-auto border border-zinc-800 shadow-lg bg-gradient-to-b from-zinc-950 to-zinc-900">
+        <table className="w-full text-left min-w-[700px] table-auto">
+          <thead>
+            <tr className="text-xs sm:text-sm text-zinc-400 uppercase tracking-wider bg-zinc-900 border-b border-zinc-800">
+              <th className="px-4 py-3 font-semibold">Name</th>
+              <th className="px-4 py-3 font-semibold">Email</th>
+              <th className="px-4 py-3 font-semibold">Role</th>
+              <th className="px-4 py-3 font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-sm sm:text-base text-zinc-300">
+            {loading ? (
               <tr>
-                <th className="px-3 py-2">Name</th>
-                <th className="px-3 py-2">Email</th>
-                <th className="px-3 py-2">Role</th>
-                <th className="px-3 py-2">Actions</th>
+                <td colSpan={4} className="text-center p-6">
+                  <ActionLoader />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={4} className="text-center p-6">
-                    <ActionLoader />
+            ) : users.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="text-center p-4 text-zinc-500">
+                  No users found
+                </td>
+              </tr>
+            ) : (
+              users.map((user) => (
+                <tr
+                  key={user.id}
+                  className="border-b border-zinc-800 hover:bg-zinc-800 transition duration-200"
+                >
+                  <td className="px-4 py-3">{user.name || "—"}</td>
+                  <td className="px-4 py-3">{user.email}</td>
+                  <td className="px-4 py-3">
+                    <select
+                      value={user.role}
+                      onChange={(e) =>
+                        handleRoleChange(
+                          user.id,
+                          e.target.value as User["role"]
+                        )
+                      }
+                      disabled={user.role === "ADMIN"}
+                      className={`bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm outline-none transition ${
+                        user.role === "ADMIN"
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                      }`}
+                    >
+                      <option value="ADMIN">ADMIN</option>
+                      <option value="HELPER">HELPER</option>
+                      <option value="CLIENT">CLIENT</option>
+                    </select>
                   </td>
-                </tr>
-              ) : users.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="text-center p-4 text-gray-500">
-                    No users found
-                  </td>
-                </tr>
-              ) : (
-                users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="border-t border-zinc-800 hover:bg-zinc-800"
-                  >
-                    <td className="px-3 py-2.5 text-sm sm:text-base">
-                      {user.name || "—"}
-                    </td>
-                    <td className="px-3 py-2.5 text-sm sm:text-base">
-                      {user.email}
-                    </td>
-                    <td className="px-3 py-2.5">
-                      <select
-                        value={user.role}
-                        onChange={(e) =>
-                          handleRoleChange(
-                            user.id,
-                            e.target.value as User["role"]
-                          )
-                        }
-                        disabled={user.role === "ADMIN"} // 🔒 prevent editing admin
-                        className={`bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm ${
-                          user.role === "ADMIN"
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
-                        }`}
+                  <td className="px-4 py-3">
+                    {user.role === "ADMIN" ? (
+                      <span className="text-gray-500 text-xs italic">
+                        Cannot delete
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setDeleteId(user.id)}
+                        className="text-red-400 hover:text-red-600"
                       >
-                        <option value="ADMIN">ADMIN</option>
-                        <option value="HELPER">HELPER</option>
-                        <option value="CLIENT">CLIENT</option>
-                      </select>
-                    </td>
-                    <td className="px-3 py-2.5">
-                      {user.role === "ADMIN" ? (
-                        <span className="text-gray-500 text-xs italic">
-                          Cannot delete
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => setDeleteId(user.id)}
-                          className="text-red-400 hover:text-red-600"
-                        >
-                          <FaTrash />
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                        <FaTrash />
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Delete Confirm Popup */}

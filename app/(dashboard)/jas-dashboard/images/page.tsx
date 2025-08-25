@@ -80,18 +80,18 @@ const ImagesPage = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-zinc-900 rounded-lg shadow overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[800px]">
-          <thead className="bg-black/40 backdrop-blur-2xl shadow-xl text-sm sm:text-base text-gray-300">
-            <tr>
-              <th className="px-3 py-2">Name</th>
-              <th className="px-3 py-2">Preview</th>
-              <th className="px-3 py-2">URL</th>
-              <th className="px-3 py-2">Uploaded</th>
-              <th className="px-3 py-2">Actions</th>
+      <div className="rounded-xl overflow-x-auto border border-zinc-800 shadow-lg bg-gradient-to-b from-zinc-950 to-zinc-900">
+        <table className="w-full text-left min-w-[800px] table-auto">
+          <thead>
+            <tr className="text-xs sm:text-sm text-zinc-400 uppercase tracking-wider bg-zinc-900 border-b border-zinc-800">
+              <th className="px-4 py-3 font-semibold">Name</th>
+              <th className="px-4 py-3 font-semibold">Preview</th>
+              <th className="px-4 py-3 font-semibold">URL</th>
+              <th className="px-4 py-3 font-semibold">Uploaded</th>
+              <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm sm:text-base text-zinc-300">
             {loading ? (
               <tr>
                 <td colSpan={5} className="text-center p-6">
@@ -100,7 +100,7 @@ const ImagesPage = () => {
               </tr>
             ) : images.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center p-4 text-gray-500">
+                <td colSpan={5} className="text-center p-4 text-zinc-500">
                   No images uploaded
                 </td>
               </tr>
@@ -108,10 +108,10 @@ const ImagesPage = () => {
               images.map((image) => (
                 <tr
                   key={image.id}
-                  className="border-t border-zinc-800 hover:bg-zinc-800"
+                  className="border-b border-zinc-800 hover:bg-zinc-800 transition duration-200"
                 >
-                  <td className="px-3 py-2.5">{image.name}</td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3">{image.name}</td>
+                  <td className="px-4 py-3">
                     <Image
                       src={image.url}
                       alt={image.name}
@@ -120,7 +120,7 @@ const ImagesPage = () => {
                       className="rounded object-cover"
                     />
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3">
                     <div className="flex items-center gap-2 max-w-[220px]">
                       <span
                         title={image.url}
@@ -138,10 +138,10 @@ const ImagesPage = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="px-3 py-2.5 text-sm">
+                  <td className="px-4 py-3 text-zinc-400 text-sm">
                     {new Date(image.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3">
                     <button
                       onClick={() => setDeleteId(image.id)}
                       className="text-red-400 hover:text-red-600"

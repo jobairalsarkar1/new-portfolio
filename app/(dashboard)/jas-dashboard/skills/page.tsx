@@ -79,17 +79,17 @@ const SkillsPage = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-zinc-900 rounded-lg shadow overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-black/40 backdrop-blur-2xl shadow-xl text-sm sm:text-base text-gray-300">
-            <tr>
-              <th className="px-3 py-2">Name</th>
-              <th className="px-3 py-2">Icon</th>
-              <th className="px-3 py-2">Needs Bg</th>
-              <th className="px-3 py-2">Actions</th>
+      <div className="rounded-xl overflow-x-auto border border-zinc-800 shadow-lg bg-gradient-to-b from-zinc-950 to-zinc-900">
+        <table className="w-full text-left min-w-[600px] table-auto">
+          <thead>
+            <tr className="text-xs sm:text-sm text-zinc-400 uppercase tracking-wider bg-zinc-900 border-b border-zinc-800">
+              <th className="px-4 py-3 font-semibold">Name</th>
+              <th className="px-4 py-3 font-semibold">Icon</th>
+              <th className="px-4 py-3 font-semibold">Needs Bg</th>
+              <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm sm:text-base text-zinc-300">
             {loading ? (
               <tr>
                 <td colSpan={4} className="text-center p-6">
@@ -98,7 +98,7 @@ const SkillsPage = () => {
               </tr>
             ) : skills.length === 0 ? (
               <tr>
-                <td colSpan={4} className="text-center p-4 text-gray-500">
+                <td colSpan={4} className="text-center p-4 text-zinc-500">
                   No skills available
                 </td>
               </tr>
@@ -106,12 +106,10 @@ const SkillsPage = () => {
               skills.map((skill) => (
                 <tr
                   key={skill.id}
-                  className="border-t border-zinc-800 hover:bg-zinc-800"
+                  className="border-b border-zinc-800 hover:bg-zinc-800 transition duration-200"
                 >
-                  <td className="px-3 py-2.5 text-sm sm:text-base">
-                    {skill.name}
-                  </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-2.5">{skill.name}</td>
+                  <td className="px-4 py-2.5">
                     <Image
                       src={skill.iconUrl}
                       alt={skill.name}
@@ -120,14 +118,14 @@ const SkillsPage = () => {
                       className="rounded"
                     />
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-2.5">
                     {skill.needsBg ? (
                       <FaCheckCircle className="text-green-500 text-lg" />
                     ) : (
                       <FaTimesCircle className="text-red-500 text-lg" />
                     )}
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-2.5">
                     <button
                       onClick={() => setDeleteId(skill.id)}
                       className="text-red-400 hover:text-red-600"
