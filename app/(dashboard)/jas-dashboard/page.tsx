@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import axios from "axios";
 import { FaUsers, FaMicrochip, FaFolder, FaFileAlt } from "react-icons/fa";
 import ActionLoader from "@/components/loaders/ActionLoader";
@@ -10,44 +11,39 @@ type Counts = {
   users: number;
   skills: number;
   projects: number;
-  blogs: number; // For now, static
+  blogs: number;
 };
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function Dashboard() {
   const { data: session } = useSession();
-  const [counts, setCounts] = useState<Counts>({
-    users: 0,
-    skills: 0,
-    projects: 0,
-    blogs: 0,
-  });
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCounts = async () => {
-      setLoading(true);
-      try {
-        const [usersRes, skillsRes, projectsRes] = await Promise.all([
-          axios.get("/api/users"),
-          axios.get("/api/skills"),
-          axios.get("/api/projects"),
-        ]);
+  // SWR hooks with 60s refresh interval
+  const { data: usersData, isLoading: usersLoading } = useSWR(
+    "/api/users",
+    fetcher,
+    { refreshInterval: 60000 }
+  );
+  const { data: skillsData, isLoading: skillsLoading } = useSWR(
+    "/api/skills",
+    fetcher,
+    { refreshInterval: 60000 }
+  );
+  const { data: projectsData, isLoading: projectsLoading } = useSWR(
+    "/api/projects",
+    fetcher,
+    { refreshInterval: 60000 }
+  );
 
-        setCounts({
-          users: usersRes.data?.data?.length || 0,
-          skills: skillsRes.data?.data?.length || 0,
-          projects: projectsRes.data?.data?.length || 0,
-          blogs: 0, // keep static for now
-        });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loading = usersLoading || skillsLoading || projectsLoading;
 
-    fetchCounts();
-  }, []);
+  const counts: Counts = {
+    users: usersData?.data?.length || 0,
+    skills: skillsData?.data?.length || 0,
+    projects: projectsData?.data?.length || 0,
+    blogs: 0, // static
+  };
 
   if (loading) {
     return (
@@ -72,46 +68,55 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Users */}
-        <div className="bg-black/40 backdrop-blur-2xl shadow-lg rounded-xl p-5 flex flex-col items-start">
-          <div className="flex items-center justify-between w-full mb-3">
-            <h2 className="text-lg font-semibold">Users</h2>
-            <FaUsers className="text-blue-400" size={24} />
-          </div>
-          <p className="text-3xl font-bold">{counts.users}</p>
-          <span className="text-sm text-gray-400">Total registered users</span>
-        </div>
-
-        {/* Skills */}
-        <div className="bg-black/40 backdrop-blur-2xl shadow-lg rounded-xl p-5 flex flex-col items-start">
-          <div className="flex items-center justify-between w-full mb-3">
-            <h2 className="text-lg font-semibold">Skills</h2>
-            <FaMicrochip className="text-green-400" size={24} />
-          </div>
-          <p className="text-3xl font-bold">{counts.skills}</p>
-          <span className="text-sm text-gray-400">Skills in system</span>
-        </div>
-
-        {/* Projects */}
-        <div className="bg-black/40 backdrop-blur-2xl shadow-lg rounded-xl p-5 flex flex-col items-start">
-          <div className="flex items-center justify-between w-full mb-3">
-            <h2 className="text-lg font-semibold">Projects</h2>
-            <FaFolder className="text-yellow-400" size={24} />
-          </div>
-          <p className="text-3xl font-bold">{counts.projects}</p>
-          <span className="text-sm text-gray-400">Projects created</span>
-        </div>
-
-        {/* Blogs */}
-        <div className="bg-black/40 backdrop-blur-2xl shadow-lg rounded-xl p-5 flex flex-col items-start">
-          <div className="flex items-center justify-between w-full mb-3">
-            <h2 className="text-lg font-semibold">Blogs</h2>
-            <FaFileAlt className="text-pink-400" size={24} />
-          </div>
-          <p className="text-3xl font-bold">{counts.blogs}</p>
-          <span className="text-sm text-gray-400">Blog posts published</span>
-        </div>
+        <StatCard
+          title="Users"
+          count={counts.users}
+          icon={<FaUsers className="text-blue-400" size={24} />}
+          subtitle="Total registered users"
+        />
+        <StatCard
+          title="Skills"
+          count={counts.skills}
+          icon={<FaMicrochip className="text-green-400" size={24} />}
+          subtitle="Skills in system"
+        />
+        <StatCard
+          title="Projects"
+          count={counts.projects}
+          icon={<FaFolder className="text-yellow-400" size={24} />}
+          subtitle="Projects created"
+        />
+        <StatCard
+          title="Blogs"
+          count={counts.blogs}
+          icon={<FaFileAlt className="text-pink-400" size={24} />}
+          subtitle="Blog posts published"
+        />
       </div>
+    </div>
+  );
+}
+
+// StatCard component
+function StatCard({
+  title,
+  count,
+  icon,
+  subtitle,
+}: {
+  title: string;
+  count: number;
+  icon: React.ReactNode;
+  subtitle: string;
+}) {
+  return (
+    <div className="bg-black/40 backdrop-blur-2xl shadow-lg rounded-xl p-5 flex flex-col items-start">
+      <div className="flex items-center justify-between w-full mb-3">
+        <h2 className="text-lg font-semibold">{title}</h2>
+        {icon}
+      </div>
+      <p className="text-3xl font-bold">{count}</p>
+      <span className="text-sm text-gray-400">{subtitle}</span>
     </div>
   );
 }
