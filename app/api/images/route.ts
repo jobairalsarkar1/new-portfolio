@@ -14,9 +14,6 @@ cloudinary.v2.config({
 // Edge cache: cache response globally for 60 seconds
 export const revalidate = 60;
 
-// Optional: increase size limit for larger image uploads
-export const maxSize = 20 * 1024 * 1024; // 20 MB
-
 // GET: all uploaded images
 export async function GET() {
   try {
@@ -43,6 +40,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // max upload size (20MB)
+    const maxSize = 20 * 1024 * 1024;
+
     const formData = await req.formData();
     const file = formData.get("file") as File;
     const name = formData.get("name") as string;
@@ -51,6 +51,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { success: false, error: "Missing 'file' or 'name' in form data" },
         { status: 400 }
+      );
+    }
+
+    // file size check
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { success: false, error: "File size exceeds 20MB limit." },
+        { status: 413 } // Payload Too Large
       );
     }
 

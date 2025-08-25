@@ -7,7 +7,7 @@ const Loader = () => {
 
   return (
     <Html center>
-      <div className="flex flex-col justify-center items-center space-y-5 animate-fadeInSlow">
+      <div className="flex flex-col justify-center items-center space-y-3 animate-fadeInSlow">
         {/* Glowing Core with Orbits */}
         <div className="relative w-28 h-28 flex items-center justify-center">
           {/* Core pulse */}
