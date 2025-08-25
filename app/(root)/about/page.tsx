@@ -1,20 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
-import { techs } from "@/lib/constants";
+// import { techs } from "@/lib/constants";
 import DonutChart from "@/components/charts/DonutChart";
 import AreaChart from "@/components/charts/AreaChart";
 import BarChart from "@/components/charts/BarChart";
+import { useFetch } from "@/lib/hooks/useFetch";
+import SkillSkeleton from "@/components/loaders/SkillSkeleton";
 
-interface Tech {
+type Skill = {
+  id: string;
   name: string;
-  icon: StaticImageData | string;
+  iconUrl: string;
   needsBg?: boolean;
-}
+  createdAt: string;
+};
 
 const About = () => {
+  const { data: skills, isLoading, isError } = useFetch<Skill[]>("/api/skills");
+
   return (
     <section className="relative pt-22 py-12 px-8 text-white bg-transparent z-30">
       <div className="mx-1 md:mx-4 py-4 rounded-lg">
@@ -40,8 +46,8 @@ const About = () => {
             Skills
           </span>
         </h2>
-        <div className="mt-4 flex gap-3 flex-wrap items-center justify-center">
-          {techs.map((tech: Tech, index: number) => (
+        {/* <div className="mt-4 flex gap-3 flex-wrap items-center justify-center">
+          {techs.map((tech, index: number) => (
             <div
               key={tech.name}
               className={`w-12 h-12 border flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group ${
@@ -61,7 +67,42 @@ const About = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
+
+        {isLoading ? (
+          <SkillSkeleton />
+        ) : isError ? (
+          <p className="text-red-500">Failed to load skills.</p>
+        ) : (
+          <div className="mt-4 flex gap-3 flex-wrap items-center justify-center">
+            {skills
+              ?.sort(
+                (a, b) =>
+                  new Date(a.createdAt).getTime() -
+                  new Date(b.createdAt).getTime()
+              )
+              .map((skill, index: number) => (
+                <div
+                  key={skill.id}
+                  className={`w-12 h-12 border flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group ${
+                    skill.needsBg ? "bg-white" : "bg-gray-800"
+                  }`}
+                  style={{ animationDelay: `${index * 0.5}s` }}
+                >
+                  <Image
+                    src={skill.iconUrl}
+                    alt={skill.name}
+                    className="w-10 h-10 bg-cover"
+                    width={40}
+                    height={40}
+                  />
+                  <div className="absolute -top-5 -right-2 bg-gray-700 text-white text-xs p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center rounded-lg font-bold">
+                    {skill.name}
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
       </div>
 
       <div className="mx-1 md:mx-4 mt-4 grid gap-2 lg:grid-cols-2">
