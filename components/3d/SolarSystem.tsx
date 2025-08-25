@@ -36,10 +36,12 @@ const SolarSystem = ({ modelPath }: SolarSystemProps) => {
   useEffect(() => {
     if (actions) {
       Object.values(actions).forEach((action) => {
-        action.setLoop(THREE.LoopRepeat, Infinity);
-        action.clampWhenFinished = false;
-        action.timeScale = 0.5;
-        action.play();
+        if (action) {
+          action.setLoop(THREE.LoopRepeat, Infinity);
+          action.clampWhenFinished = false;
+          action.timeScale = 0.5;
+          action.play();
+        }
       });
     }
   }, [actions]);

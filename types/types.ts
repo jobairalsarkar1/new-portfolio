@@ -7,8 +7,8 @@ export interface Stack {
 
 export interface Project {
   iconUrl: StaticImageData | string;
-  coverImage: StaticImageData | string;
-  heroImage?: StaticImageData | string;
+  // coverImage: StaticImageData | string;
+  // heroImage?: StaticImageData | string;
   name: string;
   description: string;
   stacks: Stack[];

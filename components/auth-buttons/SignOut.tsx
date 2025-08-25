@@ -1,6 +1,6 @@
 import { signOut } from "@/auth";
-import { LogOut } from "lucide-react";
 import React from "react";
+import { FiLogOut } from "react-icons/fi";
 
 export default function SignOut() {
   return (
@@ -14,7 +14,7 @@ export default function SignOut() {
         type="button"
         className="w-full flex items-center justify-center gap-2 bg-[#171515] hover:bg-black text-white py-2 rounded-md transition duration-200"
       >
-        <LogOut className="w-5 h-5" />
+        <FiLogOut className="w-5 h-5" />
         Sign Out
       </button>
     </form>
