@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import cloudinary from "cloudinary";
 import type { UploadApiResponse } from "cloudinary";
+import { auth } from "@/auth";
 
 // Cloudinary configuration
 cloudinary.v2.config({
@@ -36,6 +37,12 @@ export async function GET() {
 // POST: upload image to Cloudinary and save metadata
 export async function POST(req: NextRequest) {
   try {
+    // Authorization Check
+    const session = await auth();
+    if (!session?.user?.email && session?.user?.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const formData = await req.formData();
     const file = formData.get("file") as File;
     const name = formData.get("name") as string;

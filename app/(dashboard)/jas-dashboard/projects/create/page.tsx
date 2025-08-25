@@ -19,11 +19,13 @@ const CreateProjectPage = () => {
   const [form, setForm] = useState({
     name: "",
     coverImage: "",
+    heroImage: "",
     link: "",
     gitLink: "",
     description: "",
     skillIds: [] as string[],
   });
+
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -42,11 +44,15 @@ const CreateProjectPage = () => {
   }, []);
 
   const isFormValid =
-    form.name.trim() && form.coverImage.trim() && form.description.trim();
+    form.name.trim() &&
+    form.coverImage.trim() &&
+    form.heroImage.trim() &&
+    form.description.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
+
     setLoading(true);
     try {
       const { data } = await axios.post("/api/projects", form);
@@ -86,7 +92,7 @@ const CreateProjectPage = () => {
         onSubmit={handleSubmit}
         className="flex flex-col gap-6 w-full max-w-6xl mx-auto"
       >
-        {/* Project Name & Cover Image */}
+        {/* Project Name & Images */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 text-gray-300">Project Name *</label>
@@ -112,6 +118,19 @@ const CreateProjectPage = () => {
               required
             />
           </div>
+        </div>
+
+        {/* Hero Image */}
+        <div>
+          <label className="block mb-1 text-gray-300">Hero Image URL *</label>
+          <input
+            type="text"
+            placeholder="Enter hero image URL"
+            value={form.heroImage}
+            onChange={(e) => setForm({ ...form, heroImage: e.target.value })}
+            className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-200 placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 outline-none transition"
+            required
+          />
         </div>
 
         {/* Project Links */}
@@ -180,7 +199,7 @@ const CreateProjectPage = () => {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Submit Button */}
         <div className="flex justify-end mt-4">
           <GradientButton type="submit" disabled={!isFormValid || loading}>
             {loading ? (

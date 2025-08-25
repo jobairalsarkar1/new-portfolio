@@ -100,6 +100,7 @@ model Project {
   id          String   @id @default(cuid())
   name        String
   coverImage  String
+  heroImage   String?
   link        String?
   gitLink     String?
   description String

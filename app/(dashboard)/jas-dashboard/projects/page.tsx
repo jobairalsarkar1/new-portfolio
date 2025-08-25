@@ -25,6 +25,7 @@ type Project = {
   id: string;
   name: string;
   coverImage: string;
+  heroImage?: string;
   link?: string;
   gitLink?: string;
   description: string;
@@ -86,7 +87,8 @@ const ProjectsPage = () => {
           <thead>
             <tr className="text-xs sm:text-sm text-zinc-400 uppercase tracking-wider bg-zinc-900 border-b border-zinc-800">
               <th className="px-4 py-3 font-semibold">Name</th>
-              <th className="px-4 py-3 font-semibold">Cover</th>
+              <th className="px-4 py-3 font-semibold">Cover Image</th>
+              <th className="px-4 py-3 font-semibold">Hero Image</th>
               <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
@@ -109,8 +111,8 @@ const ProjectsPage = () => {
                   key={project.id}
                   className="border-b border-zinc-800 hover:bg-zinc-800 transition duration-200"
                 >
-                  <td className="px-4 py-3">{project.name}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-2.5">{project.name}</td>
+                  <td className="px-4 py-2.5">
                     <Image
                       src={project.coverImage}
                       alt={project.name}
@@ -119,7 +121,20 @@ const ProjectsPage = () => {
                       className="rounded object-cover"
                     />
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-2.5">
+                    {project.heroImage ? (
+                      <Image
+                        src={project.heroImage}
+                        alt={project.name}
+                        width={48}
+                        height={48}
+                        className="rounded object-cover"
+                      />
+                    ) : (
+                      <span className="text-zinc-500 italic">N/A</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-2.5">
                     <div className="flex items-center gap-4">
                       <button
                         onClick={() => setViewProject(project)}

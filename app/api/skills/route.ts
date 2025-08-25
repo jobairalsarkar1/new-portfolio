@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 // Edge cache: cache response globally for 60 seconds
 export const revalidate = 60;
@@ -21,6 +22,12 @@ export async function GET() {
 // POST new skill
 export async function POST(req: Request) {
   try {
+    // Authorization Check
+    const session = await auth();
+    if (!session?.user?.email && session?.user?.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { name, iconUrl, needsBg } = body;
 
