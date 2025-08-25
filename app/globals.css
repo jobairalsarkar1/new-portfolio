@@ -44,7 +44,6 @@
     background: linear-gradient(to right, #434343, #000000);
   }
 
-  /* Spin animations */
   @keyframes spin-slow {
     0% {
       transform: rotate(0deg);
@@ -68,6 +67,21 @@
   }
   .animate-spin-reverse {
     animation: spin-reverse 6s linear infinite;
+  }
+
+  @keyframes fadeInSlow {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeInSlow {
+    animation: fadeInSlow 1s ease-out forwards;
   }
 }
 
