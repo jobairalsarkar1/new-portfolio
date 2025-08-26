@@ -83,6 +83,22 @@
   .animate-fadeInSlow {
     animation: fadeInSlow 1s ease-out forwards;
   }
+
+  /* Wiggle For Retry Button */
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-2deg);
+    }
+    50% {
+      transform: rotate(2deg);
+    }
+  }
+
+  /* MarkDown Preview Background */
+  .no-bg {
+    background: transparent !important;
+  }
 }
 
 @layer utilities {

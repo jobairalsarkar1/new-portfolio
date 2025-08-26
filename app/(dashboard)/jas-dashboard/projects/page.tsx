@@ -270,7 +270,7 @@ const ProjectsPage = () => {
             <div className="bg-gray-800 rounded-lg p-3">
               <MarkdownPreview
                 source={viewProject.description}
-                className="prose prose-invert max-w-full"
+                className="prose prose-invert max-w-full no-bg"
               />
             </div>
 

@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaRedo } from "react-icons/fa";
 // import { techs } from "@/lib/constants";
 import DonutChart from "@/components/charts/DonutChart";
 import AreaChart from "@/components/charts/AreaChart";
 import BarChart from "@/components/charts/BarChart";
 import { useFetch } from "@/lib/hooks/useFetch";
 import SkillSkeleton from "@/components/loaders/SkillSkeleton";
+import { mutate } from "swr";
 
 type Skill = {
   id: string;
@@ -72,7 +73,20 @@ const About = () => {
         {isLoading ? (
           <SkillSkeleton />
         ) : isError ? (
-          <p className="text-red-500">Failed to load skills.</p>
+          <div className="flex flex-col items-center gap-3 py-6">
+            <p className="text-red-400 font-semibold">Failed to load skills.</p>
+            <button
+              onClick={() => mutate("/api/skills")}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-600 
+                 bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 
+                 text-white font-semibold shadow-md
+                 hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 
+                 transition-all duration-300 ease-in-out hover:animate-[wiggle_0.3s_ease-in-out] cursor-pointer"
+            >
+              <FaRedo className="w-4 h-4" />
+              Retry
+            </button>
+          </div>
         ) : (
           <div className="mt-4 flex gap-3 flex-wrap items-center justify-center">
             {skills

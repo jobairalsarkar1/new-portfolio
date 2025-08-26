@@ -60,7 +60,7 @@ const Navbar = () => {
         {/* Hire Me Button */}
         <Link
           href="/contact"
-          className="flex items-center gap-2 text-[0.9rem] font-semibold border border-gray-500 xl:ml-4 px-4 py-2 bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 text-white rounded-lg shadow-md hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300"
+          className="flex items-center gap-2 text-[0.9rem] font-semibold border border-gray-500 xl:ml-4 px-4 py-2 bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 text-white rounded-lg shadow-md hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300 hover:animate-[wiggle_0.3s_ease-in-out]"
         >
           <FiBriefcase size={18} />
           Hire Me

@@ -27,7 +27,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "i.imgur.com" },
       { protocol: "https", hostname: "firebasestorage.googleapis.com" },
       { protocol: "https", hostname: "*.s3.amazonaws.com" },
-      { protocol: "https", hostname: "*.supabase.co" }
+      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "*.unsplash.com" }
     ]
   }
   /* config options here */
