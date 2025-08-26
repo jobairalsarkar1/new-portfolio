@@ -11,9 +11,6 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Edge cache: cache response globally for 60 seconds
-export const revalidate = 60;
-
 // GET: all uploaded images
 export async function GET() {
   try {
