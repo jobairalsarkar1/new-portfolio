@@ -7,6 +7,7 @@ export async function GET() {
   try {
     const projects = await prisma.project.findMany({
       include: { skills: true },
+      orderBy: { priority: "desc" },
     });
 
     return NextResponse.json({ success: true, data: projects });
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, coverImage, heroImage, link, gitLink, canContact, description, skillIds } = body;
+    const { name, coverImage, heroImage, link, gitLink, canContact, description, priority, skillIds } = body;
 
     if (!name || !coverImage || !heroImage || !description) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
@@ -53,6 +54,7 @@ export async function POST(req: Request) {
         gitLink,
         canContact: canContact ?? false,
         description,
+        priority: priority ?? 0,
         skills: skillIds
           ? { connect: skillIds.map((id: string) => ({ id })) }
           : undefined,

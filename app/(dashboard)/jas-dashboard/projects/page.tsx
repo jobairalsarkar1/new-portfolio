@@ -28,7 +28,9 @@ type Project = {
   heroImage?: string;
   link?: string;
   gitLink?: string;
+  canContact: boolean;
   description: string;
+  priority: number;
   createdAt: string;
   skills: Skill[];
 };
@@ -89,6 +91,7 @@ const ProjectsPage = () => {
               <th className="px-4 py-3 font-semibold">Name</th>
               <th className="px-4 py-3 font-semibold">Cover Image</th>
               <th className="px-4 py-3 font-semibold">Hero Image</th>
+              <th className="px-4 py-3 font-semibold">Priority</th>
               <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
@@ -134,6 +137,7 @@ const ProjectsPage = () => {
                       <span className="text-zinc-500 italic">N/A</span>
                     )}
                   </td>
+                  <td className="px-4 py-2.5">{project.priority}</td>
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-4">
                       <button

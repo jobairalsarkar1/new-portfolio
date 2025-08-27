@@ -31,7 +31,6 @@ const Projects = () => {
     isLoading,
     isError,
   } = useFetch<Project[]>("/api/projects", 3000);
-  console.log("Projects data:", projects);
   // const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   // useEffect(() => {
@@ -218,7 +217,7 @@ const Projects = () => {
       <div className="mt-5 px-1 sm:px-4 flex justify-end items-center">
         <Link
           href="/contact"
-          className="flex items-center gap-5 text-[0.9rem] font-semibold border border-gray-500 px-4 py-2 bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 text-white rounded-lg shadow-md hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300"
+          className="flex items-center gap-5 text-lg font-semibold border border-gray-500 px-4 py-2 bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 text-white rounded-lg shadow-md hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300"
         >
           Let&apos;s Bring Your Idea to Life
           <FaArrowRight />

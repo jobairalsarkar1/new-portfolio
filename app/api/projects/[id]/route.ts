@@ -7,10 +7,10 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params;
+    const { id: slug } = await context.params;
 
     const project = await prisma.project.findUnique({
-      where: { id },
+      where: { slug },
       include: { skills: true },
     });
 

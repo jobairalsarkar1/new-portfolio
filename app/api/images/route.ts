@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   try {
     // Authorization Check
     const session = await auth();
-    if (!session?.user?.email && session?.user?.role !== "ADMIN") {
+    if (!session?.user?.email || session?.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
