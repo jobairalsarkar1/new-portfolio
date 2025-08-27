@@ -16,29 +16,42 @@ export async function GET() {
   }
 }
 
+// Utility function to create slugs
+function generateSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+}
+
+
 // POST new project
 export async function POST(req: Request) {
   try {
     // Authorization Check
     const session = await auth();
-    if (!session?.user?.email && session?.user?.role !== "ADMIN") {
+    if (!session?.user?.email || session?.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
-    const { name, coverImage, heroImage, link, gitLink, description, skillIds } = body;
+    const { name, coverImage, heroImage, link, gitLink, canContact, description, skillIds } = body;
 
     if (!name || !coverImage || !heroImage || !description) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
     }
 
+    const slug = generateSlug(name);
+
     const newProject = await prisma.project.create({
       data: {
         name,
+        slug,
         coverImage,
         heroImage,
         link,
         gitLink,
+        canContact: canContact ?? false,
         description,
         skills: skillIds
           ? { connect: skillIds.map((id: string) => ({ id })) }

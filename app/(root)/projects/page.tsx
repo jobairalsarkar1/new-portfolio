@@ -14,6 +14,7 @@ import { mutate } from "swr";
 type Project = {
   id: string;
   name: string;
+  slug: string;
   coverImage: string;
   description: string;
   createdAt: string;
@@ -30,6 +31,7 @@ const Projects = () => {
     isLoading,
     isError,
   } = useFetch<Project[]>("/api/projects", 3000);
+  console.log("Projects data:", projects);
   // const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   // useEffect(() => {
@@ -168,7 +170,7 @@ const Projects = () => {
         <div className="mx-1 md:mx-4 mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects?.map((project) => (
             <Link
-              href={`/projects/${project.id}`}
+              href={`/projects/${project.slug}`}
               key={project.id}
               className="group relative border-2 border-gray-700 rounded-2xl overflow-hidden 
              bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-lg 
@@ -200,13 +202,13 @@ const Projects = () => {
                 >
                   {project.name}
                 </h3>
-                <p className="text-sm text-gray-400">
+                <div className="text-sm text-gray-400">
                   <ReactMarkdown>
-                    {project.description.length > 70
-                      ? project.description.substring(0, 70) + "..."
-                      : project.description.substring(0, 70) + "..."}
+                    {project.description.length > 80
+                      ? project.description.substring(0, 80) + "..."
+                      : project.description.substring(0, 80) + "..."}
                   </ReactMarkdown>
-                </p>
+                </div>
               </div>
             </Link>
           ))}

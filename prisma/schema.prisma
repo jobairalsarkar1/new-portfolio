@@ -99,10 +99,12 @@ model Skill {
 model Project {
   id          String   @id @default(cuid())
   name        String
+  slug        String   @unique
   coverImage  String
   heroImage   String?
   link        String?
   gitLink     String?
+  canContact  Boolean  @default(false)
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

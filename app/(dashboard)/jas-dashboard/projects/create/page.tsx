@@ -22,6 +22,7 @@ const CreateProjectPage = () => {
     heroImage: "",
     link: "",
     gitLink: "",
+    canContact: false,
     description: "",
     skillIds: [] as string[],
   });
@@ -179,6 +180,23 @@ const CreateProjectPage = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Can Contact Toggle */}
+        <div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.canContact}
+              onChange={(e) =>
+                setForm({ ...form, canContact: e.target.checked })
+              }
+              className="h-4 w-4 rounded border-gray-700 bg-gray-900 text-indigo-500 focus:ring-indigo-500"
+            />
+            <span className="text-gray-300 text-lg">
+              Allow people to contact you about this project
+            </span>
+          </label>
         </div>
 
         {/* Markdown Editor */}
