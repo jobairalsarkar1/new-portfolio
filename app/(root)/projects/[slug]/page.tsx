@@ -30,7 +30,7 @@ type Project = {
   gitLink?: string;
   canContact?: boolean;
   description: string;
-  priority
+  priority: number;
   skills: Skill[];
 };
 
