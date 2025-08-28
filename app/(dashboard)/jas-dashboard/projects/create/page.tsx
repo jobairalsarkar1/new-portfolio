@@ -136,7 +136,6 @@ const CreateProjectPage = () => {
             />
           </div>
 
-          {/* Priority */}
           <div>
             <label className="block mb-1 text-gray-300">
               Priority (0 = default, higher shows first)

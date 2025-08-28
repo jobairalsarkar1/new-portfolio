@@ -96,3 +96,49 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+// DELETE: remove image
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await auth();
+    if (!session?.user?.email || session?.user?.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Image ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Find image in DB
+    const image = await prisma.image.findUnique({ where: { id } });
+    if (!image) {
+      return NextResponse.json(
+        { success: false, error: "Image not found" },
+        { status: 404 }
+      );
+    }
+
+    // Extract public_id from URL
+    const parts = image.url.split("/");
+    const filename = parts[parts.length - 1];
+    const publicId = "portfolio/images/" + filename.split(".")[0];
+
+    // Delete from Cloudinary
+    await cloudinary.v2.uploader.destroy(publicId);
+
+    // Delete from DB
+    await prisma.image.delete({ where: { id } });
+
+    return NextResponse.json({ success: true, message: "Image deleted" });
+  } catch (error) {
+    console.error("DELETE /api/images error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to delete image" },
+      { status: 500 }
+    );
+  }
+}

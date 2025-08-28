@@ -69,6 +69,24 @@ const ImagesPage = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      const { data } = await axios.delete("/api/images", {
+        data: { id: deleteId },
+      });
+      if (data.success) {
+        setDeleteId(null);
+        fetchImages();
+      } else {
+        alert(data.error || "Delete failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Delete error");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white p-6">
       {/* Top Bar */}
@@ -228,7 +246,7 @@ const ImagesPage = () => {
         </div>
       )}
 
-      {/* Delete Confirm Modal (placeholder) */}
+      {/* Delete Confirm Modal */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="backdrop-blur-md bg-white/10 border border-white/20 p-5 rounded-xl shadow-lg w-72">
@@ -236,14 +254,20 @@ const ImagesPage = () => {
               Delete Image?
             </h2>
             <p className="text-sm text-gray-300 text-center mb-4">
-              This action is not implemented yet.
+              This action cannot be undone.
             </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setDeleteId(null)}
                 className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
               >
-                Close
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-1.5 rounded bg-red-600 hover:bg-red-500"
+              >
+                Delete
               </button>
             </div>
           </div>
