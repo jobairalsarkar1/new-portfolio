@@ -174,7 +174,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn-main mt-1 text-lg text-white bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300 flex items-center justify-center gap-2"
+              className="btn-main mt-1 text-lg text-white bg-gradient-to-r from-gray-800 via-indigo-900 to-gray-900 hover:from-gray-900 hover:via-indigo-700 hover:to-gray-800 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isLoading ? (
                 <>

@@ -79,9 +79,17 @@ export default function DashboardSidebar({
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-md hover:bg-gray-700 transition-colors text-gray-300 hover:text-white"
+          className="text-gray-300 hover:text-white cursor-pointer"
         >
-          {collapsed ? <FaBars size={18} /> : <FaTimes size={18} />}
+          {collapsed ? (
+            <div className="ml-2 p-2 rounded-md hover:bg-gray-700 transition-colors">
+              <FaBars size={18} />
+            </div>
+          ) : (
+            <div className="ml-2 p-2 rounded-md hover:bg-gray-700 transition-colors">
+              <FaTimes size={18} />
+            </div>
+          )}
         </button>
       </div>
 

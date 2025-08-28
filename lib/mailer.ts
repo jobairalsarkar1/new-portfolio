@@ -16,7 +16,7 @@ export async function sendMail({ to, subject, html, text, from }: MailOptions) {
     const response = await axios.post(
       RESEND_API_URL,
       {
-        from: from || `DataForge <${SENDER_EMAIL}>`,
+        from: from || `Jobair Al Sarkar <${SENDER_EMAIL}>`,
         to,
         subject,
         html,
