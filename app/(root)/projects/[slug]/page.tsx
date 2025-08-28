@@ -19,6 +19,7 @@ type Skill = {
   name: string;
   iconUrl: string;
   needsBg: boolean;
+  priority: number;
 };
 
 type Project = {
@@ -29,6 +30,7 @@ type Project = {
   gitLink?: string;
   canContact?: boolean;
   description: string;
+  priority
   skills: Skill[];
 };
 

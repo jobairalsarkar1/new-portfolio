@@ -17,6 +17,7 @@ type Project = {
   slug: string;
   coverImage: string;
   description: string;
+  priority: number;
   createdAt: string;
   updatedAt: string;
 };

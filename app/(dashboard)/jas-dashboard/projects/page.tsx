@@ -19,6 +19,7 @@ type Skill = {
   name: string;
   iconUrl: string;
   needsBg: boolean;
+  priority: number;
 };
 
 type Project = {
