@@ -186,12 +186,22 @@ const ProjectsPage = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setDeleteId(null)}
-                className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                disabled={deleting}
+                className={`px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 cursor-pointer ${
+                  deleting ? "cursor-not-allowed opacity-50" : ""
+                }`}
               >
                 Cancel
               </button>
               <GradientButton onClick={handleDelete} disabled={deleting}>
-                {deleting ? <ActionLoader size={5} /> : "Confirm"}
+                {deleting ? (
+                  <div className="flex items-center gap-2">
+                    <ActionLoader size={5} />
+                    Deleting...
+                  </div>
+                ) : (
+                  "Confirm"
+                )}
               </GradientButton>
             </div>
           </div>

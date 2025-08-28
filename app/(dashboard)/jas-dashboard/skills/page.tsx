@@ -27,6 +27,8 @@ const SkillsPage = () => {
     needsBg: false,
     priority: 0,
   });
+  const [deleting, setDeleting] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   // Fetch skills
   const fetchSkills = async () => {
@@ -48,18 +50,22 @@ const SkillsPage = () => {
   // Delete skill
   const handleDelete = async () => {
     if (!deleteId) return;
+    setDeleting(true);
     try {
       await axios.delete(`/api/skills/${deleteId}`);
       setDeleteId(null);
       fetchSkills();
     } catch (err) {
       console.error(err);
+    } finally {
+      setDeleting(false);
     }
   };
 
   // Add new skill
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    setUploading(true);
     try {
       const { data } = await axios.post("/api/skills", form);
       if (data.success) {
@@ -71,6 +77,8 @@ const SkillsPage = () => {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -136,7 +144,7 @@ const SkillsPage = () => {
                   <td className="px-4 py-2.5">
                     <button
                       onClick={() => setDeleteId(skill.id)}
-                      className="text-red-400 hover:text-red-600"
+                      className="text-red-400 hover:text-red-600 cursor-pointer"
                     >
                       <FaTrash />
                     </button>
@@ -213,11 +221,23 @@ const SkillsPage = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                  disabled={uploading}
+                  className={`px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 cursor-pointer ${
+                    uploading ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 >
                   Cancel
                 </button>
-                <GradientButton type="submit">Save</GradientButton>
+                <GradientButton type="submit" disabled={uploading}>
+                  {uploading ? (
+                    <div className="flex items-center gap-2">
+                      <ActionLoader size={5} />
+                      Saving...
+                    </div>
+                  ) : (
+                    "Save"
+                  )}
+                </GradientButton>
               </div>
             </form>
           </div>
@@ -237,11 +257,23 @@ const SkillsPage = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setDeleteId(null)}
-                className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                disabled={deleting}
+                className={`px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 cursor-pointer ${
+                  deleting ? "cursor-not-allowed opacity-50" : ""
+                }`}
               >
                 Cancel
               </button>
-              <GradientButton onClick={handleDelete}>Confirm</GradientButton>
+              <GradientButton onClick={handleDelete} disabled={deleting}>
+                {deleting ? (
+                  <div className="flex items-center gap-2">
+                    <ActionLoader size={5} />
+                    Deleting...
+                  </div>
+                ) : (
+                  "Confirm"
+                )}
+              </GradientButton>
             </div>
           </div>
         </div>

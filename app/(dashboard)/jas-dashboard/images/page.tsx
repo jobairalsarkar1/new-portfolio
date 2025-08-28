@@ -23,6 +23,8 @@ const ImagesPage = () => {
     file: null,
     name: "",
   });
+  const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchImages = async () => {
     setLoading(true);
@@ -50,6 +52,7 @@ const ImagesPage = () => {
       return alert("File is too large. Max size is 20MB.");
     }
 
+    setUploading(true);
     const formData = new FormData();
     formData.append("file", form.file);
     formData.append("name", form.name);
@@ -66,11 +69,14 @@ const ImagesPage = () => {
     } catch (err) {
       console.error(err);
       alert("Upload error");
+    } finally {
+      setUploading(false);
     }
   };
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    setDeleting(true);
     try {
       const { data } = await axios.delete("/api/images", {
         data: { id: deleteId },
@@ -84,6 +90,8 @@ const ImagesPage = () => {
     } catch (err) {
       console.error(err);
       alert("Delete error");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -162,7 +170,7 @@ const ImagesPage = () => {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => setDeleteId(image.id)}
-                      className="text-red-400 hover:text-red-600"
+                      className="text-red-400 hover:text-red-600 cursor-pointer"
                     >
                       <FaTrash />
                     </button>
@@ -235,11 +243,23 @@ const ImagesPage = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                  disabled={uploading}
+                  className={`px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 cursor-pointer ${
+                    uploading ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 >
                   Cancel
                 </button>
-                <GradientButton type="submit">Upload</GradientButton>
+                <GradientButton type="submit" disabled={uploading}>
+                  {uploading ? (
+                    <div className="flex items-center gap-2">
+                      <ActionLoader size={5} />
+                      Uploading...
+                    </div>
+                  ) : (
+                    "Upload"
+                  )}
+                </GradientButton>
               </div>
             </form>
           </div>
@@ -259,15 +279,26 @@ const ImagesPage = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setDeleteId(null)}
-                className="px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600"
+                disabled={deleting}
+                className={`px-4 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 cursor-pointer ${
+                  deleting ? "cursor-not-allowed opacity-50" : ""
+                }`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-1.5 rounded bg-red-600 hover:bg-red-500"
+                disabled={deleting}
+                className="px-4 py-1.5 rounded bg-red-600 hover:bg-red-500 cursor-pointer"
               >
-                Delete
+                {deleting ? (
+                  <div className="flex items-center gap-2">
+                    <ActionLoader size={5} />
+                    Deleting...
+                  </div>
+                ) : (
+                  "Delete"
+                )}
               </button>
             </div>
           </div>
