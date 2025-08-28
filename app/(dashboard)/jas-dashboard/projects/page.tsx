@@ -40,6 +40,7 @@ const ProjectsPage = () => {
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [viewProject, setViewProject] = useState<Project | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const router = useRouter();
 
   // Fetch projects
@@ -62,12 +63,15 @@ const ProjectsPage = () => {
   // Delete project
   const handleDelete = async () => {
     if (!deleteId) return;
+    setDeleting(true);
     try {
       await axios.delete(`/api/projects/${deleteId}`);
       setDeleteId(null);
       fetchProjects();
     } catch (err) {
       console.error(err);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -98,7 +102,7 @@ const ProjectsPage = () => {
           <tbody className="text-sm sm:text-base text-zinc-300">
             {loading ? (
               <tr>
-                <td colSpan={3} className="text-center p-6">
+                <td colSpan={5} className="text-center p-6">
                   <ActionLoader />
                 </td>
               </tr>
@@ -152,7 +156,7 @@ const ProjectsPage = () => {
                         className="text-red-400 hover:text-red-600 cursor-pointer transition"
                         title="Delete Project"
                       >
-                        <FaTrash className="w-5 h-5" />
+                        <FaTrash className="w-4 h-4" />
                       </button>
                     </div>
                   </td>
@@ -186,7 +190,9 @@ const ProjectsPage = () => {
               >
                 Cancel
               </button>
-              <GradientButton onClick={handleDelete}>Confirm</GradientButton>
+              <GradientButton onClick={handleDelete} disabled={deleting}>
+                {deleting ? <ActionLoader size={5} /> : "Confirm"}
+              </GradientButton>
             </div>
           </div>
         </div>

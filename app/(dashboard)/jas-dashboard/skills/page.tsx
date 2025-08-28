@@ -12,6 +12,7 @@ type Skill = {
   name: string;
   iconUrl: string;
   needsBg: boolean;
+  priority: number;
   createdAt: string;
 };
 
@@ -20,7 +21,12 @@ const SkillsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<null | string>(null);
-  const [form, setForm] = useState({ name: "", iconUrl: "", needsBg: false });
+  const [form, setForm] = useState({
+    name: "",
+    iconUrl: "",
+    needsBg: false,
+    priority: 0,
+  });
 
   // Fetch skills
   const fetchSkills = async () => {
@@ -58,7 +64,7 @@ const SkillsPage = () => {
       const { data } = await axios.post("/api/skills", form);
       if (data.success) {
         setIsModalOpen(false);
-        setForm({ name: "", iconUrl: "", needsBg: false });
+        setForm({ name: "", iconUrl: "", needsBg: false, priority: 0 });
         fetchSkills();
       } else {
         alert(data.error || "Failed to add skill");
@@ -86,13 +92,14 @@ const SkillsPage = () => {
               <th className="px-4 py-3 font-semibold">Name</th>
               <th className="px-4 py-3 font-semibold">Icon</th>
               <th className="px-4 py-3 font-semibold">Needs Bg</th>
+              <th className="px-4 py-3 font-semibold">Priority</th>
               <th className="px-4 py-3 font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody className="text-sm sm:text-base text-zinc-300">
             {loading ? (
               <tr>
-                <td colSpan={4} className="text-center p-6">
+                <td colSpan={5} className="text-center p-6">
                   <ActionLoader />
                 </td>
               </tr>
@@ -125,6 +132,7 @@ const SkillsPage = () => {
                       <FaTimesCircle className="text-red-500 text-lg" />
                     )}
                   </td>
+                  <td className="px-4 py-2.5">{skill.priority}</td>
                   <td className="px-4 py-2.5">
                     <button
                       onClick={() => setDeleteId(skill.id)}
@@ -184,6 +192,21 @@ const SkillsPage = () => {
                   className="h-4 w-4"
                 />
                 <label className="text-gray-300">Needs Background</label>
+              </div>
+
+              {/* Priority */}
+              <div>
+                <input
+                  type="number"
+                  value={form.priority}
+                  placeholder="Priority (higher = more important)"
+                  min={0}
+                  max={1000}
+                  onChange={(e) =>
+                    setForm({ ...form, priority: Number(e.target.value) })
+                  }
+                  className="w-full px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 outline-none transition"
+                />
               </div>
 
               <div className="flex justify-end gap-3 mt-4">

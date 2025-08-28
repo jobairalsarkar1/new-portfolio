@@ -86,10 +86,11 @@ model Authenticator {
 }
 
 model Skill {
-  id      String    @id @default(cuid())
-  name    String
-  iconUrl String
-  needsBg Boolean?  @default(false)
+  id       String    @id @default(cuid())
+  name     String
+  iconUrl  String
+  needsBg  Boolean?  @default(false)
+  priority Int       @default(0)
 
   projects Project[] @relation("ProjectSkills")
   createdAt DateTime @default(now())

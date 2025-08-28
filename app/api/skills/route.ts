@@ -7,6 +7,7 @@ export async function GET() {
   try {
     const skills = await prisma.skill.findMany({
       include: { projects: true },
+      orderBy: { priority: "desc" },
     });
 
     return NextResponse.json({ success: true, data: skills });
@@ -26,14 +27,14 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, iconUrl, needsBg } = body;
+    const { name, iconUrl, needsBg, priority } = body;
 
     if (!name || !iconUrl) {
       return NextResponse.json({ success: false, error: "Missing fields" }, { status: 400 });
     }
 
     const newSkill = await prisma.skill.create({
-      data: { name, iconUrl, needsBg },
+      data: { name, iconUrl, needsBg, priority: priority ?? 0 },
     });
 
     return NextResponse.json({ success: true, data: newSkill }, { status: 201 });

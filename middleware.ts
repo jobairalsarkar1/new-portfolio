@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
   const adminRoutes = ["/jas-dashboard"];
 
   if (session && pathname === "/sign-in") {
-    return NextResponse.redirect(new URL("/jas-dashboard", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (!session && protectedRoutes.some(path => pathname.startsWith(path))) {

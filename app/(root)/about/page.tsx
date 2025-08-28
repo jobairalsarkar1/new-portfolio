@@ -74,7 +74,9 @@ const About = () => {
           <SkillSkeleton />
         ) : isError ? (
           <div className="flex flex-col items-center gap-3 py-6">
-            <p className="text-red-400 font-semibold">Failed to load skills.</p>
+            <p className="text-gray-300 text-lg font-semibold">
+              Failed to load skills.
+            </p>
             <button
               onClick={() => mutate("/api/skills")}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-600 
@@ -89,32 +91,26 @@ const About = () => {
           </div>
         ) : (
           <div className="mt-4 flex gap-3 flex-wrap items-center justify-center">
-            {skills
-              ?.sort(
-                (a, b) =>
-                  new Date(a.createdAt).getTime() -
-                  new Date(b.createdAt).getTime()
-              )
-              .map((skill, index: number) => (
-                <div
-                  key={skill.id}
-                  className={`w-12 h-12 border flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group ${
-                    skill.needsBg ? "bg-white" : "bg-gray-800"
-                  }`}
-                  style={{ animationDelay: `${index * 0.5}s` }}
-                >
-                  <Image
-                    src={skill.iconUrl}
-                    alt={skill.name}
-                    className="w-10 h-10 bg-cover"
-                    width={40}
-                    height={40}
-                  />
-                  <div className="absolute -top-5 -right-2 bg-gray-700 text-white text-xs p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center rounded-lg font-bold">
-                    {skill.name}
-                  </div>
+            {skills?.map((skill, index: number) => (
+              <div
+                key={skill.id}
+                className={`w-12 h-12 border flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group ${
+                  skill.needsBg ? "bg-white" : "bg-gray-800"
+                }`}
+                style={{ animationDelay: `${index * 0.5}s` }}
+              >
+                <Image
+                  src={skill.iconUrl}
+                  alt={skill.name}
+                  className="w-10 h-10 bg-cover"
+                  width={40}
+                  height={40}
+                />
+                <div className="absolute -top-5 -right-2 bg-gray-700 text-white text-xs p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center rounded-lg font-bold">
+                  {skill.name}
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         )}
       </div>
