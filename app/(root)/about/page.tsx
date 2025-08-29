@@ -94,7 +94,7 @@ const About = () => {
             {skills?.map((skill, index: number) => (
               <div
                 key={skill.id}
-                className={`w-12 h-12 border flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group ${
+                className={`w-12 h-12 border border-gray-600 flex items-center justify-center rounded-lg hover:bg-slate-100 animate-pulse relative group cursor-help ${
                   skill.needsBg ? "bg-white" : "bg-gray-800"
                 }`}
                 style={{ animationDelay: `${index * 0.5}s` }}
