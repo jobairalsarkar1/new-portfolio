@@ -4,7 +4,7 @@ const InProjectSkeletonLoader = () => {
   return (
     <div className="relative pt-24 py-12 px-8 sm:px-12 animate-pulse flex flex-col gap-4">
       {/* Hero Image Placeholder */}
-      <div className="h-72 w-full rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-inner" />
+      <div className="h-80 w-full rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-inner" />
 
       {/* Project Title Placeholder */}
       <div className="h-8 w-1/3 rounded-md border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
@@ -20,7 +20,7 @@ const InProjectSkeletonLoader = () => {
       </div>
 
       {/* Description Placeholder */}
-      <div className="h-40 w-full rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-inner" />
+      <div className="h-48 w-full rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800 shadow-inner" />
 
       {/* Buttons Placeholder */}
       <div className="h-10 w-32 rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-900 via-black to-gray-800" />

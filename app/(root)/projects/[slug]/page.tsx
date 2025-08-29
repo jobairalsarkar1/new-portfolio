@@ -8,6 +8,7 @@ import { FaExternalLinkAlt, FaRedo } from "react-icons/fa";
 import GradientButton from "@/components/dashboard/GradientButton";
 import InProjectSkeletonLoader from "@/components/loaders/InProjectSkeletonLoader";
 import dynamic from "next/dynamic";
+import { getCloudinaryBlurUrl } from "@/lib/cloudinary";
 
 // Markdown preview
 const MarkdownPreview = dynamic(() => import("@uiw/react-markdown-preview"), {
@@ -90,18 +91,20 @@ const ProjectPage = () => {
     <section className="relative pt-24 py-12 px-8 sm:px-12 text-white z-30">
       {/* Hero Image */}
       {project.heroImage && (
-        <div className="mb-6 w-full h-96 relative rounded-lg overflow-hidden shadow-lg">
+        <div className="mb-4 w-full aspect-video h-auto sm:max-h-[480px] relative rounded-lg overflow-hidden shadow-lg border border-gray-700">
           <Image
             src={project.heroImage}
             alt={project.name}
             fill
-            className="object-cover w-full h-full rounded-lg"
+            className="object-cover rounded-lg"
+            placeholder="blur"
+            blurDataURL={getCloudinaryBlurUrl(project.heroImage)}
           />
         </div>
       )}
 
       {/* Project Name */}
-      <h1 className="inline-block text-3xl sm:text-4xl font-bold mb-6 py-2 bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
+      <h1 className="inline-block text-2xl sm:text-3xl font-bold mb-4 py-2 bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text">
         {project.name}
       </h1>
 
@@ -131,7 +134,7 @@ const ProjectPage = () => {
       )}
 
       {/* Links */}
-      <div className="mb-10 flex flex-wrap gap-4">
+      <div className="mb-8 flex flex-wrap gap-4">
         {project.link && (
           <a
             href={project.link}
@@ -166,7 +169,7 @@ const ProjectPage = () => {
       </div>
 
       {/* Description */}
-      <div>
+      <div className="rounded-2xl p-4 sm:p-6 lg:p-6 border border-gray-700 bg-black/60 backdrop-blur-xl shadow-lg shadow-indigo-500/10">
         <MarkdownPreview
           source={project.description}
           className="prose prose-invert max-w-full no-bg"
