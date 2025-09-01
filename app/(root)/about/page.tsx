@@ -32,11 +32,26 @@ const About = () => {
             Jobair Al Sarkar
           </span>
         </h3>
-        <p className="subhead-text text-gray-200 mt-4 sm:text-justify">
+        {/* <p className="subhead-text text-gray-200 mt-4 sm:text-justify">
           I’m a passionate full-stack developer who loves creating seamless web
           applications. I enjoy solving complex problems and turning ideas into
           user-friendly functional solutions. Always eager to learn and grow. My
           goal is to build meaningful software that makes a difference.
+        </p> */}
+        <p className="subhead-text text-gray-200 mt-4 sm:text-justify">
+          I’m a passionate&nbsp;
+          <span className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text font-semibold">
+            Full-Stack Software Engineer
+          </span>
+          &nbsp;who loves turning ideas into seamless, user-friendly
+          applications. My journey in tech has been fueled by curiosity and the
+          excitement of solving complex problems with simple, elegant solutions.
+          <br />
+          <br />I care deeply about building software that is not only
+          functional, but also performant, scalable, and meaningful. To me,
+          development is more than just writing code—it’s about crafting
+          experiences, learning continuously, and creating technology that makes
+          a real difference in people’s lives.
         </p>
       </div>
 
