@@ -172,7 +172,8 @@ const ProjectPage = () => {
       <div className="rounded-2xl p-4 sm:p-6 lg:p-6 border border-gray-700 bg-black/60 backdrop-blur-xl shadow-lg shadow-indigo-500/10">
         <MarkdownPreview
           source={project.description}
-          className="prose prose-invert max-w-full no-bg"
+          data-color-mode="dark"
+          className="prose prose-invert max-w-full no-bg !text-white"
         />
       </div>
 
