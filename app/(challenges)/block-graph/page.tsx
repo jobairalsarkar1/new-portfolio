@@ -5,30 +5,27 @@ import { useState, MouseEvent } from "react";
 interface Box {
   id: number;
   parentId: number | null;
-  position: {
-    top: number;
-    left: number;
-  };
+  position: { top: number; left: number };
   counter: number;
 }
 
-interface Offset {
-  x: number;
-  y: number;
-}
+interface Offset { x: number; y: number }
 
-function BlockGraph() {
-  const [boxes, setBoxes] = useState<Box[]>([
-    {
-      id: 0,
-      parentId: null,
-      position: {
-        top: Math.random() * (window.innerHeight - 120),
-        left: Math.random() * (window.innerWidth - 150),
+const BlockGraph = () => {
+  const [boxes, setBoxes] = useState<Box[]>(() => {
+    if (typeof window === "undefined") return []; // SSR: empty array
+    return [
+      {
+        id: 0,
+        parentId: null,
+        position: {
+          top: Math.random() * (window.innerHeight - 120),
+          left: Math.random() * (window.innerWidth - 150),
+        },
+        counter: 0,
       },
-      counter: 0,
-    },
-  ]);
+    ];
+  });
 
   const [offset, setOffset] = useState<Offset>({ x: 0, y: 0 });
   const [draggingId, setDraggingId] = useState<number | null>(null);
@@ -54,28 +51,21 @@ function BlockGraph() {
     );
   };
 
-  const handleMouseUp = () => {
-    setDraggingId(null);
-  };
+  const handleMouseUp = () => setDraggingId(null);
 
   const handleButtonClick = (parentId: number) => {
+    if (typeof window === "undefined") return;
+
     const randomTop = Math.random() * (window.innerHeight - 120);
     const randomLeft = Math.random() * (window.innerWidth - 150);
 
     setBoxes((prev) => [
       ...prev,
-      {
-        id: prev.length,
-        parentId,
-        position: { top: randomTop, left: randomLeft },
-        counter: 0,
-      },
+      { id: prev.length, parentId, position: { top: randomTop, left: randomLeft }, counter: 0 },
     ]);
 
     setBoxes((prev) =>
-      prev.map((box) =>
-        box.id === parentId ? { ...box, counter: box.counter + 1 } : box
-      )
+      prev.map((box) => (box.id === parentId ? { ...box, counter: box.counter + 1 } : box))
     );
   };
 
@@ -88,17 +78,11 @@ function BlockGraph() {
       {boxes.map((box) => (
         <div
           key={box.id}
-          id={`box-${box.id}`}
           className="absolute bg-pink-500 w-36 p-4 flex flex-col items-center justify-center cursor-grab"
-          style={{
-            top: `${box.position.top}px`,
-            left: `${box.position.left}px`,
-          }}
+          style={{ top: box.position.top, left: box.position.left }}
           onMouseDown={(e) => handleMouseDown(e, box.id)}
         >
-          <span className="text-white text-lg font-semibold">
-            {box.counter}
-          </span>
+          <span className="text-white text-lg font-semibold">{box.counter}</span>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -111,21 +95,16 @@ function BlockGraph() {
         </div>
       ))}
 
-      {/* SVG lines between parent and child boxes */}
       <svg className="top-0 left-0 w-full h-full pointer-events-none">
         {boxes.map((box) => {
           if (box.parentId === null) return null;
-
-          const parent = boxes.find(
-            (parentBox) => parentBox.id === box.parentId
-          );
+          const parent = boxes.find((p) => p.id === box.parentId);
           if (!parent) return null;
 
           const parentCenterX = parent.position.left + 70;
           const parentCenterY = parent.position.top + 70;
           const childCenterX = box.position.left + 70;
           const childCenterY = box.position.top + 70;
-
           const midX = childCenterX;
           const midY = parentCenterY;
 
@@ -143,6 +122,6 @@ function BlockGraph() {
       </svg>
     </div>
   );
-}
+};
 
 export default BlockGraph;
