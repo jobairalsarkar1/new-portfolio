@@ -151,6 +151,9 @@ export default function ContactSection() {
             >
               <FaLinkedin />
             </a>
+            <a href="/v1" aria-label="Version 1 portfolio">
+              V1
+            </a>
           </div>
         </div>
 
