@@ -34,6 +34,19 @@ export default function ExperienceSection() {
     return () => window.clearInterval(interval);
   }, [selectedOverview]);
 
+  useEffect(() => {
+    if (!selectedExperience) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedExperience]);
+
   return (
     <section id="experience" className="modern-section modern-experience">
       <div className="modern-section-head">

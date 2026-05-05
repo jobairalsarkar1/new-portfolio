@@ -14,7 +14,7 @@ type Skill = {
 
 export default function SkillsStrip() {
   const { data: skills, isLoading } = useFetch<Skill[]>("/api/skills");
-  const visibleSkills = skills?.slice(0, 18) ?? [];
+  const visibleSkills = skills ?? [];
 
   return (
     <section className="modern-section modern-skills" aria-label="Skills">

@@ -358,6 +358,10 @@
   padding: 70px 0;
 }
 
+.modern-experience {
+  z-index: 30;
+}
+
 .modern-skills {
   padding-top: 18px;
 }
@@ -799,7 +803,7 @@
 .modern-experience-modal {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 999;
   display: grid;
   place-items: center;
   padding: 18px;
@@ -837,10 +841,12 @@
 .modern-modal-top button {
   border: 1px solid rgba(255, 229, 180, 0.18);
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: 5px 9px;
   color: #f7f5ef;
   background: rgba(255, 255, 255, 0.055);
   cursor: pointer;
+  font-size: 0.78rem;
+  line-height: 1;
 }
 
 .modern-experience-modal-panel h3 {
