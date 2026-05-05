@@ -17,19 +17,6 @@
   user-select: text;
 }
 
-.modern-shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 92px 92px;
-  mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 68%);
-}
-
 .modern-noise {
   position: fixed;
   inset: 0;
