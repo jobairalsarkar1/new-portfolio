@@ -9,6 +9,12 @@
   font-family: "Geist", "Space Grotesk", "Segoe UI", sans-serif;
   position: relative;
   cursor: crosshair;
+  user-select: none;
+}
+
+.modern-shell input,
+.modern-shell textarea {
+  user-select: text;
 }
 
 .modern-shell::before {
