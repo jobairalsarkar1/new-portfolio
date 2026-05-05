@@ -12,6 +12,7 @@ import {
   FaTimes,
   FaSignOutAlt,
   FaImages,
+  FaEnvelope,
 } from "react-icons/fa";
 import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
@@ -52,6 +53,11 @@ export default function DashboardSidebar({
       title: "Projects",
       icon: <FaFolder size={20} />,
       href: "/jas-dashboard/projects",
+    },
+    {
+      title: "Messages",
+      icon: <FaEnvelope size={20} />,
+      href: "/jas-dashboard/messages",
     },
     {
       title: "Blogs",

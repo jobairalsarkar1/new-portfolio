@@ -4,13 +4,20 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
-import { FaUsers, FaMicrochip, FaFolder, FaFileAlt } from "react-icons/fa";
+import {
+  FaUsers,
+  FaMicrochip,
+  FaFolder,
+  FaFileAlt,
+  FaEnvelope,
+} from "react-icons/fa";
 import ActionLoader from "@/components/loaders/ActionLoader";
 
 type Counts = {
   users: number;
   skills: number;
   projects: number;
+  messages: number;
   blogs: number;
 };
 
@@ -35,13 +42,20 @@ export default function Dashboard() {
     fetcher,
     { refreshInterval: 60000 }
   );
+  const { data: messagesData, isLoading: messagesLoading } = useSWR(
+    "/api/contact-messages",
+    fetcher,
+    { refreshInterval: 60000 }
+  );
 
-  const loading = usersLoading || skillsLoading || projectsLoading;
+  const loading =
+    usersLoading || skillsLoading || projectsLoading || messagesLoading;
 
   const counts: Counts = {
     users: usersData?.data?.length || 0,
     skills: skillsData?.data?.length || 0,
     projects: projectsData?.data?.length || 0,
+    messages: messagesData?.data?.length || 0,
     blogs: 0, // static
   };
 
@@ -67,7 +81,7 @@ export default function Dashboard() {
       </p>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
         <StatCard
           title="Users"
           count={counts.users}
@@ -85,6 +99,12 @@ export default function Dashboard() {
           count={counts.projects}
           icon={<FaFolder className="text-yellow-400" size={24} />}
           subtitle="Projects created"
+        />
+        <StatCard
+          title="Messages"
+          count={counts.messages}
+          icon={<FaEnvelope className="text-purple-300" size={24} />}
+          subtitle="Portfolio contact messages"
         />
         <StatCard
           title="Blogs"

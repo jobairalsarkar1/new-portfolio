@@ -1,6 +1,5 @@
 "use client";
 
-import emailjs from "@emailjs/browser";
 import { ChangeEvent, FormEvent, useState } from "react";
 import {
   FaEnvelope,
@@ -36,32 +35,28 @@ export default function ContactSection() {
     }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSendState("sending");
 
-    emailjs
-      .send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        {
-          from_name: form.name,
-          to_name: "Jobair Al Sarkar",
-          from_email: form.email,
-          to_email: "jobairalsarkar1@gmail.com",
-          message: `Message from: ${form.name} (${form.email})\n\n${form.message}`,
-        },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_ID!,
-      )
-      .then(() => {
-        setSendState("sent");
-        setForm({ name: "", email: "", message: "" });
-        window.setTimeout(() => setSendState("idle"), 2600);
-      })
-      .catch(() => {
-        setSendState("error");
-        window.setTimeout(() => setSendState("idle"), 3000);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
+
+      if (!response.ok) {
+        throw new Error("Message could not be sent.");
+      }
+
+      setSendState("sent");
+      setForm({ name: "", email: "", message: "" });
+      window.setTimeout(() => setSendState("idle"), 2600);
+    } catch {
+      setSendState("error");
+      window.setTimeout(() => setSendState("idle"), 3000);
+    }
   };
 
   return (
