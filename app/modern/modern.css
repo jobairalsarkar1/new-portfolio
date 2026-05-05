@@ -120,7 +120,7 @@
   position: fixed;
   top: 22px;
   left: 50%;
-  z-index: 20;
+  z-index: 100;
   width: min(1120px, calc(100% - 32px));
   transform: translateX(-50%);
   display: flex;
