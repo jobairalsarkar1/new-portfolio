@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const HEX_RADIUS = 58;
 const HEX_HEIGHT = HEX_RADIUS * 2;
 const HEX_WIDTH = Math.sqrt(3) * HEX_RADIUS;
 const HORIZONTAL_STEP = HEX_WIDTH;
 const VERTICAL_STEP = HEX_RADIUS * 1.5;
-const ECHO_LIFETIME = 900;
-const PULSE_LIFETIME = 1800;
-const MAX_ECHOES = 18;
-const MAX_PULSES = 12;
+const ECHO_LIFETIME = 680;
+const PULSE_LIFETIME = 980;
+const MAX_EFFECT_NODES = 36;
 
 type Point = {
   x: number;
@@ -33,24 +32,6 @@ type Edge = {
   end: Point;
   midX: number;
   midY: number;
-};
-
-type Echo = {
-  id: number;
-  x: number;
-  y: number;
-  createdAt: number;
-  radius: number;
-  path: string;
-};
-
-type Pulse = {
-  id: number;
-  edgeId: number;
-  ringId: number;
-  x: number;
-  y: number;
-  createdAt: number;
 };
 
 type CursorState = Point & {
@@ -173,15 +154,44 @@ type SegmentMatch = ReturnType<typeof distanceToSegment> & {
   edge: Edge;
 };
 
+type EffectNode = {
+  node: SVGElement;
+  createdAt: number;
+  lifetime: number;
+  kind: "echo" | "pulse" | "charge";
+  strength?: number;
+};
+
+function createSvgElement<ElementName extends keyof SVGElementTagNameMap>(
+  name: ElementName,
+) {
+  return document.createElementNS("http://www.w3.org/2000/svg", name);
+}
+
+function setSvgAttributes(
+  element: SVGElement,
+  attributes: Record<string, string | number>,
+) {
+  Object.entries(attributes).forEach(([name, value]) => {
+    element.setAttribute(name, String(value));
+  });
+}
+
 export default function BenzeneField() {
   const initialViewport = getViewport();
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const echoLayerRef = useRef<SVGGElement | null>(null);
+  const chargeLayerRef = useRef<SVGGElement | null>(null);
+  const pulseLayerRef = useRef<SVGGElement | null>(null);
+  const revealMaskRef = useRef<SVGCircleElement | null>(null);
+  const ambientBloomRef = useRef<SVGRectElement | null>(null);
+  const waterSurfaceRef = useRef<HTMLDivElement | null>(null);
   const cursorWashRef = useRef<SVGCircleElement | null>(null);
   const cursorGroupRef = useRef<SVGGElement | null>(null);
   const hoverSpawnRef = useRef(0);
-  const pulseIdRef = useRef(0);
-  const echoIdRef = useRef(0);
-  const chargeTimeoutsRef = useRef<number[]>([]);
-  const frameNowRef = useRef(getNow());
+  const clickSpawnRef = useRef(0);
+  const effectNodesRef = useRef<EffectNode[]>([]);
+  const ambientChargeRef = useRef(0);
   const pointerTargetRef = useRef<CursorState>({
     x: initialViewport.width / 2,
     y: initialViewport.height / 2,
@@ -194,15 +204,36 @@ export default function BenzeneField() {
   });
   const [viewport, setViewport] = useState(initialViewport);
   const [cursorVisible, setCursorVisible] = useState(false);
-  const [echoes, setEchoes] = useState<Echo[]>([]);
-  const [pulses, setPulses] = useState<Pulse[]>([]);
-  const [edgeCharge, setEdgeCharge] = useState<Record<number, number>>({});
-  const [ambientCharge, setAmbientCharge] = useState(0);
 
   const architecture = useMemo(
     () => createArchitecture(viewport.width, viewport.height),
     [viewport.height, viewport.width],
   );
+
+  const toSvgPoint = useCallback((clientX: number, clientY: number) => {
+    const bounds = svgRef.current?.getBoundingClientRect();
+
+    if (!bounds || bounds.width === 0 || bounds.height === 0) {
+      return { x: clientX, y: clientY };
+    }
+
+    return {
+      x: ((clientX - bounds.left) / bounds.width) * viewport.width,
+      y: ((clientY - bounds.top) / bounds.height) * viewport.height,
+    };
+  }, [viewport.height, viewport.width]);
+
+  const trimEffectNodes = useCallback(() => {
+    while (effectNodesRef.current.length > MAX_EFFECT_NODES) {
+      const oldest = effectNodesRef.current.shift();
+      oldest?.node.remove();
+    }
+  }, []);
+
+  const appendEffectNode = useCallback((effectNode: EffectNode) => {
+    effectNodesRef.current.push(effectNode);
+    trimEffectNodes();
+  }, [trimEffectNodes]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -225,43 +256,78 @@ export default function BenzeneField() {
   useEffect(() => {
     const createEcho = (x: number, y: number) => {
       const now = getNow();
-      setEchoes((current) => [
-        ...current.slice(-(MAX_ECHOES - 1)),
-        {
-          id: (echoIdRef.current += 1),
-          x,
-          y,
-          createdAt: now,
-          radius: 20 + Math.random() * 34,
-          path: buildHexPoints(x, y)
-            .map(
-              (point, index) =>
-                `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
-            )
-            .join(" ")
-            .concat(" Z"),
-        },
-      ]);
+      const group = createSvgElement("g");
+      const ring = createSvgElement("circle");
+      const shape = createSvgElement("path");
+      const radius = 20 + Math.random() * 28;
+      const path = buildHexPoints(x, y)
+        .map(
+          (point, index) =>
+            `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`,
+        )
+        .join(" ")
+        .concat(" Z");
+
+      setSvgAttributes(ring, {
+        cx: x,
+        cy: y,
+        r: radius,
+        class: "benzene-echo-ring",
+      });
+      setSvgAttributes(shape, {
+        d: path,
+        class: "benzene-echo-shape",
+      });
+
+      group.append(ring, shape);
+      echoLayerRef.current?.append(group);
+      appendEffectNode({
+        node: group,
+        createdAt: now,
+        lifetime: ECHO_LIFETIME,
+        kind: "echo",
+        strength: radius,
+      });
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      const x = event.clientX;
-      const y = event.clientY;
+      const { x, y } = toSvgPoint(event.clientX, event.clientY);
       const wasOutside = !pointerTargetRef.current.inside;
+      const target = event.target instanceof HTMLElement ? event.target : null;
+      const overContent = Boolean(
+        target?.closest(
+          "a, button, input, textarea, .modern-hero, .modern-section, .modern-contact, .modern-orbit-panel, .modern-explore-tile, .modern-experience-node, .modern-experience-core, .modern-contact-copy, .modern-contact-form",
+        ),
+      );
 
       pointerTargetRef.current = { x, y, inside: true };
-
-      if (wasOutside) {
-        cursorRef.current = { x, y, inside: true };
-        cursorWashRef.current?.setAttribute("cx", `${x}`);
-        cursorWashRef.current?.setAttribute("cy", `${y}`);
-        cursorGroupRef.current?.setAttribute("transform", `translate(${x} ${y})`);
+      cursorRef.current = { x, y, inside: true };
+      cursorWashRef.current?.setAttribute("cx", `${x}`);
+      cursorWashRef.current?.setAttribute("cy", `${y}`);
+      cursorWashRef.current?.setAttribute("opacity", "0.28");
+      revealMaskRef.current?.setAttribute("cx", `${x}`);
+      revealMaskRef.current?.setAttribute("cy", `${y}`);
+      revealMaskRef.current?.setAttribute("opacity", "1");
+      cursorGroupRef.current?.setAttribute("transform", `translate(${x} ${y})`);
+      cursorGroupRef.current?.setAttribute("opacity", "0.68");
+      if (waterSurfaceRef.current) {
+        waterSurfaceRef.current.style.setProperty(
+          "--water-x",
+          `${event.clientX}px`,
+        );
+        waterSurfaceRef.current.style.setProperty(
+          "--water-y",
+          `${event.clientY}px`,
+        );
+        waterSurfaceRef.current.style.opacity = overContent ? "1" : "0";
       }
 
-      setCursorVisible(true);
+      if (wasOutside) {
+        setCursorVisible(true);
+      }
 
       const now = getNow();
-      if (now - hoverSpawnRef.current > 76) {
+      if (now - hoverSpawnRef.current > 180) {
         hoverSpawnRef.current = now;
         createEcho(x, y);
       }
@@ -272,6 +338,10 @@ export default function BenzeneField() {
         ...pointerTargetRef.current,
         inside: false,
       };
+      revealMaskRef.current?.setAttribute("opacity", "0");
+      if (waterSurfaceRef.current) {
+        waterSurfaceRef.current.style.opacity = "0";
+      }
       setCursorVisible(false);
     };
 
@@ -284,32 +354,11 @@ export default function BenzeneField() {
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("blur", handlePointerLeave);
     };
-  }, []);
+  }, [appendEffectNode, toSvgPoint]);
 
   useEffect(() => {
-    const clearChargeTimeouts = () => {
-      chargeTimeoutsRef.current.forEach((timeoutId) => {
-        window.clearTimeout(timeoutId);
-      });
-      chargeTimeoutsRef.current = [];
-    };
-
-    const scheduleEdgeCharge = (edge: Edge, boost: number, delay: number) => {
-      const timeoutId = window.setTimeout(() => {
-        setEdgeCharge((current) => ({
-          ...current,
-          [edge.id]: Math.min(3.8, (current[edge.id] ?? 0) + boost),
-        }));
-      }, delay);
-
-      chargeTimeoutsRef.current.push(timeoutId);
-    };
-
     const handleClick = (event: MouseEvent) => {
-      const point = {
-        x: event.clientX,
-        y: event.clientY,
-      };
+      const point = toSvgPoint(event.clientX, event.clientY);
 
       let bestMatch: SegmentMatch | null = null;
 
@@ -330,36 +379,35 @@ export default function BenzeneField() {
 
       const selectedMatch = bestMatch;
       const now = getNow();
+
+      if (now - clickSpawnRef.current < 70) {
+        ambientChargeRef.current = Math.min(2.6, ambientChargeRef.current + 0.1);
+        return;
+      }
+
+      clickSpawnRef.current = now;
+
       const ringEdges = architecture.edges
         .filter((edge) => edge.ringId === selectedMatch.edge.ringId)
         .sort((a, b) => a.id - b.id);
       const selectedRingIndex = ringEdges.findIndex(
         (edge) => edge.id === selectedMatch.edge.id,
       );
-      const nearbyEdges = architecture.edges
-        .filter((edge) => edge.ringId !== selectedMatch.edge.ringId)
-        .map((edge) => ({
-          edge,
-          distance: Math.hypot(
-            edge.midX - selectedMatch.projection.x,
-            edge.midY - selectedMatch.projection.y,
-          ),
-        }))
-        .filter((item) => item.distance < 145)
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 8);
+      const pulse = createSvgElement("circle");
 
-      setPulses((current) => [
-        ...current.slice(-(MAX_PULSES - 1)),
-        {
-          id: (pulseIdRef.current += 1),
-          edgeId: selectedMatch.edge.id,
-          ringId: selectedMatch.edge.ringId,
-          x: selectedMatch.projection.x,
-          y: selectedMatch.projection.y,
-          createdAt: now,
-        },
-      ]);
+      setSvgAttributes(pulse, {
+        cx: selectedMatch.projection.x,
+        cy: selectedMatch.projection.y,
+        r: 10,
+        class: "benzene-click-core",
+      });
+      pulseLayerRef.current?.append(pulse);
+      appendEffectNode({
+        node: pulse,
+        createdAt: now,
+        lifetime: PULSE_LIFETIME,
+        kind: "pulse",
+      });
 
       if (selectedRingIndex >= 0) {
         ringEdges.forEach((edge, index) => {
@@ -368,35 +416,39 @@ export default function BenzeneField() {
             clockwiseDistance,
             ringEdges.length - clockwiseDistance,
           );
-          const boostByDistance = [2.35, 1.38, 0.78, 0.42];
-          const delay = ringDistance * 82;
+          const opacityByDistance = [0.98, 0.5, 0.25, 0.12];
+          const widthByDistance = [5.2, 3.4, 2.3, 1.5];
+          const line = createSvgElement("line");
 
-          scheduleEdgeCharge(
-            edge,
-            boostByDistance[ringDistance] ?? 0.32,
-            delay,
-          );
+          setSvgAttributes(line, {
+            x1: edge.start.x,
+            y1: edge.start.y,
+            x2: edge.end.x,
+            y2: edge.end.y,
+            class: "benzene-live-charge",
+          });
+          line.style.opacity = String(opacityByDistance[ringDistance] ?? 0.1);
+          line.style.strokeWidth = `${widthByDistance[ringDistance] ?? 1.2}px`;
+          line.style.transitionDelay = `${ringDistance * 35}ms`;
+          chargeLayerRef.current?.append(line);
+          appendEffectNode({
+            node: line,
+            createdAt: now + ringDistance * 35,
+            lifetime: PULSE_LIFETIME,
+            kind: "charge",
+            strength: opacityByDistance[ringDistance] ?? 0.1,
+          });
         });
       }
 
-      nearbyEdges.forEach(({ edge, distance }, index) => {
-        const distanceFalloff = clamp(1 - distance / 145, 0, 1);
-        scheduleEdgeCharge(
-          edge,
-          0.22 + distanceFalloff * 0.42,
-          260 + index * 34,
-        );
-      });
-
-      setAmbientCharge((current) => Math.min(2.8, current + 0.24));
+      ambientChargeRef.current = Math.min(2.6, ambientChargeRef.current + 0.22);
     };
 
     window.addEventListener("click", handleClick);
     return () => {
-      clearChargeTimeouts();
       window.removeEventListener("click", handleClick);
     };
-  }, [architecture.edges]);
+  }, [appendEffectNode, architecture.edges, toSvgPoint]);
 
   useEffect(() => {
     let frameId = 0;
@@ -406,8 +458,6 @@ export default function BenzeneField() {
     const animate = (now: number) => {
       const delta = (now - lastTime) / 1000;
       lastTime = now;
-      frameNowRef.current = now;
-
       const target = pointerTargetRef.current;
       const current = cursorRef.current;
       const easing = 0.1;
@@ -430,6 +480,15 @@ export default function BenzeneField() {
         );
       }
 
+      if (revealMaskRef.current) {
+        revealMaskRef.current.setAttribute("cx", `${nextCursor.x}`);
+        revealMaskRef.current.setAttribute("cy", `${nextCursor.y}`);
+        revealMaskRef.current.setAttribute(
+          "opacity",
+          nextCursor.inside ? "1" : "0",
+        );
+      }
+
       if (cursorGroupRef.current) {
         cursorGroupRef.current.setAttribute(
           "transform",
@@ -443,33 +502,58 @@ export default function BenzeneField() {
 
       animationAccumulator += delta;
 
-      if (animationAccumulator >= 1 / 45) {
+      if (animationAccumulator >= 1 / 30) {
         const animationDelta = animationAccumulator;
         animationAccumulator = 0;
-
-        setAmbientCharge((currentCharge) =>
-          Math.max(0, currentCharge - animationDelta * 0.07),
+        ambientChargeRef.current = Math.max(
+          0,
+          ambientChargeRef.current - animationDelta * 0.16,
         );
-        setEchoes((currentEchoes) =>
-          currentEchoes.filter((echo) => now - echo.createdAt < ECHO_LIFETIME),
+
+        cursorWashRef.current?.setAttribute(
+          "r",
+          `${174 + ambientChargeRef.current * 54}`,
         );
-        setPulses((currentPulses) =>
-          currentPulses.filter(
-            (pulse) => now - pulse.createdAt < PULSE_LIFETIME,
-          ),
+        revealMaskRef.current?.setAttribute(
+          "r",
+          `${210 + ambientChargeRef.current * 82}`,
         );
-        setEdgeCharge((currentChargeMap) => {
-          const next: Record<number, number> = {};
+        if (ambientBloomRef.current) {
+          ambientBloomRef.current.style.opacity = `${ambientChargeRef.current * 0.22}`;
+        }
 
-          Object.entries(currentChargeMap).forEach(([key, value]) => {
-            const faded = Math.max(0, value - animationDelta * 0.16);
+        effectNodesRef.current = effectNodesRef.current.filter((effectNode) => {
+          const age = clamp(
+            (now - effectNode.createdAt) / effectNode.lifetime,
+            0,
+            1,
+          );
 
-            if (faded > 0.01) {
-              next[Number(key)] = faded;
-            }
-          });
+          if (age >= 1) {
+            effectNode.node.remove();
+            return false;
+          }
 
-          return next;
+          if (effectNode.kind === "echo") {
+            effectNode.node.setAttribute("opacity", `${(1 - age) * 0.32}`);
+            const circle = effectNode.node.firstElementChild;
+            circle?.setAttribute(
+              "r",
+              `${(effectNode.strength ?? 22) + age * 30}`,
+            );
+          }
+
+          if (effectNode.kind === "pulse") {
+            effectNode.node.setAttribute("r", `${10 + age * 26}`);
+            effectNode.node.style.opacity = `${(1 - age) * 0.56}`;
+          }
+
+          if (effectNode.kind === "charge") {
+            const strength = effectNode.strength ?? 0.6;
+            effectNode.node.style.opacity = `${(1 - age) * strength}`;
+          }
+
+          return true;
         });
       }
 
@@ -481,10 +565,13 @@ export default function BenzeneField() {
   }, []);
 
   return (
-    <section className="benzene-fullscreen" aria-hidden="true">
+    <>
+      <section className="benzene-fullscreen" aria-hidden="true">
       <svg
+        ref={svgRef}
         viewBox={`0 0 ${viewport.width} ${viewport.height}`}
         className="benzene-canvas"
+        preserveAspectRatio="none"
       >
         <defs>
           <radialGradient id="modernFieldGlow" cx="50%" cy="50%">
@@ -499,7 +586,36 @@ export default function BenzeneField() {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <radialGradient id="modernAmbientBloom" cx="50%" cy="50%">
+            <stop offset="0%" stopColor="rgba(255, 229, 180, 0.24)" />
+            <stop offset="42%" stopColor="rgba(255, 191, 107, 0.08)" />
+            <stop offset="100%" stopColor="rgba(255, 191, 107, 0)" />
+          </radialGradient>
+          <mask id="modernCursorReveal">
+            <rect width="100%" height="100%" fill="black" />
+            <circle
+              ref={revealMaskRef}
+              cx={cursorRef.current.x}
+              cy={cursorRef.current.y}
+              r={210}
+              fill="url(#modernRevealGlow)"
+              opacity="0"
+            />
+          </mask>
+          <radialGradient id="modernRevealGlow" cx="50%" cy="50%">
+            <stop offset="0%" stopColor="white" />
+            <stop offset="42%" stopColor="rgba(255, 255, 255, 0.68)" />
+            <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
+          </radialGradient>
         </defs>
+
+        <rect
+          ref={ambientBloomRef}
+          width="100%"
+          height="100%"
+          fill="url(#modernAmbientBloom)"
+          className="benzene-ambient-bloom"
+        />
 
         <circle
           ref={cursorWashRef}
@@ -510,142 +626,30 @@ export default function BenzeneField() {
           opacity={cursorVisible ? 0.28 : 0}
         />
 
-        {architecture.rings.map((ring) => {
-          const distance = cursorVisible
-            ? Math.hypot(
-                cursorRef.current.x - ring.centerX,
-                cursorRef.current.y - ring.centerY,
-              )
-            : 9999;
-          const proximity = clamp(1 - distance / 220, 0, 1);
-          const opacity = proximity * 0.13 + ambientCharge * 0.026;
-
-          if (opacity <= 0.002) {
-            return null;
-          }
-
-          return (
+        <g mask="url(#modernCursorReveal)">
+          {architecture.rings.map((ring) => (
             <path
               key={ring.id}
               d={ring.path}
               className="benzene-ring-shadow"
-              style={{ opacity }}
             />
-          );
-        })}
+          ))}
 
-        {architecture.edges.map((edge) => {
-          const distance = cursorVisible
-            ? Math.hypot(
-                cursorRef.current.x - edge.midX,
-                cursorRef.current.y - edge.midY,
-              )
-            : 9999;
-          const proximity = clamp(1 - distance / 210, 0, 1);
-          const charged = edgeCharge[edge.id] ?? 0;
-          const opacity =
-            proximity * 0.18 + charged * 0.3 + ambientCharge * 0.038;
+          {architecture.edges.map((edge) => (
+            <line
+              key={edge.id}
+              x1={edge.start.x}
+              y1={edge.start.y}
+              x2={edge.end.x}
+              y2={edge.end.y}
+              className="benzene-edge"
+            />
+          ))}
+        </g>
 
-          if (opacity <= 0.003) {
-            return null;
-          }
-
-          return (
-            <g key={edge.id}>
-              <line
-                x1={edge.start.x}
-                y1={edge.start.y}
-                x2={edge.end.x}
-                y2={edge.end.y}
-                className="benzene-edge"
-                style={{
-                  opacity,
-                  strokeWidth: 1.35 + charged * 1.45,
-                }}
-              />
-              <line
-                x1={edge.start.x}
-                y1={edge.start.y}
-                x2={edge.end.x}
-                y2={edge.end.y}
-                className="benzene-edge-glow"
-                style={{
-                  opacity: clamp(opacity * 0.82, 0, 1),
-                  strokeWidth: 3.2 + charged * 2.35,
-                }}
-                filter="url(#modernSoftEdgeGlow)"
-              />
-            </g>
-          );
-        })}
-
-        {echoes.map((echo) => {
-          const age = clamp(
-            (frameNowRef.current - echo.createdAt) / ECHO_LIFETIME,
-            0,
-            1,
-          );
-          const opacity = (1 - age) * 0.36;
-          const radius = echo.radius + age * 32;
-
-          return (
-            <g key={echo.id} opacity={opacity}>
-              <circle
-                cx={echo.x}
-                cy={echo.y}
-                r={radius}
-                className="benzene-echo-ring"
-              />
-              <path d={echo.path} className="benzene-echo-shape" />
-            </g>
-          );
-        })}
-
-        {pulses.map((pulse) => {
-          const age = clamp(
-            (frameNowRef.current - pulse.createdAt) / PULSE_LIFETIME,
-            0,
-            1,
-          );
-          const pulseEdge = architecture.edges.find(
-            (edge) => edge.id === pulse.edgeId,
-          );
-          const opacity = 1 - age * 0.82;
-
-          if (!pulseEdge) {
-            return null;
-          }
-
-          const edgeLength = Math.hypot(
-            pulseEdge.end.x - pulseEdge.start.x,
-            pulseEdge.end.y - pulseEdge.start.y,
-          );
-
-          return (
-            <g key={pulse.id}>
-              <circle
-                cx={pulse.x}
-                cy={pulse.y}
-                r={10 + age * 28}
-                className="benzene-click-core"
-                style={{ opacity: opacity * 0.62 }}
-              />
-              <line
-                x1={pulseEdge.start.x}
-                y1={pulseEdge.start.y}
-                x2={pulseEdge.end.x}
-                y2={pulseEdge.end.y}
-                className="benzene-ring-trace"
-                style={{
-                  opacity,
-                  strokeDasharray: `${edgeLength}`,
-                  strokeDashoffset: `${(1 - age) * edgeLength}`,
-                }}
-                filter="url(#modernSoftEdgeGlow)"
-              />
-            </g>
-          );
-        })}
+        <g ref={echoLayerRef} />
+        <g ref={chargeLayerRef} filter="url(#modernSoftEdgeGlow)" />
+        <g ref={pulseLayerRef} />
 
         <g
           ref={cursorGroupRef}
@@ -656,6 +660,8 @@ export default function BenzeneField() {
           <circle r="3" className="benzene-cursor-dot" />
         </g>
       </svg>
-    </section>
+      </section>
+      <div ref={waterSurfaceRef} className="modern-water-surface" />
+    </>
   );
 }
