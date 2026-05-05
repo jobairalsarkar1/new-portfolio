@@ -180,6 +180,7 @@ export default function BenzeneField() {
   const hoverSpawnRef = useRef(0);
   const pulseIdRef = useRef(0);
   const echoIdRef = useRef(0);
+  const chargeTimeoutsRef = useRef<number[]>([]);
   const frameNowRef = useRef(getNow());
   const pointerTargetRef = useRef<CursorState>({
     x: initialViewport.width / 2,
@@ -286,6 +287,24 @@ export default function BenzeneField() {
   }, []);
 
   useEffect(() => {
+    const clearChargeTimeouts = () => {
+      chargeTimeoutsRef.current.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      chargeTimeoutsRef.current = [];
+    };
+
+    const scheduleEdgeCharge = (edge: Edge, boost: number, delay: number) => {
+      const timeoutId = window.setTimeout(() => {
+        setEdgeCharge((current) => ({
+          ...current,
+          [edge.id]: Math.min(3.8, (current[edge.id] ?? 0) + boost),
+        }));
+      }, delay);
+
+      chargeTimeoutsRef.current.push(timeoutId);
+    };
+
     const handleClick = (event: MouseEvent) => {
       const point = {
         x: event.clientX,
@@ -311,6 +330,24 @@ export default function BenzeneField() {
 
       const selectedMatch = bestMatch;
       const now = getNow();
+      const ringEdges = architecture.edges
+        .filter((edge) => edge.ringId === selectedMatch.edge.ringId)
+        .sort((a, b) => a.id - b.id);
+      const selectedRingIndex = ringEdges.findIndex(
+        (edge) => edge.id === selectedMatch.edge.id,
+      );
+      const nearbyEdges = architecture.edges
+        .filter((edge) => edge.ringId !== selectedMatch.edge.ringId)
+        .map((edge) => ({
+          edge,
+          distance: Math.hypot(
+            edge.midX - selectedMatch.projection.x,
+            edge.midY - selectedMatch.projection.y,
+          ),
+        }))
+        .filter((item) => item.distance < 145)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 8);
 
       setPulses((current) => [
         ...current.slice(-(MAX_PULSES - 1)),
@@ -324,27 +361,41 @@ export default function BenzeneField() {
         },
       ]);
 
-      setEdgeCharge((current) => {
-        const next = { ...current };
-        const targetRingId = selectedMatch.edge.ringId;
+      if (selectedRingIndex >= 0) {
+        ringEdges.forEach((edge, index) => {
+          const clockwiseDistance = Math.abs(index - selectedRingIndex);
+          const ringDistance = Math.min(
+            clockwiseDistance,
+            ringEdges.length - clockwiseDistance,
+          );
+          const boostByDistance = [2.35, 1.38, 0.78, 0.42];
+          const delay = ringDistance * 82;
 
-        architecture.edges.forEach((edge) => {
-          if (edge.ringId !== targetRingId) {
-            return;
-          }
-
-          const boost = edge.id === selectedMatch.edge.id ? 2.2 : 1.22;
-          next[edge.id] = Math.min(3.6, (next[edge.id] ?? 0) + boost);
+          scheduleEdgeCharge(
+            edge,
+            boostByDistance[ringDistance] ?? 0.32,
+            delay,
+          );
         });
+      }
 
-        return next;
+      nearbyEdges.forEach(({ edge, distance }, index) => {
+        const distanceFalloff = clamp(1 - distance / 145, 0, 1);
+        scheduleEdgeCharge(
+          edge,
+          0.22 + distanceFalloff * 0.42,
+          260 + index * 34,
+        );
       });
 
       setAmbientCharge((current) => Math.min(2.8, current + 0.24));
     };
 
     window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
+    return () => {
+      clearChargeTimeouts();
+      window.removeEventListener("click", handleClick);
+    };
   }, [architecture.edges]);
 
   useEffect(() => {
@@ -359,12 +410,14 @@ export default function BenzeneField() {
 
       const target = pointerTargetRef.current;
       const current = cursorRef.current;
-      const easing = target.inside ? 0.26 : 0.1;
-      const nextCursor = {
-        x: current.x + (target.x - current.x) * easing,
-        y: current.y + (target.y - current.y) * easing,
-        inside: target.inside,
-      };
+      const easing = 0.1;
+      const nextCursor = target.inside
+        ? target
+        : {
+            x: current.x + (target.x - current.x) * easing,
+            y: current.y + (target.y - current.y) * easing,
+            inside: target.inside,
+          };
 
       cursorRef.current = nextCursor;
 
@@ -554,12 +607,19 @@ export default function BenzeneField() {
             0,
             1,
           );
-          const ring = architecture.rings[pulse.ringId];
+          const pulseEdge = architecture.edges.find(
+            (edge) => edge.id === pulse.edgeId,
+          );
           const opacity = 1 - age * 0.82;
 
-          if (!ring) {
+          if (!pulseEdge) {
             return null;
           }
+
+          const edgeLength = Math.hypot(
+            pulseEdge.end.x - pulseEdge.start.x,
+            pulseEdge.end.y - pulseEdge.start.y,
+          );
 
           return (
             <g key={pulse.id}>
@@ -570,15 +630,16 @@ export default function BenzeneField() {
                 className="benzene-click-core"
                 style={{ opacity: opacity * 0.62 }}
               />
-              <path
-                d={ring.path}
+              <line
+                x1={pulseEdge.start.x}
+                y1={pulseEdge.start.y}
+                x2={pulseEdge.end.x}
+                y2={pulseEdge.end.y}
                 className="benzene-ring-trace"
                 style={{
                   opacity,
-                  strokeDasharray: `${ring.traceLength}`,
-                  strokeDashoffset: `${
-                    (1 - age) * (edgeCharge[pulse.edgeId] ?? 0) * 40
-                  }`,
+                  strokeDasharray: `${edgeLength}`,
+                  strokeDashoffset: `${(1 - age) * edgeLength}`,
                 }}
                 filter="url(#modernSoftEdgeGlow)"
               />
