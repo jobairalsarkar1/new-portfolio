@@ -10,6 +10,7 @@ const VERTICAL_STEP = HEX_RADIUS * 1.5;
 const ECHO_LIFETIME = 680;
 const PULSE_LIFETIME = 980;
 const MAX_EFFECT_NODES = 36;
+const MAX_AMBIENT_CHARGE = 6.4;
 
 type Point = {
   x: number;
@@ -185,7 +186,6 @@ export default function BenzeneField() {
   const pulseLayerRef = useRef<SVGGElement | null>(null);
   const revealMaskRef = useRef<SVGCircleElement | null>(null);
   const ambientBloomRef = useRef<SVGRectElement | null>(null);
-  const waterSurfaceRef = useRef<HTMLDivElement | null>(null);
   const cursorWashRef = useRef<SVGCircleElement | null>(null);
   const cursorGroupRef = useRef<SVGGElement | null>(null);
   const hoverSpawnRef = useRef(0);
@@ -293,12 +293,6 @@ export default function BenzeneField() {
     const handlePointerMove = (event: PointerEvent) => {
       const { x, y } = toSvgPoint(event.clientX, event.clientY);
       const wasOutside = !pointerTargetRef.current.inside;
-      const target = event.target instanceof HTMLElement ? event.target : null;
-      const overContent = Boolean(
-        target?.closest(
-          "a, button, input, textarea, .modern-hero, .modern-section, .modern-contact, .modern-orbit-panel, .modern-explore-tile, .modern-experience-node, .modern-experience-core, .modern-contact-copy, .modern-contact-form",
-        ),
-      );
 
       pointerTargetRef.current = { x, y, inside: true };
       cursorRef.current = { x, y, inside: true };
@@ -310,17 +304,6 @@ export default function BenzeneField() {
       revealMaskRef.current?.setAttribute("opacity", "1");
       cursorGroupRef.current?.setAttribute("transform", `translate(${x} ${y})`);
       cursorGroupRef.current?.setAttribute("opacity", "0.68");
-      if (waterSurfaceRef.current) {
-        waterSurfaceRef.current.style.setProperty(
-          "--water-x",
-          `${event.clientX}px`,
-        );
-        waterSurfaceRef.current.style.setProperty(
-          "--water-y",
-          `${event.clientY}px`,
-        );
-        waterSurfaceRef.current.style.opacity = overContent ? "1" : "0";
-      }
 
       if (wasOutside) {
         setCursorVisible(true);
@@ -339,9 +322,6 @@ export default function BenzeneField() {
         inside: false,
       };
       revealMaskRef.current?.setAttribute("opacity", "0");
-      if (waterSurfaceRef.current) {
-        waterSurfaceRef.current.style.opacity = "0";
-      }
       setCursorVisible(false);
     };
 
@@ -381,7 +361,10 @@ export default function BenzeneField() {
       const now = getNow();
 
       if (now - clickSpawnRef.current < 70) {
-        ambientChargeRef.current = Math.min(2.6, ambientChargeRef.current + 0.1);
+        ambientChargeRef.current = Math.min(
+          MAX_AMBIENT_CHARGE,
+          ambientChargeRef.current + 0.18,
+        );
         return;
       }
 
@@ -441,7 +424,10 @@ export default function BenzeneField() {
         });
       }
 
-      ambientChargeRef.current = Math.min(2.6, ambientChargeRef.current + 0.22);
+      ambientChargeRef.current = Math.min(
+        MAX_AMBIENT_CHARGE,
+        ambientChargeRef.current + 0.46,
+      );
     };
 
     window.addEventListener("click", handleClick);
@@ -507,19 +493,19 @@ export default function BenzeneField() {
         animationAccumulator = 0;
         ambientChargeRef.current = Math.max(
           0,
-          ambientChargeRef.current - animationDelta * 0.16,
+          ambientChargeRef.current - animationDelta * 0.14,
         );
 
         cursorWashRef.current?.setAttribute(
           "r",
-          `${174 + ambientChargeRef.current * 54}`,
+          `${174 + ambientChargeRef.current * 62}`,
         );
         revealMaskRef.current?.setAttribute(
           "r",
-          `${210 + ambientChargeRef.current * 82}`,
+          `${210 + ambientChargeRef.current * 190}`,
         );
         if (ambientBloomRef.current) {
-          ambientBloomRef.current.style.opacity = `${ambientChargeRef.current * 0.22}`;
+          ambientBloomRef.current.style.opacity = `${Math.min(0.92, ambientChargeRef.current * 0.16)}`;
         }
 
         effectNodesRef.current = effectNodesRef.current.filter((effectNode) => {
@@ -565,8 +551,7 @@ export default function BenzeneField() {
   }, []);
 
   return (
-    <>
-      <section className="benzene-fullscreen" aria-hidden="true">
+    <section className="benzene-fullscreen" aria-hidden="true">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${viewport.width} ${viewport.height}`}
@@ -589,7 +574,7 @@ export default function BenzeneField() {
           <radialGradient id="modernAmbientBloom" cx="50%" cy="50%">
             <stop offset="0%" stopColor="rgba(255, 229, 180, 0.24)" />
             <stop offset="42%" stopColor="rgba(255, 191, 107, 0.08)" />
-            <stop offset="100%" stopColor="rgba(255, 191, 107, 0)" />
+            <stop offset="100%" stopColor="rgba(255, 191, 107, 0.025)" />
           </radialGradient>
           <mask id="modernCursorReveal">
             <rect width="100%" height="100%" fill="black" />
@@ -660,8 +645,6 @@ export default function BenzeneField() {
           <circle r="3" className="benzene-cursor-dot" />
         </g>
       </svg>
-      </section>
-      <div ref={waterSurfaceRef} className="modern-water-surface" />
-    </>
+    </section>
   );
 }
