@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { experienceNotes } from "../data";
 
 export default function ExperienceSection() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [typedText, setTypedText] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   const selectedExperience =
     selectedIndex !== null ? experienceNotes[selectedIndex] : null;
 
@@ -13,6 +15,10 @@ export default function ExperienceSection() {
     () => selectedExperience?.overview ?? "",
     [selectedExperience],
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!selectedOverview) {
@@ -46,6 +52,41 @@ export default function ExperienceSection() {
       document.body.style.overflow = "";
     };
   }, [selectedExperience]);
+
+  const experienceModal =
+    selectedExperience && isMounted
+      ? createPortal(
+          <div
+            className="modern-experience-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedExperience.company} experience overview`}
+            onClick={() => setSelectedIndex(null)}
+          >
+            <div
+              className="modern-experience-modal-panel"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="modern-modal-top">
+                <span>{selectedExperience.signal}</span>
+                <button type="button" onClick={() => setSelectedIndex(null)}>
+                  Close
+                </button>
+              </div>
+              <h3>{selectedExperience.company}</h3>
+              <p className="modern-modal-meta">
+                {selectedExperience.role} / {selectedExperience.duration} /{" "}
+                {selectedExperience.place}
+              </p>
+              <p className="modern-typed-text">
+                {typedText}
+                <span className="modern-type-caret" />
+              </p>
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
 
   return (
     <section id="experience" className="modern-section modern-experience">
@@ -81,36 +122,7 @@ export default function ExperienceSection() {
         ))}
       </div>
 
-      {selectedExperience && (
-        <div
-          className="modern-experience-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${selectedExperience.company} experience overview`}
-          onClick={() => setSelectedIndex(null)}
-        >
-          <div
-            className="modern-experience-modal-panel"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="modern-modal-top">
-              <span>{selectedExperience.signal}</span>
-              <button type="button" onClick={() => setSelectedIndex(null)}>
-                Close
-              </button>
-            </div>
-            <h3>{selectedExperience.company}</h3>
-            <p className="modern-modal-meta">
-              {selectedExperience.role} / {selectedExperience.duration} /{" "}
-              {selectedExperience.place}
-            </p>
-            <p className="modern-typed-text">
-              {typedText}
-              <span className="modern-type-caret" />
-            </p>
-          </div>
-        </div>
-      )}
+      {experienceModal}
     </section>
   );
 }
