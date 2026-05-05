@@ -8,10 +8,9 @@ import { FaArrowRight } from "react-icons/fa";
 import Loader from "@/components/loaders/Loader";
 import SolarSystem from "@/components/3d/SolarSystem";
 
-const Home = () => {
+const V1Home = () => {
   return (
     <section className="w-full h-screen relative">
-      {/* Overlay Info Box */}
       <div className="fixed top-24 left-0 right-0 sm:px-12 px-8 flex items-center justify-center text-white z-30">
         <div className="w-auto border-2 border-slate-500 bg-gradient-to-br from-gray-900 via-black to-gray-800 px-4 sm:px-5 pt-2 sm:pt-3 pb-7 sm:pb-7 rounded-xl shadow-2xl">
           <h1 className="mb-1 text-sm sm:text-lg font-semibold">
@@ -39,7 +38,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 3D Canvas */}
       <Canvas
         camera={{
           near: 0.1,
@@ -60,7 +58,6 @@ const Home = () => {
         />
 
         <Suspense fallback={<Loader />}>
-          {/* <StarField numStars={1000} /> */}
           <SolarSystem modelPath="/solar_system.glb" />
         </Suspense>
 
@@ -70,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default V1Home;
