@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 import PortfolioSummaryCard from "./PortfolioSummaryCard";
 
@@ -17,9 +16,9 @@ export default function HeroSection() {
           <a href="#work" className="modern-primary">
             Explore work <FaArrowRight />
           </a>
-          <Link href="/contact" className="modern-secondary">
+          <a href="#contact" className="modern-secondary">
             Start a project
-          </Link>
+          </a>
         </div>
       </div>
 

@@ -45,7 +45,7 @@ export default function ExperienceSection() {
         <div className="modern-experience-core">
           <span>Career Signal</span>
           <strong>4 chapters</strong>
-          <p>Hero is 01. These nodes continue the story.</p>
+          <p>Click a node to open the full story.</p>
         </div>
 
         {experienceNotes.map((item, index) => (
@@ -56,7 +56,7 @@ export default function ExperienceSection() {
             type="button"
           >
             <span className="modern-node-index">
-              {String(index + 2).padStart(2, "0")}
+              {String(index + 1).padStart(2, "0")}
             </span>
             <span>{item.signal}</span>
             <strong>{item.company}</strong>

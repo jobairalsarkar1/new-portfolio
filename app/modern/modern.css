@@ -931,19 +931,25 @@
 .modern-form-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
+  align-items: start;
 }
 
 .modern-contact-form label {
   display: grid;
-  gap: 5px;
+  gap: 8px;
+  align-content: start;
+  align-items: start;
 }
 
 .modern-contact-form label span {
+  display: block;
   color: #f8d79e;
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0;
 }
 
 .modern-contact-form input,
@@ -951,11 +957,19 @@
   width: 100%;
   border: 1px solid rgba(255, 229, 180, 0.14);
   border-radius: 8px;
-  padding: 12px 13px;
+  padding: 7px 10px;
   color: #f7f5ef;
   background: rgba(255, 255, 255, 0.045);
   outline: none;
   resize: none;
+}
+
+.modern-contact-form input {
+  height: 38px;
+}
+
+.modern-contact-form textarea {
+  padding-top: 10px;
 }
 
 .modern-contact-form input:focus,
