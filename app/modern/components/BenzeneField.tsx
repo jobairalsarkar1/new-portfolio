@@ -246,8 +246,17 @@ export default function BenzeneField() {
     const handlePointerMove = (event: PointerEvent) => {
       const x = event.clientX;
       const y = event.clientY;
+      const wasOutside = !pointerTargetRef.current.inside;
 
       pointerTargetRef.current = { x, y, inside: true };
+
+      if (wasOutside) {
+        cursorRef.current = { x, y, inside: true };
+        cursorWashRef.current?.setAttribute("cx", `${x}`);
+        cursorWashRef.current?.setAttribute("cy", `${y}`);
+        cursorGroupRef.current?.setAttribute("transform", `translate(${x} ${y})`);
+      }
+
       setCursorVisible(true);
 
       const now = getNow();
@@ -350,7 +359,7 @@ export default function BenzeneField() {
 
       const target = pointerTargetRef.current;
       const current = cursorRef.current;
-      const easing = target.inside ? 0.16 : 0.1;
+      const easing = target.inside ? 0.26 : 0.1;
       const nextCursor = {
         x: current.x + (target.x - current.x) * easing,
         y: current.y + (target.y - current.y) * easing,
