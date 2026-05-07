@@ -621,11 +621,15 @@
   border-radius: 8px;
   overflow: hidden;
   background:
+    linear-gradient(135deg, rgba(255, 240, 199, 0.05), transparent 24%, rgba(142, 205, 222, 0.035) 72%, transparent),
     radial-gradient(circle at 50% 50%, rgba(255, 240, 199, 0.08), transparent 18%),
     radial-gradient(circle at 18% 26%, rgba(255, 240, 199, 0.07), transparent 24%),
     radial-gradient(circle at 82% 72%, rgba(255, 240, 199, 0.07), transparent 26%),
     rgba(7, 8, 9, 0.26);
   backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 199, 0.08),
+    0 34px 100px rgba(0, 0, 0, 0.28);
 }
 
 .modern-experience-constellation::before,
@@ -642,6 +646,92 @@
   inset: 25%;
   border-style: dashed;
   animation: modernSpin 42s linear infinite;
+}
+
+.modern-constellation-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.modern-constellation-path,
+.modern-constellation-loop {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.modern-constellation-path {
+  stroke: rgba(255, 240, 199, 0.24);
+  stroke-width: 1;
+  stroke-dasharray: 6 9;
+  animation: modernSignalDash 18s linear infinite;
+}
+
+.modern-constellation-loop {
+  stroke: rgba(142, 205, 222, 0.16);
+  stroke-width: 0.8;
+  stroke-dasharray: 1 10;
+  animation: modernSignalDash 32s linear infinite reverse;
+}
+
+.modern-constellation-sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.modern-constellation-sparks span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff0c7;
+  box-shadow:
+    0 0 18px rgba(255, 240, 199, 0.75),
+    0 0 44px rgba(142, 205, 222, 0.24);
+  opacity: 0.72;
+  animation: modernSparkPulse 2.8s ease-in-out infinite;
+}
+
+.modern-constellation-sparks span:nth-child(1) {
+  left: 17%;
+  top: 19%;
+}
+
+.modern-constellation-sparks span:nth-child(2) {
+  right: 16%;
+  top: 22%;
+  animation-delay: 0.4s;
+}
+
+.modern-constellation-sparks span:nth-child(3) {
+  right: 20%;
+  bottom: 22%;
+  animation-delay: 0.8s;
+}
+
+.modern-constellation-sparks span:nth-child(4) {
+  left: 20%;
+  bottom: 20%;
+  animation-delay: 1.2s;
+}
+
+.modern-constellation-sparks span:nth-child(5) {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1.6s;
+}
+
+.modern-constellation-sparks span:nth-child(6) {
+  left: 50%;
+  top: 18%;
+  background: rgba(142, 205, 222, 0.92);
+  animation-delay: 2s;
 }
 
 .modern-experience-core {
@@ -666,7 +756,39 @@
     inset 0 0 44px rgba(255, 240, 199, 0.05);
 }
 
-.modern-experience-core span {
+.modern-core-orbit {
+  position: absolute;
+  inset: -14px;
+  border: 1px solid rgba(255, 229, 180, 0.18);
+  border-top-color: rgba(142, 205, 222, 0.48);
+  border-radius: 50%;
+  animation: modernSpin 12s linear infinite;
+}
+
+.modern-core-orbit::before,
+.modern-core-orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: #fff0c7;
+  box-shadow: 0 0 22px rgba(255, 240, 199, 0.7);
+}
+
+.modern-core-orbit::before {
+  width: 8px;
+  height: 8px;
+  top: 18px;
+  right: 28px;
+}
+
+.modern-core-orbit::after {
+  width: 5px;
+  height: 5px;
+  left: 36px;
+  bottom: 18px;
+}
+
+.modern-experience-core > span:not(.modern-core-orbit) {
   color: #f8d79e;
   font-size: 0.78rem;
   font-weight: 800;
@@ -696,16 +818,20 @@
   padding: 16px;
   color: inherit;
   background:
+    radial-gradient(circle at 18% 12%, rgba(255, 240, 199, 0.14), transparent 28%),
+    linear-gradient(110deg, rgba(142, 205, 222, 0.08), transparent 26%),
     linear-gradient(135deg, rgba(255, 240, 199, 0.08), transparent 42%),
     rgba(5, 6, 7, 0.54);
   text-align: left;
   cursor: pointer;
   backdrop-filter: blur(16px);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
-    background 180ms ease;
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .modern-experience-node::before {
@@ -718,12 +844,34 @@
   box-shadow: 0 0 28px rgba(255, 240, 199, 0.75);
 }
 
+.modern-experience-node::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 240, 199, 0.16), transparent);
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
 .modern-experience-node:hover {
   transform: translateY(-6px) scale(1.018);
   border-color: rgba(255, 229, 180, 0.36);
   background:
+    radial-gradient(circle at 18% 12%, rgba(255, 240, 199, 0.2), transparent 30%),
+    linear-gradient(110deg, rgba(142, 205, 222, 0.12), transparent 28%),
     linear-gradient(135deg, rgba(255, 240, 199, 0.12), transparent 46%),
     rgba(5, 6, 7, 0.44);
+  box-shadow:
+    0 30px 86px rgba(0, 0, 0, 0.42),
+    0 0 42px rgba(255, 229, 180, 0.1);
+}
+
+.modern-experience-node:hover::after {
+  opacity: 1;
+  animation: modernNodeSweep 760ms ease forwards;
 }
 
 .exp-node-0 {
@@ -738,7 +886,7 @@
 
 .exp-node-1 {
   right: 6%;
-  top: 13%;
+  top: 10%;
 }
 
 .exp-node-1::before {
@@ -747,8 +895,8 @@
 }
 
 .exp-node-2 {
-  right: 11%;
-  bottom: 12%;
+  right: calc(11% - 15px);
+  bottom: 4%;
 }
 
 .exp-node-2::before {
@@ -758,7 +906,7 @@
 
 .exp-node-3 {
   left: 9%;
-  bottom: 10%;
+  bottom: 4%;
 }
 
 .exp-node-3::before {
@@ -806,6 +954,24 @@
   color: rgba(247, 245, 239, 0.66);
   font-size: 0.92rem;
   line-height: 1.58;
+}
+
+.modern-node-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: #fff0c7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.modern-node-action::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, #fff0c7, transparent);
 }
 
 .modern-experience-modal {
@@ -1085,6 +1251,30 @@
   }
 }
 
+@keyframes modernSignalDash {
+  to {
+    stroke-dashoffset: -80;
+  }
+}
+
+@keyframes modernSparkPulse {
+  0%,
+  100% {
+    opacity: 0.36;
+    transform: scale(0.78);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes modernNodeSweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes modernCaret {
   0%,
   45% {
@@ -1159,6 +1349,12 @@
 
   .modern-experience-constellation::before,
   .modern-experience-constellation::after {
+    display: none;
+  }
+
+  .modern-constellation-lines,
+  .modern-constellation-sparks,
+  .modern-core-orbit {
     display: none;
   }
 

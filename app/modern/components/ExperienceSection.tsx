@@ -96,7 +96,45 @@ export default function ExperienceSection() {
       </div>
 
       <div className="modern-experience-constellation">
+        <svg
+          className="modern-constellation-lines"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M 50 50 C 36 36, 27 23, 17 19"
+            className="modern-constellation-path"
+          />
+          <path
+            d="M 50 50 C 64 34, 73 22, 84 22"
+            className="modern-constellation-path"
+          />
+          <path
+            d="M 50 50 C 67 61, 76 74, 80 78"
+            className="modern-constellation-path"
+          />
+          <path
+            d="M 50 50 C 37 62, 27 76, 20 80"
+            className="modern-constellation-path"
+          />
+          <path
+            d="M 17 19 C 43 10, 63 12, 84 22 C 88 44, 88 62, 80 78 C 57 88, 37 88, 20 80 C 12 56, 12 36, 17 19"
+            className="modern-constellation-loop"
+          />
+        </svg>
+
+        <div className="modern-constellation-sparks" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+
         <div className="modern-experience-core">
+          <span className="modern-core-orbit" aria-hidden="true" />
           <span>Career Signal</span>
           <strong>4 chapters</strong>
           <p>Click a node to open the full story.</p>
@@ -118,6 +156,7 @@ export default function ExperienceSection() {
               {item.role} / {item.duration}
             </small>
             <p>{item.note}</p>
+            <span className="modern-node-action">Open story</span>
           </button>
         ))}
       </div>
