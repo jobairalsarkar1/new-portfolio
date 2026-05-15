@@ -1073,6 +1073,7 @@
   color: rgba(247, 245, 239, 0.78);
   font-size: clamp(1rem, 1.6vw, 1.14rem);
   line-height: 1.85;
+  white-space: pre-line;
 }
 
 .modern-type-caret {
