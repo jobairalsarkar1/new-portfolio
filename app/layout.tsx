@@ -16,17 +16,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.jobairalsarkar.site"),
-  title: "Jobair Al Sarkar | Full-Stack Developer | Software Engineer",
+  title: "Jobair Al Sarkar | Software Engineer | Full Stack Engineer",
   description:
-    "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer. Explore projects, skills, and contact for collaboration.",
+    "Portfolio of Jobair Al Sarkar, covering backend systems with Kafka/CDC and PostgreSQL, plus TypeScript, Node.js, React, Python, and cloud integrations.",
   keywords: [
     "Jobair Al Sarkar",
-    "Full-Stack Developer",
+    "Software Engineer",
+    "Full Stack Engineer",
+    "Frontend Development",
+    "Backend Systems",
+    "Kafka/CDC",
     "React",
     "Next.js",
     "Node.js",
+    "TypeScript",
+    "PostgreSQL",
     "Portfolio",
-    "Freelance Developer",
     "Web Developer",
   ],
   authors: [
@@ -34,9 +39,9 @@ export const metadata: Metadata = {
   ],
   creator: "Jobair Al Sarkar",
   openGraph: {
-    title: "Jobair Al Sarkar | Full-Stack Developer | Software Engineer",
+    title: "Jobair Al Sarkar | Software Engineer | Full Stack Engineer",
     description:
-      "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer...",
+      "Portfolio covering backend systems with Kafka/CDC and PostgreSQL, plus TypeScript, Node.js, React, Python, product interfaces, and cloud integrations.",
     url: "/",
     siteName: "Jobair Al Sarkar Portfolio",
     images: [
@@ -52,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jobair Al Sarkar | Full-Stack Developer",
+    title: "Jobair Al Sarkar | Software Engineer",
     description:
-      "Portfolio of Jobair Al Sarkar – Freelance Full-Stack Developer. Explore projects, skills, and contact for collaboration.",
+      "Software engineer working across backend systems, product interfaces, Kafka/CDC, PostgreSQL, TypeScript, Node.js, React, Python, and cloud integrations.",
     images: ["/og-image.png"],
     creator: "@jobairalsarkar",
   },

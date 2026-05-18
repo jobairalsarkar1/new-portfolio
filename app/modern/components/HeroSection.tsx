@@ -5,12 +5,15 @@ export default function HeroSection() {
   return (
     <section className="modern-hero">
       <div className="modern-hero-copy">
-        <p className="modern-kicker">Full Stack Software Engineer</p>
-        <h1>I build systems that feel alive, useful, and quietly sharp.</h1>
+        <p className="modern-kicker">
+          Full Stack Software Engineer @ FringeCore_
+        </p>
+        <h1>Focusing on scalable backend systems and modern web interfaces.</h1>
         <p>
-          A more experimental version of my portfolio, shaped around motion,
-          product thinking, and the kind of engineering work that has to serve
-          real people.
+          I build production grade applications using TypeScript, React,
+          Node.js, and PostgreSQL, with recent work across enterprise ERP
+          systems, Kafka/CDC pipelines, cloud integrations, and developer
+          tooling.
         </p>
         <div className="modern-actions">
           <a href="#work" className="modern-primary">

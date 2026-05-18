@@ -4,12 +4,12 @@ export default function PortfolioSummaryCard() {
       <span className="modern-panel-index">01</span>
       <h2>Jobair Al Sarkar</h2>
       <p>
-        TypeScript, React, backend systems, scalable databases, payment flows,
-        AI integrations, and interactive visual interfaces.
+        A focused look at the systems I have built across hospital software,
+        digital marketplaces, AI video products, and client web applications.
       </p>
       <div className="modern-stat-grid">
         <div>
-          <strong>3+</strong>
+          <strong>3</strong>
           <span>Years building</span>
         </div>
         <div>
@@ -17,8 +17,8 @@ export default function PortfolioSummaryCard() {
           <span>Work chapters</span>
         </div>
         <div>
-          <strong>12</strong>
-          <span>Core tools</span>
+          <strong>Full</strong>
+          <span>Stack focus</span>
         </div>
       </div>
     </div>
