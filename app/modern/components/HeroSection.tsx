@@ -1,4 +1,5 @@
 import { FaArrowRight } from "react-icons/fa";
+import { FiDownload } from "react-icons/fi";
 import PortfolioSummaryCard from "./PortfolioSummaryCard";
 
 export default function HeroSection() {
@@ -16,11 +17,15 @@ export default function HeroSection() {
           tooling.
         </p>
         <div className="modern-actions">
-          <a href="#work" className="modern-primary">
-            Explore work <FaArrowRight />
+          <a href="#experience" className="modern-primary">
+            View experience <FaArrowRight />
           </a>
-          <a href="#contact" className="modern-secondary">
-            Start a project
+          <a
+            href="/assets/resume/jobair-al-sarkar-resume.pdf"
+            className="modern-secondary"
+            download
+          >
+            Resume <FiDownload />
           </a>
         </div>
       </div>
