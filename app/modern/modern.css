@@ -382,17 +382,54 @@
   margin-bottom: 18px;
 }
 
-.modern-skill-orbit {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.modern-skill-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.modern-skill-group {
   border: 1px solid rgba(255, 229, 180, 0.12);
   border-radius: 8px;
   padding: 14px;
   background:
-    linear-gradient(90deg, rgba(255, 240, 199, 0.045), transparent 42%),
-    rgba(7, 8, 9, 0.28);
+    linear-gradient(135deg, rgba(255, 240, 199, 0.055), transparent 46%),
+    rgba(7, 8, 9, 0.3);
   backdrop-filter: blur(12px);
+}
+
+.modern-skill-group-head {
+  margin-bottom: 12px;
+}
+
+.modern-skill-group-head h3 {
+  color: #fff0c7;
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.modern-skill-group-head p {
+  margin-top: 6px;
+  color: rgba(247, 245, 239, 0.54);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.modern-skill-group-title-loading {
+  display: block;
+  width: 140px;
+  height: 18px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  animation: modernPulse 1.1s ease-in-out infinite;
+}
+
+.modern-skill-orbit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .modern-skill-chip {
@@ -408,6 +445,14 @@
   padding: 8px 12px 8px 9px;
   font-size: 0.9rem;
   backdrop-filter: blur(16px);
+}
+
+.modern-skill-chip.text-only {
+  padding: 9px 13px;
+  border-color: rgba(142, 205, 222, 0.22);
+  background:
+    linear-gradient(90deg, rgba(142, 205, 222, 0.08), transparent 70%),
+    rgba(255, 255, 255, 0.045);
 }
 
 .modern-skill-icon {
@@ -1375,6 +1420,10 @@
     grid-template-columns: 1fr;
   }
 
+  .modern-skill-groups {
+    grid-template-columns: 1fr;
+  }
+
   .modern-experience-constellation {
     min-height: auto;
     display: grid;
@@ -1620,7 +1669,10 @@
 
   .modern-skill-orbit {
     gap: 8px;
-    padding: 10px;
+  }
+
+  .modern-skill-group {
+    padding: 12px;
   }
 
   .modern-skill-chip {

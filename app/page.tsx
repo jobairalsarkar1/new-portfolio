@@ -15,8 +15,8 @@ export default function Home() {
       <ModernNav />
       <HeroSection />
       <SkillsStrip />
-      <WorkSection />
       <ExperienceSection />
+      <WorkSection />
       <ContactSection />
     </main>
   );
