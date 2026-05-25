@@ -492,14 +492,15 @@
 
 .modern-explore-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-auto-rows: 94px;
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .modern-explore-tile {
   position: relative;
-  display: block;
+  display: grid;
+  grid-template-rows: 190px 1fr;
+  min-height: 360px;
   color: #f7f5ef;
   text-decoration: none;
   border: 1px solid rgba(255, 229, 180, 0.16);
@@ -518,7 +519,7 @@
 }
 
 .modern-explore-tile:hover {
-  transform: translateY(-4px) scale(1.012);
+  transform: translateY(-4px);
   border-color: rgba(255, 229, 180, 0.34);
   background:
     linear-gradient(180deg, rgba(255, 240, 199, 0.08), transparent 42%),
@@ -528,29 +529,37 @@
     0 0 38px rgba(255, 229, 180, 0.08);
 }
 
+.modern-explore-media {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 229, 180, 0.12);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 240, 199, 0.12), transparent 34%),
+    #050607;
+}
+
+.modern-explore-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 44%, rgba(3, 4, 5, 0.42) 100%),
+    radial-gradient(circle at 70% 20%, rgba(255, 240, 199, 0.1), transparent 34%);
+  pointer-events: none;
+}
+
 .modern-explore-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.78) contrast(1.08);
-  transform: scale(1.02);
+  filter: saturate(0.84) contrast(1.02);
+  transform: scale(1.01);
   transition: transform 260ms ease, filter 260ms ease;
 }
 
 .modern-explore-tile:hover .modern-explore-image {
   filter: saturate(1) contrast(1.04);
-  transform: scale(1.08);
-}
-
-.modern-explore-tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.22) 36%, rgba(0, 0, 0, 0.82) 100%),
-    radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 235, 198, 0.12), transparent 32%);
-  opacity: 0.92;
-  transition: opacity 220ms ease;
+  transform: scale(1.055);
 }
 
 .modern-explore-tile::before {
@@ -579,77 +588,66 @@
 }
 
 .modern-explore-overlay {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: space-between;
+  min-height: 170px;
+  gap: 18px;
   padding: 16px;
 }
 
 .modern-explore-overlay span {
   color: #f8d79e;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .modern-explore-overlay h3 {
   margin-top: 8px;
-  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-size: clamp(1.25rem, 1.7vw, 1.7rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.05;
 }
 
 .modern-explore-overlay p {
-  color: rgba(247, 245, 239, 0.62);
+  color: rgba(247, 245, 239, 0.64);
   line-height: 1.55;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
 }
 
 .tile-0 {
-  grid-column: span 3;
-  grid-row: span 4;
-}
-
-.tile-1 {
   grid-column: span 2;
-  grid-row: span 2;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  grid-template-rows: 1fr;
+  min-height: 420px;
 }
 
-.tile-2 {
-  grid-column: span 1;
-  grid-row: span 2;
+.tile-0 .modern-explore-media {
+  border-right: 1px solid rgba(255, 229, 180, 0.12);
+  border-bottom: 0;
 }
 
-.tile-3 {
-  grid-column: span 2;
-  grid-row: span 2;
+.tile-0 .modern-explore-overlay {
+  min-height: auto;
+  padding: 22px;
 }
 
-.tile-4 {
-  grid-column: span 1;
-  grid-row: span 2;
+.tile-0 .modern-explore-overlay h3 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
 }
 
-.tile-5 {
-  grid-column: span 2;
-  grid-row: span 3;
+.tile-0 .modern-explore-overlay p {
+  font-size: 0.98rem;
 }
 
-.tile-6 {
-  grid-column: span 2;
-  grid-row: span 3;
-}
-
-.tile-7 {
-  grid-column: span 1;
-  grid-row: span 3;
-}
-
+.tile-4,
 .tile-8 {
-  grid-column: span 1;
-  grid-row: span 3;
+  background:
+    linear-gradient(135deg, rgba(142, 205, 222, 0.06), transparent 38%),
+    rgba(6, 7, 8, 0.48);
 }
 
 .loading-card {
@@ -669,6 +667,17 @@
   padding: 14px;
   background: rgba(7, 8, 9, 0.28);
   backdrop-filter: blur(12px);
+}
+
+.modern-work-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.modern-work-footer-actions button {
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .modern-work-footer div {
@@ -1471,7 +1480,6 @@
 
   .modern-explore-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 170px;
   }
 
   .modern-explore-tile,
@@ -1485,14 +1493,19 @@
   .tile-7,
   .tile-8 {
     grid-column: span 1;
-    grid-row: span 1;
+    grid-template-columns: 1fr;
+    grid-template-rows: 190px 1fr;
     clip-path: none;
   }
 
-  .tile-0,
-  .tile-5 {
+  .tile-0 {
     grid-column: span 2;
-    grid-row: span 2;
+    min-height: 0;
+  }
+
+  .tile-0 .modern-explore-media {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 229, 180, 0.12);
   }
 
   .modern-work-footer {
@@ -1500,7 +1513,8 @@
     flex-direction: column;
   }
 
-  .modern-work-footer div {
+  .modern-work-footer div,
+  .modern-work-footer-actions {
     text-align: left;
   }
 
@@ -1619,7 +1633,6 @@
 
   .modern-explore-grid {
     grid-template-columns: 1fr;
-    grid-auto-rows: 230px;
   }
 
   .modern-explore-tile,
@@ -1633,7 +1646,7 @@
   .tile-7,
   .tile-8 {
     grid-column: span 1;
-    grid-row: span 1;
+    grid-template-rows: 210px 1fr;
     clip-path: none;
   }
 
@@ -1758,10 +1771,6 @@
 
   .modern-orbit-panel::after {
     bottom: 148px;
-  }
-
-  .modern-explore-grid {
-    grid-auto-rows: 210px;
   }
 
   .modern-experience-modal {

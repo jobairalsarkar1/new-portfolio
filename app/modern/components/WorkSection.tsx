@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useFetch } from "@/lib/hooks/useFetch";
 
 type Skill = {
@@ -27,11 +28,14 @@ function stripMarkdown(value: string) {
 }
 
 export default function WorkSection() {
+  const [isExpanded, setIsExpanded] = useState(false);
   const { data: projects, isLoading } = useFetch<Project[]>(
     "/api/projects",
     5000,
   );
-  const visibleProjects = projects?.slice(0, 9) ?? [];
+  const projectCount = projects?.length ?? 0;
+  const visibleProjects = isExpanded ? (projects ?? []) : projects?.slice(0, 5) ?? [];
+  const hasMoreProjects = projectCount > 5;
 
   return (
     <section id="work" className="modern-section">
@@ -54,13 +58,15 @@ export default function WorkSection() {
                 key={project.id}
                 className={`modern-explore-tile tile-${index}`}
               >
-                <Image
-                  src={project.coverImage}
-                  alt={project.name}
-                  width={760}
-                  height={760}
-                  className="modern-explore-image"
-                />
+                <div className="modern-explore-media">
+                  <Image
+                    src={project.coverImage}
+                    alt={project.name}
+                    width={760}
+                    height={520}
+                    className="modern-explore-image"
+                  />
+                </div>
                 <div className="modern-explore-overlay">
                   <div>
                     <span>
@@ -78,12 +84,27 @@ export default function WorkSection() {
       </div>
 
       <div className="modern-work-footer">
-        <Link href="/projects" className="modern-secondary">
-          View the full archive
-        </Link>
+        <div className="modern-work-footer-actions">
+          {hasMoreProjects && (
+            <button
+              type="button"
+              className="modern-secondary"
+              onClick={() => setIsExpanded((current) => !current)}
+            >
+              {isExpanded ? "Show fewer" : `Show all ${projectCount}`}
+            </button>
+          )}
+          <Link href="/projects" className="modern-secondary">
+            View archive
+          </Link>
+        </div>
         <div>
-          <span>{projects?.length ?? 0}</span>
-          <p>projects currently connected</p>
+          <span>{isExpanded ? projectCount : visibleProjects.length}</span>
+          <p>
+            {isExpanded
+              ? "projects currently shown"
+              : `of ${projectCount} projects shown`}
+          </p>
         </div>
       </div>
     </section>

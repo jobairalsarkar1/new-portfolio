@@ -95,7 +95,7 @@ export default function SkillsStrip() {
     <section className="modern-section modern-skills" aria-label="Skills">
       <div className="modern-section-head modern-section-head-compact">
         <p>Stack</p>
-        <h2>A cleaner view of the stack behind the work.</h2>
+        <h2>The tools I reach for when ideas need to become real.</h2>
       </div>
 
       <div className="modern-skill-groups">
