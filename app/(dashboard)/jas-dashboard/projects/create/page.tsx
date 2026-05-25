@@ -3,12 +3,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import GradientButton from "@/components/dashboard/GradientButton";
 import ActionLoader from "@/components/loaders/ActionLoader";
-
-// Dynamically import MDEditor for SSR support
-const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
+import ProjectDescriptionEditor from "@/components/dashboard/ProjectDescriptionEditor";
 
 type Skill = {
   id: string;
@@ -223,46 +220,10 @@ const CreateProjectPage = () => {
           </label>
         </div>
 
-        {/* Markdown Editor */}
-        <div>
-          <label className="block mb-1 text-gray-300">
-            Project Description *
-          </label>
-          {/* <div className="rounded-lg p-2 bg-gray-900">
-            <MDEditor
-              value={form.description}
-              onChange={(val = "") => setForm({ ...form, description: val })}
-              height={400}
-              textareaProps={{
-                placeholder: "Write project description in Markdown...",
-                className: "bg-gray-900 text-gray-200",
-              }}
-            />
-          </div> */}
-          <div className="rounded-lg p-2 bg-gray-900">
-            <MDEditor
-              value={form.description}
-              onChange={(value) =>
-                setForm({ ...form, description: value || "" })
-              }
-              id="description"
-              preview="edit"
-              height={400}
-              style={{
-                borderRadius: 12,
-                overflow: "hidden",
-                backgroundColor: "#111827", // same as bg-gray-900
-              }}
-              textareaProps={{
-                placeholder: "Write project description in Markdown...",
-                className: "bg-gray-900 text-gray-200",
-              }}
-              previewOptions={{
-                disallowedElements: ["style"],
-              }}
-            />
-          </div>
-        </div>
+        <ProjectDescriptionEditor
+          value={form.description}
+          onChange={(description) => setForm({ ...form, description })}
+        />
 
         {/* Submit Button */}
         <div className="flex justify-end mt-4">

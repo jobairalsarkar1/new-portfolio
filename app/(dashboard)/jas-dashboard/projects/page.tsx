@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaTrash, FaEye } from "react-icons/fa";
+import { FaTrash, FaEye, FaEdit } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -151,6 +151,17 @@ const ProjectsPage = () => {
                         title="View Project"
                       >
                         <FaEye className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          router.push(
+                            `/jas-dashboard/projects/${project.id}/edit`,
+                          )
+                        }
+                        className="text-emerald-400 hover:text-emerald-600 cursor-pointer transition"
+                        title="Edit Project"
+                      >
+                        <FaEdit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => setDeleteId(project.id)}
