@@ -38,7 +38,6 @@ const skillGroups: SkillGroup[] = [
       "Django",
       "Flask",
       ".NET",
-      "Laravel",
       "Prisma",
       "tRPC",
       "Monorepo Architecture",
