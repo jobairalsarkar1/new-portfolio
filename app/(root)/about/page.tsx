@@ -28,14 +28,14 @@ const experiences = [
     location: "Dhaka, Bangladesh",
     mode: "On site",
     summary:
-      "The main work here is on the hospital information system and ERP for Asgar Ali Hospital, so most features are tied closely to real hospital operations.",
+      "I work on a Hospital Information System and ERP platform for Asgar Ali Hospital, contributing across frontend, backend, shared application layers, and database integration.",
     highlights: [
-      "A lot of my day starts with understanding how the hospital actually works before building a feature.",
-      "Together with the design team, I help shape screens that are not just functional, but easier for people to use every day.",
-      "Most of the feature work happens across Laravel, Node.js, React, TypeScript, PostgreSQL, and Oracle.",
-      "One important part was working on a CDC pipeline that keeps Oracle and PostgreSQL data in sync while newer modules move over gradually.",
-      "The appointment booking flow was more complicated than it needed to be, so I helped redesign it into something smoother.",
-      "I also join discussions around data flow, scalability, and how to improve the system without breaking legacy parts.",
+      "Collaborate with business stakeholders and design teams to turn hospital operations into scalable software flows.",
+      "Work within a monorepo architecture using TypeScript, React, Node.js, tRPC, PostgreSQL, and Oracle.",
+      "Contributed to a Kafka based CDC synchronization pipeline for gradual Oracle to PostgreSQL migration.",
+      "Improved patient appointment and scheduling flows by simplifying complex operational steps.",
+      "Participate in architecture discussions around data flow, scalability, maintainability, and legacy modernization.",
+      "Build software that supports real hospital operations instead of isolated demo features.",
     ],
   },
   {
@@ -46,15 +46,14 @@ const experiences = [
     location: "New York, United States",
     mode: "Remote",
     summary:
-      "At Picture TV, the work was building a media marketplace from the ground up as a contract full stack developer.",
+      "At Picture TV, I worked on a content driven marketplace platform for buying and selling images and videos, event booking, blogging, and media focused features.",
     highlights: [
-      "My role started early, from planning and system structure to building main features and improving the user experience.",
-      "The platform supported buying and selling images and videos, event booking, blogging, and media features.",
-      "The core stack was Next.js, React, Tailwind CSS, Prisma, and MongoDB.",
-      "Authentication used JWT magic link login with role based access for different types of users.",
-      "Stripe handled payments, while Cloudinary handled image and video uploads.",
-      "The admin dashboard gave the team a way to manage users, events, blogs, and uploaded media.",
-      "A lot of the work was moving quickly while still keeping the code clean enough to grow with the product.",
+      "Worked from planning and system structure to core feature development and user experience refinement.",
+      "Built with Next.js, React, Tailwind CSS, Prisma, and MongoDB.",
+      "Implemented JWT based magic links and role based access for different user types.",
+      "Integrated Stripe payment workflows and Cloudinary media handling.",
+      "Built admin dashboard tools for users, events, blog content, and uploaded media.",
+      "Balanced fast delivery with maintainability and product growth.",
     ],
   },
   {
@@ -65,31 +64,31 @@ const experiences = [
     location: "Manassas, Virginia, United States",
     mode: "Remote",
     summary:
-      "During the internship, I worked on both frontend and backend features and got a much better feel for production level development.",
+      "During the internship, I contributed to full stack development across frontend and backend features while learning how production systems evolve in a team.",
     highlights: [
-      "Feature work involved Next.js, React, Express, and Tailwind CSS.",
-      "PostgreSQL and Prisma were used to structure and manage application data.",
-      "Azure AI Video Indexer was integrated so the app could process videos and show useful insights.",
-      "I contributed to Stripe subscription flows as part of the product work.",
-      "Cloudflare also came into the picture for performance and delivery improvements.",
-      "Code reviews and team discussions helped me think beyond single features and more about how systems stay maintainable.",
+      "Built and refined features using Next.js, React, Express, Tailwind CSS, PostgreSQL, and Prisma.",
+      "Worked with Azure AI Video Indexer for video processing, transcription, and automated media insights.",
+      "Contributed to Stripe subscription flows and authentication related product work.",
+      "Helped improve delivery and performance using Cloudflare.",
+      "Took part in debugging, code reviews, and backend scalability discussions.",
+      "Grew from building individual features to thinking more about maintainability and system design.",
     ],
   },
   {
     role: "Full Stack Developer",
     company: "Self Employed",
     type: "Freelance",
-    duration: "Dec 2022 to Oct 2024 · 1 yr 11 mos",
+    duration: "Jun 2023 to Oct 2024 · 1 yr 5 mos",
     location: "Remote",
     mode: "Client Work",
     summary:
-      "Before joining teams full time, freelancing gave me the chance to build web applications for different clients and use cases.",
+      "Before joining structured engineering teams, I worked as a freelance full stack developer building web applications for different clients and use cases.",
     highlights: [
-      "The work covered planning, development, and deployment instead of only writing isolated features.",
-      "Most of the projects used Next.js, React, Node.js, Prisma, MongoDB, and PostgreSQL.",
-      "Projects often included authentication systems, Stripe payment flows, and Cloudinary media handling.",
-      "That period taught me how to talk with clients, understand what they really need, and ship something useful.",
-      "It also helped me learn how to make practical technical decisions when time and budget matter.",
+      "Handled planning, architecture, development, deployment, and client communication.",
+      "Built projects using Next.js, React, Node.js, Prisma, MongoDB, and PostgreSQL.",
+      "Implemented authentication systems, admin dashboards, payment flows, and media handling.",
+      "Learned to understand business needs before writing code.",
+      "Built ownership habits around scope, delivery, tradeoffs, and practical technical decisions.",
     ],
   },
 ];
@@ -114,19 +113,22 @@ const About = () => {
           goal is to build meaningful software that makes a difference.
         </p> */}
         <p className="subhead-text text-gray-200 mt-4 sm:text-justify">
-          I’m a passionate&nbsp;
+          I am a&nbsp;
           <span className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 text-transparent bg-clip-text font-semibold">
-            Full-Stack Software Engineer
+            Full Stack Software Engineer
           </span>
-          &nbsp;who loves turning ideas into seamless, user-friendly
-          applications. My journey in tech has been fueled by curiosity and the
-          excitement of solving complex problems with simple, elegant solutions.
+          &nbsp;with nearly 3 years of experience building web applications,
+          backend systems, and production focused platforms. I started through
+          self driven learning in 2022, moved into freelance client work, and
+          later transitioned into structured engineering roles across product
+          and enterprise environments.
           <br />
-          <br />I care deeply about building software that is not only
-          functional, but also performant, scalable, and meaningful. To me,
-          development is more than just writing code—it’s about crafting
-          experiences, learning continuously, and creating technology that makes
-          a real difference in people’s lives.
+          <br />
+          My current focus is building reliable software where frontend,
+          backend, database work, and real business operations meet. I enjoy
+          systems that have real user impact, especially backend focused
+          products, scalable workflows, and full stack applications that solve
+          practical problems.
         </p>
       </div>
 
@@ -140,8 +142,8 @@ const About = () => {
               </span>
             </h2>
             <p className="text-gray-300 mt-2 text-base sm:text-lg">
-              Real products, production systems, and client work across modern
-              full stack stacks.
+              Product work, enterprise systems, and client projects across
+              frontend, backend, databases, and cloud integrations.
             </p>
           </div>
           <div className="text-sm text-gray-400 border border-gray-700 rounded-lg px-3 py-1.5 bg-black/40 w-fit">
