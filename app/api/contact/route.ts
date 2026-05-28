@@ -160,7 +160,7 @@ export async function POST(req: Request) {
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
       html: buildContactEmail({ name, email, message }),
       headers: {
-        "X-Portfolio-Contact": "jobairalsarkar.site",
+        "X-Portfolio-Contact": "jobairalsarkar.com",
       },
     });
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const RESEND_API_URL = "https://api.resend.com/emails";
-const SENDER_EMAIL = "contact@jobairalsarkar.site";
+const SENDER_EMAIL = "contact@jobairalsarkar.com";
 
 interface MailOptions {
   to: string | string[];

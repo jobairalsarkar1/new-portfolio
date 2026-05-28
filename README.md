@@ -1,90 +1,154 @@
-# Jobair Al Sarkar - Developer Portfolio
+# Jobair Al Sarkar Portfolio
 
-Hi, I'm **Jobair Al Sarkar**, a passionate full-stack developer specializing in modern, interactive web experiences. This is my personal portfolio, built to showcase my skills, projects, and approach to crafting scalable and visually appealing applications.
+Personal portfolio for [jobairalsarkar.com](https://jobairalsarkar.com), built with Next.js, React, TypeScript, Tailwind CSS, Prisma, and PostgreSQL.
 
----
+The site presents my work as a Full Stack Software Engineer focused on scalable backend systems, modern web interfaces, production platforms, and real business workflows.
 
-## 🚀 About This Portfolio
+## Overview
 
-This portfolio is designed with a strong focus on interactivity and modern web technologies:
+This project includes two public portfolio experiences and a private dashboard for managing content.
 
-- **3D Visuals with Three.js** – Interactive 3D models and effects to give a dynamic feel.
-- **Email Sending via Resend** – Fully functional contact form to directly reach me.
-- **OAuth Authentication** – Secure login flows for showcasing private projects or demos.
-- **Responsive and Animated UI** – Smooth animations, hover effects, and clean layouts to enhance user experience.
+- Modern portfolio homepage with an interactive visual background
+- Older `/about`, `/projects`, `/contact`, and `/v1` pages kept for archive and supporting routes
+- Project and skill data managed through API routes and Prisma
+- Dashboard for managing projects, skills, images, users, and contact messages
+- Contact form with saved messages and email delivery
+- Resume download from the hero section
 
-It’s fully built with **Next.js 15**, **React**, and **Tailwind CSS**, providing a performant and modern web experience.
+## Current Public Experience
 
----
+The main homepage uses the modern portfolio flow:
 
-## 💻 Features
+1. Hero section with resume download
+2. Categorized skills and stack overview
+3. Experience section with detailed work stories
+4. Selected work section with expandable project cards
+5. Contact section
 
-### 1. Interactive 3D Section
+The modern page is powered by components in:
 
-- Built with **Three.js** and `@react-three/fiber`.
-- Users can rotate and explore 3D objects interactively.
+```txt
+app/modern/components
+```
 
-### 2. Contact Form
+The root homepage reuses the same modern experience:
 
-- Sends messages directly using **Resend**.
-- Live form validation and animated feedback.
-- Loading state with animated dots for better user experience.
+```txt
+app/page.tsx
+```
 
-### 3. Authentication
+## Dashboard
 
-- OAuth login integration for secure access.
-- Role-based page access (for future private content).
+The dashboard lives under:
 
-### 4. Project Showcases
+```txt
+app/(dashboard)/jas-dashboard
+```
 
-- Projects displayed in cards with smooth hover effects.
-- Markdown support for project descriptions.
-- Individual loaders for each project card for better UX.
+It supports:
 
-### 5. Animated UI
+- Creating projects
+- Editing projects
+- Deleting projects
+- Managing skills
+- Managing uploaded images
+- Viewing contact messages
+- Managing users
 
-- Floating shapes and gradient effects.
-- Custom loaders and notifications.
-- Fully responsive and mobile-friendly.
+Project descriptions are written with a custom markdown editor:
 
----
+```txt
+components/dashboard/ProjectDescriptionEditor.tsx
+```
 
-## 💻 Tech Stack
+The editor supports writing, preview, split view, quick formatting, and case study templates.
 
-| Frontend     | Backend         | Other Tools  |
-| ------------ | --------------- | ------------ |
-| Next.js 15   | Node.js         | Three.js     |
-| React        | Resend (Email)  | Tailwind CSS |
-| TypeScript   | OAuth Providers | React-Icons  |
-| Tailwind CSS |                 | EmailJS      |
+## Tech Stack
 
----
+| Area | Tools |
+| --- | --- |
+| Framework | Next.js 15, React 19, TypeScript |
+| Styling | Tailwind CSS, custom CSS |
+| Database | PostgreSQL, Prisma |
+| Auth | NextAuth |
+| Media | Cloudinary, Next Image |
+| Email | Nodemailer, Gmail SMTP |
+| 3D and Visuals | Three.js, React Three Fiber, custom SVG interactions |
+| Dashboard | React, API routes, Prisma models |
 
-## 💚 Contact Me
+## Content Model
 
-I’m always excited to collaborate on innovative projects or discuss new ideas. You can reach me via:
+Main Prisma models:
 
-- **Email:** [jobair.a.sarkar@gmail.com](mailto:jobair.a.sarkar@gmail.com)
-- **Phone:** +8801766961460
-- **Location:** Dhaka, Bangladesh
+- `Project`
+- `Skill`
+- `Image`
+- `ContactMessage`
+- `User`
 
-**Social Profiles:**
+Project descriptions are stored as markdown in the database and rendered on public project detail pages.
 
-- [LinkedIn](https://www.linkedin.com/in/jobair-al-sarkar/)
-- [GitHub](https://github.com/jobairalsarkar1)
-- [Facebook](https://www.facebook.com/profile.php?id=100081410426667)
-- [X / Twitter](https://x.com/jobairalsarkar)
+## Key Routes
 
-Or directly use the contact form in this portfolio to get in touch.
+```txt
+/                         Modern portfolio homepage
+/modern                   Modern portfolio route
+/about                    Older about page
+/projects                 Project archive
+/projects/[slug]          Project detail page
+/contact                  Older contact page
+/v1                       Older 3D portfolio page
+/jas-dashboard            Dashboard home
+/jas-dashboard/projects   Project management
+```
 
----
+## Local Development
 
-## 🎨 Design Philosophy
+Install dependencies:
 
-I believe a portfolio should not only showcase skills but also reflect creativity. This portfolio combines **visual appeal**, **usability**, and **interactivity** to provide an engaging experience for visitors and potential collaborators.
+```bash
+npm install
+```
 
----
+Run the development server:
 
-## 📌 License
+```bash
+npm run dev
+```
 
-This portfolio is personal and all rights are reserved. Feel free to contact me for collaborations or references.
+Run checks:
+
+```bash
+npm run lint
+npx tsc --noEmit
+```
+
+## Environment Variables
+
+The app expects environment variables for database access, auth, Cloudinary, and email delivery. Common values include:
+
+```txt
+DATABASE_URL=
+AUTH_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GMAIL_SMTP_USER=
+GMAIL_APP_PASSWORD=
+CONTACT_RECEIVER_EMAIL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+## Contact
+
+- Website: [jobairalsarkar.com](https://jobairalsarkar.com)
+- Email: [jobair.a.sarkar@gmail.com](mailto:jobair.a.sarkar@gmail.com)
+- GitHub: [github.com/jobairalsarkar1](https://github.com/jobairalsarkar1)
+- LinkedIn: [linkedin.com/in/jobair-al-sarkar](https://www.linkedin.com/in/jobair-al-sarkar/)
+
+## License
+
+This is a personal portfolio project. All rights reserved.
