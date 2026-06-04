@@ -59,7 +59,6 @@ const skillGroups: SkillGroup[] = [
       "Cloudflare",
       "Azure",
       "Turborepo",
-      "Postman",
       "Azure OpenAI",
       "Stripe",
       "Cloudinary",
