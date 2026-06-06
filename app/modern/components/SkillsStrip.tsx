@@ -14,24 +14,24 @@ type Skill = {
 
 type SkillGroup = {
   title: string;
-  description: string;
+  description?: string;
   skills: string[];
 };
 
 const skillGroups: SkillGroup[] = [
   {
     title: "Languages",
-    description: "Languages I use across application and systems work.",
+    // description: "Languages I use across application and systems work.",
     skills: ["JavaScript", "TypeScript", "Python", "Java", "C#"],
   },
   {
     title: "Frontend",
-    description: "Product interfaces, dashboards, and interactive screens.",
+    // description: "Product interfaces, dashboards, and interactive screens.",
     skills: ["React.js", "Next.js", "React Native", "Tailwind CSS", "Three.js"],
   },
   {
     title: "Backend & Systems",
-    description: "APIs, services, architecture, and data movement.",
+    // description: "APIs, services, architecture, and data movement.",
     skills: [
       "Node.js",
       "Express.js",
@@ -46,12 +46,12 @@ const skillGroups: SkillGroup[] = [
   },
   {
     title: "Databases",
-    description: "Storage layers I have used in real projects.",
+    // description: "Storage layers I have used in real projects.",
     skills: ["PostgreSQL", "MongoDB", "Oracle", "MySQL"],
   },
   {
     title: "Cloud & DevOps",
-    description: "Deployment, tooling, integrations, and delivery workflows.",
+    // description: "Deployment, tooling, integrations, and delivery workflows.",
     skills: [
       "Git",
       "GitHub",
