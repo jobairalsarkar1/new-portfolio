@@ -4,7 +4,8 @@
   "private": true,
   "author": {
     "name": "Jobair Al Sarkar",
-    "email": "jobair.a.sarkar@gmail.com"
+    "email": "jobair.a.sarkar@gmail.com",
+    "site": "https://www.jobairalsarkar.com"
   },
   "scripts": {
     "dev": "next dev",
