@@ -41,6 +41,11 @@ export const metadata: Metadata = {
     { name: "Jobair Al Sarkar", url: "https://www.jobairalsarkar.com" },
   ],
   creator: "Jobair Al Sarkar",
+  icons: {
+    icon: "/logo/modern-favicon.ico",
+    shortcut: "/logo/modern-favicon.ico",
+    apple: "/logo/modern-favicon.ico",
+  },
   openGraph: {
     title: "Jobair Al Sarkar | Software Engineer | Full Stack Engineer",
     description:
