@@ -148,5 +148,4 @@ If this resonates with you, let's talk. I'm available for:
 **Jobair Al Sarkar**  
 Full Stack Software Engineer  
 Dhaka, Bangladesh
-
 June 30, 2026
