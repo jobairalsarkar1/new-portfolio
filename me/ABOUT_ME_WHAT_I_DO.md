@@ -124,7 +124,7 @@ Internship in a fast-moving startup. Built full stack features, integrated Azure
 **Self-Employed Freelancer — June 2023 to October 2024**  
 Delivered web applications for international clients. Full cycle projects from requirements to deployment. Built e-commerce sites, SaaS platforms, dashboards, admin tools. Every project taught me something new.
 
-**Currently:** Studying Computer Science at BRAC University while working at FringeCore_.
+**Currently:** Working at FringeCore_.
 
 ---
 
