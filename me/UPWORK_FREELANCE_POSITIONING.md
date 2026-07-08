@@ -432,7 +432,7 @@ Filter by:
 4. **Under-promise, over-deliver** — Build buffer into estimates
 5. **Build in public** — Share what you learn on GitHub, Twitter, LinkedIn
 
-Your background is strong. Position yourself as the engineer who builds systems, not just features. That's your differentiator.
+Your background is strong. Position yourself as the engineer who builds systems, not just features.
 
 ---
 
