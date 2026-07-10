@@ -54,7 +54,7 @@ export default function WorkSection() {
             ))
           : visibleProjects.map((project, index) => (
               <Link
-                href={`/projects/${project.slug}`}
+                href={`/work/${project.slug}`}
                 key={project.id}
                 className={`modern-explore-tile tile-${index}`}
               >
