@@ -1,6 +1,17 @@
+import type { CSSProperties } from "react";
+import { experienceNotes } from "../data";
+import CountUp from "./CountUp";
+
 export default function PortfolioSummaryCard() {
   return (
-    <div className="modern-orbit-panel" aria-label="Portfolio summary">
+    <div
+      className="modern-orbit-panel modern-intro"
+      style={{ "--d": "520ms" } as CSSProperties}
+      aria-label="Portfolio summary"
+      data-tilt="5"
+      data-spot
+    >
+      <span className="modern-satellite" aria-hidden="true" />
       <span className="modern-panel-index">01</span>
       <h2>Jobair Al Sarkar</h2>
       <p>
@@ -9,11 +20,15 @@ export default function PortfolioSummaryCard() {
       </p>
       <div className="modern-stat-grid">
         <div>
-          <strong>3</strong>
+          <strong>
+            <CountUp to={3} />
+          </strong>
           <span>Years building</span>
         </div>
         <div>
-          <strong>4</strong>
+          <strong>
+            <CountUp to={experienceNotes.length} delay={800} />
+          </strong>
           <span>Work chapters</span>
         </div>
         <div>

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
+import { FiArrowUpRight } from "react-icons/fi";
 import { useFetch } from "@/lib/hooks/useFetch";
 
 type Skill = {
@@ -39,8 +40,10 @@ export default function WorkSection() {
 
   return (
     <section id="work" className="modern-section">
-      <div className="modern-section-head modern-explore-head">
-        <p>Selected work</p>
+      <div className="modern-section-head modern-explore-head" data-reveal>
+        <p>
+          <span className="modern-index">03</span>Selected work
+        </p>
         <h2>A visual wall of products, systems, and experiments.</h2>
       </div>
 
@@ -57,6 +60,10 @@ export default function WorkSection() {
                 href={`/work/${project.slug}`}
                 key={project.id}
                 className={`modern-explore-tile tile-${index}`}
+                data-reveal
+                data-spot
+                data-tilt="3"
+                style={{ "--d": `${(index % 3) * 90}ms` } as CSSProperties}
               >
                 <div className="modern-explore-media">
                   <Image
@@ -66,6 +73,12 @@ export default function WorkSection() {
                     height={520}
                     className="modern-explore-image"
                   />
+                  <span className="modern-explore-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="modern-explore-arrow" aria-hidden="true">
+                    <FiArrowUpRight />
+                  </span>
                 </div>
                 <div className="modern-explore-overlay">
                   <div>
@@ -83,7 +96,7 @@ export default function WorkSection() {
             ))}
       </div>
 
-      <div className="modern-work-footer">
+      <div className="modern-work-footer" data-reveal data-spot>
         <div className="modern-work-footer-actions">
           {hasMoreProjects && (
             <button

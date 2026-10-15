@@ -1,10 +1,12 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import { FiArrowLeft, FiMail } from "react-icons/fi";
-import BenzeneField from "@/app/modern/components/BenzeneField";
+import ModernBackdrop from "@/app/modern/components/ModernBackdrop";
+import ModernFooter from "@/app/modern/components/ModernFooter";
 import ModernNav from "@/app/modern/components/ModernNav";
 import { getCloudinaryBlurUrl } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
@@ -71,9 +73,8 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
   const heroImage = project.heroImage || project.coverImage;
 
   return (
-    <main className="modern-shell">
-      <BenzeneField />
-      <div className="modern-noise" />
+    <main id="top" className="modern-shell">
+      <ModernBackdrop />
       <ModernNav />
 
       <article className="modern-work-detail">
@@ -85,7 +86,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
         </div>
 
         <section className="modern-work-hero">
-          <div className="modern-work-hero-copy">
+          <div className="modern-work-hero-copy" data-reveal data-spot>
             <p className="modern-kicker">Selected work</p>
             <h1>{project.name}</h1>
             <p>
@@ -143,7 +144,11 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
             </div>
           </div>
 
-          <div className="modern-work-hero-media">
+          <div
+            className="modern-work-hero-media"
+            data-reveal
+            style={{ "--d": "140ms" } as CSSProperties}
+          >
             <Image
               src={heroImage}
               alt=""
@@ -166,7 +171,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
           </div>
         </section>
 
-        <section className="modern-work-body">
+        <section className="modern-work-body" data-reveal data-spot>
           <div className="modern-work-body-head">
             <p>Case study</p>
             <h2>Project notes</h2>
@@ -178,7 +183,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
             </div>
 
             <aside className="modern-work-sidebar" aria-label="Project summary">
-              <div className="modern-work-sidebar-card">
+              <div className="modern-work-sidebar-card" data-spot>
                 <span>Project</span>
                 <strong>{project.name}</strong>
                 <p>
@@ -188,7 +193,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
               </div>
 
               {project.skills.length > 0 && (
-                <div className="modern-work-sidebar-card">
+                <div className="modern-work-sidebar-card" data-spot>
                   <span>Stack</span>
                   <div className="modern-work-sidebar-skills">
                     {project.skills.slice(0, 10).map((skill) => (
@@ -198,7 +203,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
                 </div>
               )}
 
-              <div className="modern-work-sidebar-card">
+              <div className="modern-work-sidebar-card" data-spot>
                 <span>Links</span>
                 <div className="modern-work-sidebar-actions">
                   {project.link && (
@@ -232,6 +237,7 @@ export default async function ModernWorkDetail({ params }: ProjectPageProps) {
           </div>
         </section>
       </article>
+      <ModernFooter />
     </main>
   );
 }

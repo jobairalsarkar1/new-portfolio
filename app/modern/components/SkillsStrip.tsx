@@ -90,9 +90,18 @@ export default function SkillsStrip() {
   );
 
   return (
-    <section className="modern-section modern-skills" aria-label="Skills">
-      <div className="modern-section-head modern-section-head-compact">
-        <p>Stack</p>
+    <section
+      id="stack"
+      className="modern-section modern-skills"
+      aria-label="Skills"
+    >
+      <div
+        className="modern-section-head modern-section-head-compact"
+        data-reveal
+      >
+        <p>
+          <span className="modern-index">01</span>Stack
+        </p>
         <h2>The tools I reach for when ideas need to become real.</h2>
       </div>
 
@@ -111,7 +120,7 @@ export default function SkillsStrip() {
                 </div>
               </div>
             ))
-          : skillGroups.map((group) => {
+          : skillGroups.map((group, groupIndex) => {
               const groupSkills = group.skills.map((name) =>
                 getSkillMatch(skillsByName, name),
               );
@@ -121,7 +130,15 @@ export default function SkillsStrip() {
               }
 
               return (
-                <div key={group.title} className="modern-skill-group">
+                <div
+                  key={group.title}
+                  className="modern-skill-group"
+                  data-reveal
+                  data-spot
+                  style={
+                    { "--d": `${(groupIndex % 2) * 110}ms` } as CSSProperties
+                  }
+                >
                   <div className="modern-skill-group-head">
                     <h3>{group.title}</h3>
                     <p>{group.description}</p>

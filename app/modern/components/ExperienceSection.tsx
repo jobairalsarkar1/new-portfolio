@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { experienceNotes } from "../data";
 
@@ -28,8 +28,10 @@ export default function ExperienceSection() {
 
     setTypedText("");
     let index = 0;
+    // Scale the step so long stories still finish typing in a few seconds.
+    const step = Math.max(3, Math.ceil(selectedOverview.length / 280));
     const interval = window.setInterval(() => {
-      index += 2;
+      index += step;
       setTypedText(selectedOverview.slice(0, index));
 
       if (index >= selectedOverview.length) {
@@ -51,6 +53,17 @@ export default function ExperienceSection() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [selectedExperience]);
+
+  useEffect(() => {
+    if (!selectedExperience) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedIndex(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedExperience]);
 
   const experienceModal =
@@ -78,7 +91,11 @@ export default function ExperienceSection() {
                 {selectedExperience.role} / {selectedExperience.duration} /{" "}
                 {selectedExperience.place}
               </p>
-              <p className="modern-typed-text">
+              <p
+                className="modern-typed-text"
+                title="Click to skip the typing"
+                onClick={() => setTypedText(selectedOverview)}
+              >
                 {typedText}
                 <span className="modern-type-caret" />
               </p>
@@ -90,12 +107,14 @@ export default function ExperienceSection() {
 
   return (
     <section id="experience" className="modern-section modern-experience">
-      <div className="modern-section-head">
-        <p>Experience</p>
+      <div className="modern-section-head" data-reveal>
+        <p>
+          <span className="modern-index">02</span>Experience
+        </p>
         <h2>A few places where the work became serious.</h2>
       </div>
 
-      <div className="modern-experience-constellation">
+      <div className="modern-experience-constellation" data-reveal>
         <svg
           className="modern-constellation-lines"
           viewBox="0 0 100 100"
@@ -146,6 +165,8 @@ export default function ExperienceSection() {
             className={`modern-experience-node exp-node-${index}`}
             onClick={() => setSelectedIndex(index)}
             type="button"
+            data-spot
+            style={{ "--float": `${index * -1.7}s` } as CSSProperties}
           >
             <span className="modern-node-index">
               {String(index + 1).padStart(2, "0")}

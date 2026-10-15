@@ -1,6 +1,7 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, CSSProperties, FormEvent, useState } from "react";
+import { FiCheck, FiCopy } from "react-icons/fi";
 import {
   FaEnvelope,
   FaGithub,
@@ -18,6 +19,8 @@ type FormState = {
 
 type SendState = "idle" | "sending" | "sent" | "error";
 
+const EMAIL = "jobair.a.sarkar@gmail.com";
+
 export default function ContactSection() {
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -25,6 +28,17 @@ export default function ContactSection() {
     message: "",
   });
   const [sendState, setSendState] = useState<SendState>("idle");
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -61,8 +75,10 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="modern-contact">
-      <div className="modern-contact-copy">
-        <p className="modern-kicker">Contact</p>
+      <div className="modern-contact-copy" data-reveal data-spot>
+        <p className="modern-kicker">
+          <span className="modern-index">04</span>Contact
+        </p>
         <h2>Tell me what you want to build.</h2>
         <p>
           Keep it rough if the idea is still forming. I care more about the
@@ -70,10 +86,19 @@ export default function ContactSection() {
         </p>
 
         <div className="modern-contact-info">
-          <a href="mailto:jobair.a.sarkar@gmail.com">
+          <a href={`mailto:${EMAIL}`}>
             <FaEnvelope />
-            jobair.a.sarkar@gmail.com
+            {EMAIL}
           </a>
+          <button
+            type="button"
+            className="modern-copy-email"
+            onClick={copyEmail}
+            data-magnetic
+          >
+            {copied ? <FiCheck /> : <FiCopy />}
+            {copied ? "Copied to clipboard" : "Copy email"}
+          </button>
           <a href="tel:+8801766961460">
             <FaPhoneAlt />
             +8801766961460
@@ -85,7 +110,13 @@ export default function ContactSection() {
         </div>
       </div>
 
-      <form className="modern-contact-form" onSubmit={handleSubmit}>
+      <form
+        className="modern-contact-form"
+        onSubmit={handleSubmit}
+        data-reveal
+        data-spot
+        style={{ "--d": "120ms" } as CSSProperties}
+      >
         <div className="modern-form-row">
           <label>
             <span>Name</span>
@@ -123,11 +154,20 @@ export default function ContactSection() {
         </label>
 
         <div className="modern-form-footer">
-          <button type="submit" disabled={sendState === "sending"}>
+          <button
+            type="submit"
+            disabled={sendState === "sending"}
+            data-magnetic
+          >
             {sendState === "sending" ? (
               <>
                 <AiOutlineLoading3Quarters className="modern-spin" />
                 Sending
+              </>
+            ) : sendState === "sent" ? (
+              <>
+                <FiCheck />
+                Sent
               </>
             ) : (
               "Send message"
