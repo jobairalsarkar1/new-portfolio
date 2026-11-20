@@ -7,10 +7,10 @@ export default function SiteFooter() {
     <footer className="footer">
       <div className="container footer-inner">
         <p className="footer-colophon">
-          Set in Geist and Instrument Serif. The surface at the top is a damped
-          wave equation solved with finite differences, drawn as ridge lines in
-          perspective. The pipeline is a small queueing model. Both run in your
-          browser, nothing is prerecorded.
+          Set in Inter. The surface at the top of the home page is a damped
+          wave equation solved with finite differences and drawn as ridge lines
+          in perspective. It runs live in your browser, nothing is
+          prerecorded.
         </p>
 
         <div className="footer-bottom">
@@ -28,6 +28,7 @@ export default function SiteFooter() {
             <a href={profile.resume} download>
               Résumé
             </a>
+            <Link href="/writing">Writing</Link>
             <Link href="/v1">v1</Link>
           </nav>
           <a href="#top" className="footer-top">

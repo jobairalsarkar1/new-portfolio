@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import { FiArrowRight } from "react-icons/fi";
 import type { Experience } from "../_lib/experience";
 
 type ExperienceListProps = {
@@ -63,7 +65,10 @@ export default function ExperienceList({ items, now }: ExperienceListProps) {
                 <span className="experience-period">{item.duration.replace(" to ", " – ")}</span>
                 <span className="experience-title">
                   <strong>{item.company}</strong>
-                  <span>{item.role}</span>
+                  <span>
+                    {item.role}
+                    {item.deepDive && <span className="badge">Deep dive</span>}
+                  </span>
                 </span>
                 <span className="experience-track" aria-hidden>
                   {years.map((year) => (
@@ -86,6 +91,12 @@ export default function ExperienceList({ items, now }: ExperienceListProps) {
                     {item.overview.split("\n\n").map((paragraph) => (
                       <p key={paragraph.slice(0, 32)}>{paragraph}</p>
                     ))}
+                    {item.deepDive && (
+                      <Link href={item.deepDive} className="experience-deep-dive">
+                        How the Oracle to PostgreSQL sync works, with a live
+                        model <FiArrowRight aria-hidden />
+                      </Link>
+                    )}
                   </div>
                   <aside className="experience-meta">
                     <p>Focus</p>

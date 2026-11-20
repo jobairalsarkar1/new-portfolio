@@ -2,8 +2,8 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FiDownload, FiMapPin, FiPhone } from "react-icons/fi";
 import ContactForm, { CopyEmail } from "./_components/ContactForm";
 import ExperienceList from "./_components/ExperienceList";
+import FeaturedNote from "./_components/FeaturedNote";
 import Hero from "./_components/Hero";
-import PipelineSim from "./_components/PipelineSim";
 import Reveal from "./_components/Reveal";
 import SectionHeading from "./_components/SectionHeading";
 import WorkList from "./_components/WorkList";
@@ -20,60 +20,28 @@ export default async function Home() {
     <>
       <Hero />
 
-      <section id="system" className="page-section">
-        <div className="container">
-          <SectionHeading
-            index="01"
-            label="System"
-            title={
-              <>
-                Data that has to arrive. <em>In order, every time.</em>
-              </>
-            }
-            lead={
-              <>
-                At {profile.company} I work on a hospital information system and
-                ERP for Asgar Ali Hospital. Part of that is a gradual move from
-                Oracle to PostgreSQL: changes are captured from the legacy
-                database, streamed through Kafka, and applied to the new
-                platform while staff keep working. This is a small, honest model
-                of that kind of pipeline. Push it until it breaks.
-              </>
-            }
-          />
-          <div data-reveal>
-            <PipelineSim />
-          </div>
-          <p className="caption">
-            Simulated in your browser. Arrivals follow a Poisson process with
-            rate λ. Each record key hashes to one of three partitions, so
-            changes to the same row stay in order. Each consumer serves μ = 6
-            events per second, so the pipeline is only stable while ρ = λ / 3μ
-            stays below 1.
-          </p>
-        </div>
-      </section>
-
       <section id="experience" className="page-section">
         <div className="container">
           <SectionHeading
-            index="02"
+            index="01"
             label="Experience"
             title={
               <>
-                Hospitals, marketplaces, AI video, <em>and the clients in between.</em>
+                Hospitals, marketplaces, AI video,{" "}
+                <em>and the clients in between.</em>
               </>
             }
             lead="Four chapters, one thread: software that real operations depend on. Open any of them for the full story."
           />
           <ExperienceList items={experience} now={Date.now()} />
+          <FeaturedNote />
         </div>
       </section>
 
       <section id="work" className="page-section">
         <div className="container">
           <SectionHeading
-            index="03"
+            index="02"
             label="Work"
             title={
               <>
@@ -89,7 +57,7 @@ export default async function Home() {
       <section id="approach" className="page-section">
         <div className="container">
           <SectionHeading
-            index="04"
+            index="03"
             label="Approach"
             title={
               <>
@@ -135,7 +103,7 @@ export default async function Home() {
         <div className="container contact-grid">
           <div className="contact-intro" data-reveal>
             <p className="eyebrow">
-              <span>05</span>Contact
+              <span>04</span>Contact
             </p>
             <h2>
               Have a system that needs to <em>hold up?</em>

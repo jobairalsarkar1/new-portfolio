@@ -12,7 +12,7 @@ import {
 } from "react-icons/fi";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineSwatch } from "react-icons/hi2";
-import { profile, sections } from "../_lib/content";
+import { navigation, profile } from "../_lib/content";
 import { toggleTheme } from "../_lib/theme";
 
 type Command = {
@@ -56,12 +56,13 @@ export default function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         icon: <FiArrowRight />,
         run: () => (pathname === "/" ? goTo("top") : router.push("/")),
       },
-      ...sections.map<Command>((section) => ({
-        id: section.id,
+      ...navigation.map<Command>((item) => ({
+        id: item.id,
         group: "Go to",
-        label: section.label,
+        label: item.label,
+        keywords: item.id === "writing" ? "blog notes articles cdc kafka" : undefined,
         icon: <FiArrowRight />,
-        run: () => goTo(section.id),
+        run: () => (item.href.startsWith("/#") ? goTo(item.id) : router.push(item.href)),
       })),
       {
         id: "theme",

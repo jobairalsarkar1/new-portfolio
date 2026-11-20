@@ -10,6 +10,17 @@ export type WorkItem = {
   skills: string[];
 };
 
+// Locally and during the build a missing database should not break the page.
+// In production, throwing keeps the last good cached page instead of caching
+// an empty one.
+function handleFailure(error: unknown, label: string) {
+  console.error(`Failed to load ${label}:`, error);
+  const isServing =
+    process.env.NODE_ENV === "production" &&
+    process.env.NEXT_PHASE !== "phase-production-build";
+  if (isServing) throw error;
+}
+
 export function plainText(markdown: string) {
   return markdown
     .split("\n")
@@ -37,7 +48,7 @@ export const getProjects = cache(async () => {
       orderBy: { priority: "desc" },
     });
   } catch (error) {
-    console.error("Failed to load projects:", error);
+    handleFailure(error, "projects");
     return [];
   }
 });
@@ -49,7 +60,7 @@ export const getProject = cache(async (slug: string) => {
       include: { skills: { orderBy: { priority: "desc" } } },
     });
   } catch (error) {
-    console.error(`Failed to load project ${slug}:`, error);
+    handleFailure(error, `project ${slug}`);
     return null;
   }
 });

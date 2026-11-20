@@ -9,6 +9,7 @@ export type Experience = {
   overview: string;
   signal: string;
   stack: string[];
+  deepDive?: string;
 };
 
 export const experience: Experience[] = [
@@ -23,6 +24,7 @@ export const experience: Experience[] = [
     signal: "Hospital systems",
     start: "2025-11",
     end: null,
+    deepDive: "/writing/oracle-to-postgres-cdc",
     stack: ["TypeScript", "React", "Node.js", "tRPC", "PostgreSQL", "Oracle", "Kafka/CDC", "Monorepo"],
   },
   {

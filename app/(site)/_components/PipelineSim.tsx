@@ -509,7 +509,7 @@ export default function PipelineSim() {
       setStats({
         produced,
         committed,
-        lag: produced - committed,
+        lag: queues.reduce((total, queue) => total + queue.length, 0),
         throughput: commits.length / Math.min(3, Math.max(clock, 0.001)),
         p50: percentile(sorted, 0.5),
         p95: percentile(sorted, 0.95),

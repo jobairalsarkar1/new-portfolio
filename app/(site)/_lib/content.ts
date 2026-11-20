@@ -11,13 +11,15 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/jobair-al-sarkar/",
 };
 
-export const sections = [
-  { id: "system", label: "System" },
-  { id: "experience", label: "Experience" },
-  { id: "work", label: "Work" },
-  { id: "approach", label: "Approach" },
-  { id: "contact", label: "Contact" },
+export const navigation = [
+  { id: "experience", label: "Experience", href: "/#experience" },
+  { id: "work", label: "Work", href: "/#work" },
+  { id: "writing", label: "Writing", href: "/writing" },
+  { id: "approach", label: "Approach", href: "/#approach" },
+  { id: "contact", label: "Contact", href: "/#contact" },
 ];
+
+export const homeSections = navigation.filter((item) => item.href.startsWith("/#"));
 
 export const principles = [
   {

@@ -1,13 +1,12 @@
-import { Instrument_Serif } from "next/font/google";
+import { Inter } from "next/font/google";
 import SiteFooter from "./_components/SiteFooter";
 import SiteNav from "./_components/SiteNav";
 import "./site.css";
 
-const display = Instrument_Serif({
-  weight: "400",
-  style: ["normal", "italic"],
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-display",
+  axes: ["opsz"],
+  variable: "--font-inter",
 });
 
 export default function SiteLayout({
@@ -16,7 +15,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`site ${display.variable}`}>
+    <div className={`site ${inter.variable}`}>
       <a href="#main" className="skip-link">
         Skip to content
       </a>

@@ -10,7 +10,7 @@ This project includes the public portfolio, an older archived version, and a pri
 
 - Editorial portfolio homepage with light and dark themes
 - Hero surface driven by a damped 2D wave equation, solved with finite differences and drawn in perspective
-- Interactive Kafka/CDC pipeline simulation (Poisson arrivals, keyed partitions, M/M/1 consumers)
+- Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
 - Case study pages rendered from markdown stored in the database
 - Command menu (`⌘K` / `Ctrl K`) for navigation and quick actions
 - Older `/about`, `/projects`, `/contact`, and `/v1` pages kept as an archive
@@ -21,11 +21,12 @@ This project includes the public portfolio, an older archived version, and a pri
 The homepage is built from these sections:
 
 1. Hero with the live wave field, résumé download, and local time
-2. System: the pipeline simulation with live metrics and a commit log
-3. Experience: an expandable timeline drawn on a shared time axis
-4. Work: project list with a spring-animated cursor preview
-5. Approach: working principles and toolbox
-6. Contact form, saved to the database and delivered by email
+2. Experience: an expandable timeline on a shared time axis, linking to the CDC deep dive
+3. Work: project list with a spring-animated cursor preview
+4. Approach: working principles and toolbox
+5. Contact form, saved to the database and delivered by email
+
+Notes live under `/writing`. They are plain pages in `app/(site)/writing`, registered in `app/(site)/_lib/writing.ts`.
 
 Everything for the public site lives in:
 
@@ -95,6 +96,8 @@ Project descriptions are stored as markdown in the database and rendered on publ
 ```txt
 /                         Portfolio homepage
 /work/[slug]              Case study page
+/writing                  Writing index
+/writing/oracle-to-postgres-cdc   Interactive CDC deep dive
 /about                    Older about page
 /projects                 Project archive
 /projects/[slug]          Older project detail page

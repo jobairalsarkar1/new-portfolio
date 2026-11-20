@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { sections } from "../_lib/content";
+import { homeSections, navigation } from "../_lib/content";
 import CommandMenu from "./CommandMenu";
 import ThemeToggle from "./ThemeToggle";
 
@@ -49,7 +49,7 @@ export default function SiteNav() {
       { rootMargin: "-45% 0px -50% 0px" },
     );
 
-    ["top", ...sections.map((section) => section.id)].forEach((id) => {
+    ["top", ...homeSections.map((section) => section.id)].forEach((id) => {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
     });
@@ -67,13 +67,17 @@ export default function SiteNav() {
           </Link>
 
           <nav className="nav-links" aria-label="Sections">
-            {sections.map((section) => (
+            {navigation.map((item) => (
               <Link
-                key={section.id}
-                href={`/#${section.id}`}
-                data-active={active === section.id}
+                key={item.id}
+                href={item.href}
+                data-active={
+                  item.id === "writing"
+                    ? pathname.startsWith("/writing")
+                    : active === item.id
+                }
               >
-                {section.label}
+                {item.label}
               </Link>
             ))}
           </nav>
