@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FiArrowLeft } from "react-icons/fi";
 import PipelineSim from "../../_components/PipelineSim";
-import Reveal from "../../_components/Reveal";
 import { formatDate, notes } from "../../_lib/writing";
 
 const note = notes.find((item) => item.slug === "oracle-to-postgres-cdc")!;
@@ -17,64 +15,18 @@ export const metadata: Metadata = {
   },
 };
 
-const contents = [
-  { id: "problem", label: "The problem" },
-  { id: "capture", label: "Copy the changes, not the tables" },
-  { id: "ordering", label: "Changes must arrive in order" },
-  { id: "queue", label: "Every pipeline is a queue" },
-  { id: "model", label: "Try it yourself" },
-  { id: "left-out", label: "What the model leaves out" },
-];
-
 export default function CdcNote() {
   return (
-    <article id="top">
-      <header className="container case-header">
-        <Link href="/writing" className="case-back">
-          <FiArrowLeft aria-hidden /> Writing
-        </Link>
-        <p className="note-context article-context">
-          {note.context}
-          <span className="badge">Interactive</span>
+    <article className="article">
+      <header className="article-header">
+        <p className="row-meta">
+          {note.context} · {formatDate(note.published)} · {note.readingTime}
         </p>
-        <h1 className="case-title article-title">{note.title}</h1>
+        <h1>{note.title}</h1>
         <p className="article-dek">{note.summary}</p>
-
-        <dl className="case-meta">
-          <div>
-            <dt>Topics</dt>
-            <dd>
-              <ul className="tags">
-                {note.topics.map((topic) => (
-                  <li key={topic}>{topic}</li>
-                ))}
-              </ul>
-            </dd>
-          </div>
-          <div>
-            <dt>Published</dt>
-            <dd>{formatDate(note.published)}</dd>
-          </div>
-          <div>
-            <dt>Length</dt>
-            <dd>{note.readingTime}</dd>
-          </div>
-        </dl>
       </header>
 
-      <div className="container case-body">
-        <nav className="case-toc" aria-label="On this page">
-          <p>On this page</p>
-          <ol>
-            {contents.map((item) => (
-              <li key={item.id}>
-                <a href={`#${item.id}`}>{item.label}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        <div className="article-body">
+      <div className="article-body">
           <div className="prose">
             <h2 id="problem">The problem</h2>
             <p>
@@ -130,7 +82,7 @@ export default function CdcNote() {
             </p>
           </div>
 
-          <figure className="formula" data-reveal>
+          <figure className="formula">
             <span>
               lane = hash(<var>record ID</var>) mod <var>number of lanes</var>
             </span>
@@ -155,7 +107,7 @@ export default function CdcNote() {
             </p>
           </div>
 
-          <figure className="formula" data-reveal>
+          <figure className="formula">
             <span>
               <var>ρ</var> = <var>λ</var> / (<var>P</var> × <var>μ</var>)
             </span>
@@ -173,7 +125,7 @@ export default function CdcNote() {
             </p>
           </div>
 
-          <figure className="formula" data-reveal>
+          <figure className="formula">
             <span>
               <var>W</var> = 1 / (<var>μ</var> − <var>λ</var> / <var>P</var>)
             </span>
@@ -209,7 +161,7 @@ export default function CdcNote() {
             </ul>
           </div>
 
-          <figure className="article-figure" id="model-figure" data-reveal>
+          <figure className="article-figure" id="model-figure">
             <PipelineSim />
             <figcaption className="caption">
               A simplified model written for this page. It does not use any code
@@ -251,16 +203,13 @@ export default function CdcNote() {
             </p>
           </div>
 
-          <div className="case-cta" data-reveal>
+          <div className="article-cta">
             <p>Planning a migration like this?</p>
             <Link href="/#contact" className="button button-solid">
               Let’s talk
             </Link>
           </div>
-        </div>
       </div>
-
-      <Reveal />
     </article>
   );
 }

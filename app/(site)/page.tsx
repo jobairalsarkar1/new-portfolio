@@ -1,183 +1,142 @@
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { FiDownload, FiMapPin, FiPhone } from "react-icons/fi";
-import ContactForm, { CopyEmail } from "./_components/ContactForm";
-import ExperienceList from "./_components/ExperienceList";
-import FeaturedNote from "./_components/FeaturedNote";
-import Hero from "./_components/Hero";
-import Reveal from "./_components/Reveal";
-import SectionHeading from "./_components/SectionHeading";
-import SystemMap from "./_components/SystemMap";
+import Link from "next/link";
+import AsciiDatabase from "./_components/AsciiDatabase";
+import ContactForm from "./_components/ContactForm";
+import LiveStatus from "./_components/LiveStatus";
 import WorkList from "./_components/WorkList";
-import { dailyDrivers, principles, profile, toolbox } from "./_lib/content";
+import { profile, toolbox } from "./_lib/content";
 import { experience } from "./_lib/experience";
-import { buildGraph } from "./_lib/graph";
 import { getWorkItems } from "./_lib/projects";
-import { notes } from "./_lib/writing";
+import { formatDate, noteHref, notes } from "./_lib/writing";
 
 export const revalidate = 300;
 
+const links = [
+  { label: "GitHub", href: profile.github, external: true },
+  { label: "LinkedIn", href: profile.linkedin, external: true },
+  { label: "Email", href: `mailto:${profile.email}` },
+  { label: "Résumé", href: profile.resume, download: true },
+];
+
 export default async function Home() {
   const work = await getWorkItems();
-  const graph = buildGraph({
-    name: profile.name,
-    role: profile.role,
-    location: profile.location,
-    experience,
-    projects: work,
-    notes,
-  });
 
   return (
     <>
-      <Hero />
-
-      <section id="map" className="page-section">
-        <div className="container">
-          <SectionHeading
-            index="01"
-            label="Map"
-            title={
-              <>
-                Everything I have worked on, <em>connected.</em>
-              </>
-            }
-            lead={
-              <>
-                Each dot is a role, a project, a skill or a piece of writing,
-                linked by where they were used. Drag things around, point at a
-                skill to see where I used it, or click anything to read more.
-                Prefer a simple list? <a href="#experience">Skip to the list view.</a>
-              </>
-            }
-          />
-          <SystemMap graph={graph} />
-        </div>
-      </section>
-
-      <section id="experience" className="page-section">
-        <div className="container">
-          <SectionHeading
-            index="02"
-            label="Experience"
-            title={
-              <>
-                Hospitals, marketplaces, AI video,{" "}
-                <em>and the clients in between.</em>
-              </>
-            }
-            lead="Four roles with one thing in common: software that real businesses depend on. Open any role to read the full story."
-          />
-          <ExperienceList items={experience} now={Date.now()} />
-          <FeaturedNote />
-        </div>
-      </section>
-
-      <section id="work" className="page-section">
-        <div className="container">
-          <SectionHeading
-            index="03"
-            label="Work"
-            title={
-              <>
-                Selected work. <em>Products, systems, experiments.</em>
-              </>
-            }
-            lead="Case studies from my archive, from production platforms to weekend experiments. Each one opens into the full write-up."
-          />
-          <WorkList items={work} />
-        </div>
-      </section>
-
-      <section id="approach" className="page-section">
-        <div className="container">
-          <SectionHeading
-            index="04"
-            label="Approach"
-            title={
-              <>
-                How I work, <em>and what I work with.</em>
-              </>
-            }
-          />
-
-          <ol className="principles">
-            {principles.map((principle, index) => (
-              <li key={principle.title} data-reveal>
-                <span className="principle-index">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{principle.title}</h3>
-                <p>{principle.text}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div className="toolbox" data-reveal>
-            {toolbox.map((group) => (
-              <div key={group.title} className="toolbox-group">
-                <h3>{group.title}</h3>
-                <ul>
-                  {group.items.map((item) => (
-                    <li key={item} data-primary={dailyDrivers.has(item)}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <p className="caption toolbox-note">
-            <i aria-hidden /> Daily drivers. The rest I have shipped with and
-            reach for when the problem calls for it.
-          </p>
-        </div>
-      </section>
-
-      <section id="contact" className="page-section contact">
-        <div className="container contact-grid">
-          <div className="contact-intro" data-reveal>
-            <p className="eyebrow">
-              <span>05</span>Contact
-            </p>
-            <h2>
-              Have a system that needs to <em>hold up?</em>
-            </h2>
-            <a className="contact-email" href={`mailto:${profile.email}`}>
-              {profile.email}
-            </a>
-            <div className="contact-actions">
-              <CopyEmail />
-              <a href={profile.resume} className="button button-small" download>
-                <FiDownload aria-hidden /> Résumé
+      <section className="intro">
+        <h1>{profile.name}</h1>
+        <p className="intro-role">
+          {profile.role} at {profile.company}, Dhaka
+        </p>
+        <p>
+          I build software for work that can&apos;t stop. Right now that is a
+          hospital information system and ERP for Asgar Ali Hospital, where I
+          work across the frontend, the backend, and the data pipeline that
+          keeps an old Oracle database and a new PostgreSQL one in sync.
+        </p>
+        <p>
+          Before that I built a marketplace for Picture TV, worked on AI video
+          tools at Logic Matrix, and shipped web apps for freelance clients.
+        </p>
+        <ul className="intro-links">
+          {links.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})}
+                {...(link.download ? { download: true } : {})}
+              >
+                {link.label}
               </a>
-            </div>
-            <ul className="contact-details">
-              <li>
-                <FiMapPin aria-hidden /> {profile.location}
-              </li>
-              <li>
-                <FiPhone aria-hidden />
-                <a href={`tel:${profile.phone}`}>{profile.phone}</a>
-              </li>
-              <li>
-                <FaGithub aria-hidden />
-                <a href={profile.github} target="_blank" rel="noreferrer">
-                  github.com/jobairalsarkar1
-                </a>
-              </li>
-              <li>
-                <FaLinkedin aria-hidden />
-                <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                  linkedin.com/in/jobair-al-sarkar
-                </a>
-              </li>
-            </ul>
-          </div>
-          <ContactForm />
-        </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <Reveal />
+      <AsciiDatabase />
+      <LiveStatus />
+
+      <section id="experience" className="home-section">
+        <h2>Experience</h2>
+        <ol className="roles">
+          {experience.map((item) => (
+            <li key={item.company}>
+              <span className="row-meta">{item.duration.replace(" to ", " – ")}</span>
+              <div className="role">
+                <h3>
+                  {item.company} <span>{item.role}</span>
+                </h3>
+                <p>{item.note}</p>
+                {item.deepDive && (
+                  <p>
+                    <Link href={item.deepDive} className="inline-link">
+                      Read how the Oracle to PostgreSQL sync works
+                    </Link>
+                    , with a live model you can play with.
+                  </p>
+                )}
+                <details>
+                  <summary>Full story</summary>
+                  <div className="role-story">
+                    {item.overview.split("\n\n").map((paragraph) => (
+                      <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                    ))}
+                    <p className="role-stack">{item.stack.join(", ")}</p>
+                  </div>
+                </details>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section id="work" className="home-section">
+        <h2>Work</h2>
+        <WorkList items={work} />
+      </section>
+
+      <section id="writing" className="home-section">
+        <h2>Writing</h2>
+        <ol className="notes">
+          {notes.map((note) => (
+            <li key={note.slug}>
+              <span className="row-meta">{formatDate(note.published)}</span>
+              <div>
+                <Link href={noteHref(note)} className="note-link">
+                  {note.title}
+                </Link>
+                <p>
+                  {note.interactive ? "Interactive, " : ""}
+                  {note.readingTime.toLowerCase()}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section id="stack" className="home-section">
+        <h2>Stack</h2>
+        <dl className="stack">
+          {toolbox.map((group) => (
+            <div key={group.title}>
+              <dt>{group.title}</dt>
+              <dd>{group.items.join(", ")}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section id="contact" className="home-section">
+        <h2>Contact</h2>
+        <p>
+          The quickest way to reach me is{" "}
+          <a href={`mailto:${profile.email}`} className="inline-link">
+            {profile.email}
+          </a>
+          . Or leave a message here and it lands in the same inbox.
+        </p>
+        <ContactForm />
+      </section>
     </>
   );
 }

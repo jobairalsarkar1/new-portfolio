@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import SiteFooter from "./_components/SiteFooter";
-import SiteNav from "./_components/SiteNav";
+import SiteHeader from "./_components/SiteHeader";
 import "./site.css";
 
 const inter = Inter({
@@ -19,9 +19,11 @@ export default function SiteLayout({
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <SiteNav />
-      <main id="main">{children}</main>
-      <SiteFooter />
+      <div className="page">
+        <SiteHeader />
+        <main id="main">{children}</main>
+        <SiteFooter />
+      </div>
     </div>
   );
 }

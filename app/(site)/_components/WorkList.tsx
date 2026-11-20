@@ -74,7 +74,7 @@ export default function WorkList({ items }: { items: WorkItem[] }) {
     >
       <ol className="work-list" data-hovering={active !== null}>
         {items.map((item, index) => (
-          <li key={item.id} data-reveal>
+          <li key={item.id}>
             <Link
               href={`/work/${item.slug}`}
               className="work-row"

@@ -3,11 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown, { type Components } from "react-markdown";
-import { FaGithub } from "react-icons/fa";
-import { FiArrowLeft, FiArrowUpRight } from "react-icons/fi";
 import { getCloudinaryBlurUrl } from "@/lib/cloudinary";
-import Reveal from "../../_components/Reveal";
-import { excerpt, getProject, getProjects, plainText } from "../../_lib/projects";
+import { excerpt, getProject, getProjects } from "../../_lib/projects";
 
 export const revalidate = 300;
 
@@ -71,116 +68,63 @@ export default async function WorkPage({ params }: PageProps) {
   const nextProject = projects.length > 1 ? projects[(index + 1) % projects.length] : null;
 
   const image = project.heroImage || project.coverImage;
-  const headings = project.description
-    .split("\n")
-    .filter((line) => /^##\s+/.test(line))
-    .map((line) => plainText(line.replace(/^##\s+/, "")));
-
   return (
-    <article id="top">
-      <header className="container case-header">
-        <Link href="/#work" className="case-back">
-          <FiArrowLeft aria-hidden /> All work
-        </Link>
-        <h1 className="case-title">{project.name}</h1>
-
-        <dl className="case-meta">
-          {project.skills.length > 0 && (
-            <div>
-              <dt>Stack</dt>
-              <dd>
-                <ul className="tags">
-                  {project.skills.map((skill) => (
-                    <li key={skill.id}>{skill.name}</li>
-                  ))}
-                </ul>
-              </dd>
-            </div>
+    <article className="article">
+      <header className="article-header">
+        <p className="row-meta">
+          Case study {index + 1} of {projects.length}
+        </p>
+        <h1>{project.name}</h1>
+        {project.skills.length > 0 && (
+          <p className="article-dek">{project.skills.map((skill) => skill.name).join(", ")}</p>
+        )}
+        <ul className="intro-links">
+          {project.link && (
+            <li>
+              <a href={project.link} target="_blank" rel="noreferrer">
+                Live site
+              </a>
+            </li>
           )}
-          <div>
-            <dt>Links</dt>
-            <dd>
-              {project.link && (
-                <a href={project.link} target="_blank" rel="noreferrer">
-                  Live site <FiArrowUpRight aria-hidden />
-                </a>
-              )}
-              {project.gitLink && (
-                <a href={project.gitLink} target="_blank" rel="noreferrer">
-                  Source <FaGithub aria-hidden />
-                </a>
-              )}
-              {!project.link && !project.gitLink && <span>Private build</span>}
-            </dd>
-          </div>
-          <div>
-            <dt>Case</dt>
-            <dd>
-              {String(index + 1).padStart(2, "0")} of {String(projects.length).padStart(2, "0")}
-            </dd>
-          </div>
-        </dl>
-
-        <div className="case-cover">
-          <Image
-            src={image}
-            alt={project.name}
-            fill
-            priority
-            sizes="(max-width: 1320px) 100vw, 1240px"
-            placeholder="blur"
-            blurDataURL={getCloudinaryBlurUrl(image)}
-          />
-        </div>
+          {project.gitLink && (
+            <li>
+              <a href={project.gitLink} target="_blank" rel="noreferrer">
+                Source code
+              </a>
+            </li>
+          )}
+          {project.canContact && (
+            <li>
+              <Link href="/#contact">Build something like this</Link>
+            </li>
+          )}
+        </ul>
       </header>
 
-      <div className="container case-body">
-        <nav className="case-toc" aria-label="On this page">
-          {headings.length > 1 && (
-            <>
-              <p>On this page</p>
-              <ol>
-                {headings.map((heading) => (
-                  <li key={heading}>
-                    <a href={`#${headingId(heading)}`}>{heading}</a>
-                  </li>
-                ))}
-              </ol>
-            </>
-          )}
-        </nav>
+      <div className="article-cover">
+        <Image
+          src={image}
+          alt={project.name}
+          fill
+          priority
+          sizes="(max-width: 960px) 100vw, 920px"
+          placeholder="blur"
+          blurDataURL={getCloudinaryBlurUrl(image)}
+        />
+      </div>
 
-        <div>
-          <div className="prose" data-reveal>
-            <ReactMarkdown components={markdownComponents}>{project.description}</ReactMarkdown>
-          </div>
-
-          {project.canContact && (
-            <div className="case-cta" data-reveal>
-              <p>Need something like this built?</p>
-              <Link href="/#contact" className="button button-solid">
-                Let’s talk
-              </Link>
-            </div>
-          )}
-        </div>
+      <div className="article-body prose">
+        <ReactMarkdown components={markdownComponents}>{project.description}</ReactMarkdown>
       </div>
 
       {nextProject && nextProject.id !== project.id && (
-        <nav className="case-next" aria-label="Next case study">
-          <Link href={`/work/${nextProject.slug}`} className="container">
-            <span className="eyebrow">
-              <span>Next</span>Case study
-            </span>
-            <strong>{nextProject.name}</strong>
-            <span className="work-arrow" aria-hidden>
-              <FiArrowUpRight />
-            </span>
+        <p className="article-next">
+          Next case study:{" "}
+          <Link href={`/work/${nextProject.slug}`} className="inline-link">
+            {nextProject.name}
           </Link>
-        </nav>
+        </p>
       )}
-
-      <Reveal />
     </article>
   );
 }

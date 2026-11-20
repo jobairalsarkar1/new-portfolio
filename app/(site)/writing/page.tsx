@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FiArrowUpRight } from "react-icons/fi";
-import Reveal from "../_components/Reveal";
 import { formatDate, noteHref, notes } from "../_lib/writing";
 
 export const metadata: Metadata = {
@@ -12,45 +10,35 @@ export const metadata: Metadata = {
 
 export default function WritingPage() {
   return (
-    <div className="container writing-page">
-      <header className="writing-header">
-        <p className="eyebrow">
-          <span>Notes</span>Writing
+    <>
+      <section className="intro">
+        <h1>Writing</h1>
+        <p>
+          Longer notes from projects I have worked on, written so anyone can
+          follow along. Some of them come with a small model you can play with.
         </p>
-        <h1>
-          Notes on systems, data, <em>and the work behind them.</em>
-        </h1>
-        <p className="lead">
-          Longer write-ups from projects I have worked on. Some of them come with
-          a small model you can play with.
-        </p>
-      </header>
+      </section>
 
-      <ol className="note-list">
-        {notes.map((note) => (
-          <li key={note.slug} data-reveal>
-            <Link href={noteHref(note)} className="note-row">
-              <span className="note-date">{formatDate(note.published)}</span>
-              <span className="note-main">
-                <span className="note-context">
-                  {note.context}
-                  {note.interactive && <span className="badge">Interactive</span>}
-                </span>
-                <span className="note-title">{note.title}</span>
-                <span className="note-summary">{note.summary}</span>
-                <span className="note-meta">
-                  {note.readingTime} · {note.topics.join(", ")}
-                </span>
-              </span>
-              <span className="work-arrow" aria-hidden>
-                <FiArrowUpRight />
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ol>
-
-      <Reveal />
-    </div>
+      <section className="home-section">
+        <h2>Notes</h2>
+        <ol className="notes">
+          {notes.map((note) => (
+            <li key={note.slug}>
+              <span className="row-meta">{formatDate(note.published)}</span>
+              <div>
+                <Link href={noteHref(note)} className="note-link">
+                  {note.title}
+                </Link>
+                <p>{note.summary}</p>
+                <p className="row-meta">
+                  {note.interactive ? "Interactive, " : ""}
+                  {note.readingTime.toLowerCase()}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </>
   );
 }

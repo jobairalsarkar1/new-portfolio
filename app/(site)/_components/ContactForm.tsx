@@ -1,33 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { FiArrowRight, FiCheck, FiCopy } from "react-icons/fi";
-import { profile } from "../_lib/content";
+import { FiArrowRight } from "react-icons/fi";
 
 type Status = "idle" | "sending" | "sent" | "error";
-
-export function CopyEmail() {
-  const [copied, setCopied] = useState(false);
-
-  return (
-    <button
-      type="button"
-      className="button button-small"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(profile.email);
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 1800);
-        } catch {
-          window.location.href = `mailto:${profile.email}`;
-        }
-      }}
-    >
-      {copied ? <FiCheck aria-hidden /> : <FiCopy aria-hidden />}
-      {copied ? "Copied" : "Copy email"}
-    </button>
-  );
-}
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -63,7 +39,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form className="contact-form" onSubmit={onSubmit} data-reveal>
+    <form className="contact-form" onSubmit={onSubmit}>
       <div className="field-row">
         <label className="field">
           <span>Name</span>

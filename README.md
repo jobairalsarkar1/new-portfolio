@@ -6,37 +6,25 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 ## Overview
 
-This project includes the public portfolio, an older archived version, and a private dashboard for managing content.
+A simple, single column portfolio with one crafted centerpiece, plus an older archived version and a private dashboard for managing content.
 
-- Editorial portfolio homepage with light and dark themes
-- Hero surface driven by a damped 2D wave equation, solved with finite differences and drawn in perspective
+- A database drawn entirely with text characters, rendered in real time like the classic spinning donut and lit by the cursor
+- Live details: local time in Dhaka with a guess at what I am doing, and how long I have been shipping software
+- Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
 - Case study pages rendered from markdown stored in the database
-- Command menu (`⌘K` / `Ctrl K`) for navigation and quick actions
+- Command menu (`⌘K` / `Ctrl K`), light and dark themes
 - Older `/about`, `/projects`, `/contact`, and `/v1` pages kept as an archive
-- Dashboard for managing projects, skills, images, users, and contact messages
-
-## Public Experience
-
-The homepage is built from these sections:
-
-1. Hero with the live wave field, résumé download, and local time
-2. Map: a force directed graph of roles, projects, skills and writing, built from the same data as the rest of the site, with an inspector panel
-3. Experience: an expandable timeline on a shared time axis, linking to the CDC deep dive
-4. Work: project list with a spring-animated cursor preview
-5. Approach: working principles and toolbox
-6. Contact form, saved to the database and delivered by email
-
-Notes live under `/writing`. They are plain pages in `app/(site)/writing`, registered in `app/(site)/_lib/writing.ts`.
 
 Everything for the public site lives in:
 
 ```txt
 app/(site)
-  _components   UI and the two simulations (WaveField, PipelineSim)
-  _lib          content, experience data, project queries, theme helpers
+  _components   UI, the text database (AsciiDatabase) and the pipeline model (PipelineSim)
+  _lib          content, experience data, project queries, writing, theme helpers
   site.css      design tokens and styles for both themes
   work/[slug]   case study page
+  writing       writing index and articles
 ```
 
 Pages are statically generated and revalidated every five minutes. Creating, editing, or deleting a project from the dashboard revalidates them right away.
