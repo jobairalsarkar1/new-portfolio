@@ -92,13 +92,13 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
         current: !item.end,
       };
     })
-    .sort((a, b) => a.startMonth - b.startMonth);
+    .sort((a, b) => b.startMonth - a.startMonth);
 
   const compact = columns < 56;
   const labelWidth = compact ? 14 : 16;
   const lengthWidth = compact ? 12 : 13;
   const width = Math.max(16, columns - labelWidth - lengthWidth);
-  const first = roles[0].startMonth - 3;
+  const first = Math.min(...roles.map((role) => role.startMonth)) - 3;
   const last = nowIndex + 1;
   const monthAt = (column: number) => first + ((column + 0.5) / width) * (last - first);
   const columnOf = (month: number) => Math.round(((month - first) / (last - first)) * width);
