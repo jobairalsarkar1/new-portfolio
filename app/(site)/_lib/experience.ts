@@ -43,6 +43,7 @@ export const experience: Experience[] = [
     signal: "Marketplace",
     start: "2025-06",
     end: "2026-01",
+    products: [{ name: "Picture TV Media", href: "https://www.picturetv.net" }],
     stack: ["Next.js", "React", "Prisma", "MongoDB", "Stripe", "Cloudinary", "JWT auth"],
   },
   {
@@ -56,6 +57,7 @@ export const experience: Experience[] = [
     signal: "AI video product",
     start: "2025-02",
     end: "2025-05",
+    products: [{ name: "Redaxify", href: "https://redaxify.com" }],
     stack: ["Next.js", "Express", "PostgreSQL", "Prisma", "Azure AI Video Indexer", "Stripe", "Cloudflare"],
   },
   {

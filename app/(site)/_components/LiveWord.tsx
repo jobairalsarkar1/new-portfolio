@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-type Kind = "pulse" | "flow" | "sync" | "tv" | "scan";
+type Kind = "pulse" | "flow" | "sync" | "tv" | "scan" | "flash";
 
 function Timecode() {
   const [frames, setFrames] = useState(0);
@@ -108,6 +108,11 @@ export default function LiveWord({ kind, children }: { kind: Kind; children: Rea
       )}
       {active && kind === "sync" && <SyncScene />}
       {active && kind === "scan" && <Timecode />}
+      {active && kind === "flash" && (
+        <span className="live-pop live-exposure" aria-hidden>
+          ISO 400 · 1/250 · f/2.8
+        </span>
+      )}
     </span>
   );
 }

@@ -42,11 +42,13 @@ export default async function Home() {
             Bangladeshi news platform.
           </p>
           <p>
-            Before that I built a marketplace for Picture TV, worked on{" "}
-            <LiveWord kind="scan">Redaxify</LiveWord>, an AI platform for
-            redacting and indexing video and documents, at Logic Matrix, and
-            built web apps for freelance clients. Most of my work is in
-            TypeScript, React, Node.js and PostgreSQL.
+            Before that I built the web platform for{" "}
+            <LiveWord kind="flash">Picture TV Media</LiveWord>, a New York media
+            company, with event booking, image and video sales, and a blog. At
+            Logic Matrix I worked on <LiveWord kind="scan">Redaxify</LiveWord>,
+            an AI platform for redacting and indexing video and documents. I
+            have also built web apps for freelance clients. Most of my work is
+            in TypeScript, React, Node.js and PostgreSQL.
           </p>
         </div>
         <p className="live-hint">
