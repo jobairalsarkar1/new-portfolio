@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
-import { applyTheme, storedTheme, toggleTheme } from "../_lib/theme";
+import { applyTheme, currentTheme, storedTheme, syncFavicon, toggleTheme } from "../_lib/theme";
 
 export default function ThemeToggle() {
   useEffect(() => {
+    syncFavicon(currentTheme());
     const query = window.matchMedia("(prefers-color-scheme: dark)");
     const followSystem = () => {
       if (!storedTheme()) applyTheme(query.matches ? "dark" : "light", false);

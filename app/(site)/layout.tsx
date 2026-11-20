@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import SiteFooter from "./_components/SiteFooter";
 import SiteHeader from "./_components/SiteHeader";
@@ -8,6 +9,18 @@ const inter = Inter({
   axes: ["opsz"],
   variable: "--font-inter",
 });
+
+export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/logo/site-favicon.ico", sizes: "any" },
+      { url: "/logo/site-favicon-light.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
+      { url: "/logo/site-favicon-dark.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
+    ],
+    shortcut: "/logo/site-favicon.ico",
+    apple: "/logo/site-apple-touch-icon.png",
+  },
+};
 
 export default function SiteLayout({
   children,

@@ -17,8 +17,17 @@ export function storedTheme(): Theme | null {
   }
 }
 
+// The tab icon follows the site's theme, not just the operating system.
+export function syncFavicon(theme: Theme) {
+  document.querySelectorAll<HTMLLinkElement>('link[rel="icon"][type="image/svg+xml"]').forEach((link) => {
+    link.removeAttribute("media");
+    link.href = `/logo/site-favicon-${theme}.svg`;
+  });
+}
+
 export function applyTheme(theme: Theme, persist = true) {
   document.documentElement.dataset.theme = theme;
+  syncFavicon(theme);
   if (!persist) return;
 
   try {
