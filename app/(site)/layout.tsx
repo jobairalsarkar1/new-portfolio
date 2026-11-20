@@ -13,11 +13,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   icons: {
     icon: [
-      { url: "/logo/site-favicon.ico", sizes: "any" },
+      { url: "/logo/site-favicon.ico", sizes: "32x32" },
       { url: "/logo/site-favicon-light.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
       { url: "/logo/site-favicon-dark.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
     ],
-    shortcut: "/logo/site-favicon.ico",
     apple: "/logo/site-apple-touch-icon.png",
   },
 };
