@@ -567,12 +567,12 @@ export default function PipelineSim() {
 
   const utilization = rate / (PARTITIONS * SERVICE_RATE);
   const health = !consumersOn
-    ? "Consumers stopped. Lag grows until they return."
+    ? "Consumers are stopped. Changes pile up until they start again."
     : utilization >= 1
-      ? "Arrivals exceed capacity. With ρ ≥ 1 the queue grows without bound."
+      ? "More changes arrive than the consumers can handle. The line will keep growing."
       : utilization > 0.8
-        ? "Near capacity. Waiting time rises sharply as ρ approaches 1."
-        : "Stable. Consumers keep up with arrivals.";
+        ? "Almost at capacity. Waiting time rises quickly from here."
+        : "Healthy. The consumers are keeping up.";
 
   return (
     <div className="pipeline" ref={wrapperRef}>
@@ -703,7 +703,7 @@ export default function PipelineSim() {
 
           <label className="rate-control">
             <span>
-              Arrival rate λ <strong>{rate} ev/s</strong>
+              Changes per second (λ) <strong>{rate}</strong>
             </span>
             <input
               type="range"
@@ -718,23 +718,23 @@ export default function PipelineSim() {
         <dl className="pipeline-metrics">
           <div data-tone={utilization >= 1 ? "alert" : undefined}>
             <dt>
-              Utilization <span className="symbol">ρ</span>
+              How busy <span className="symbol">ρ</span>
             </dt>
             <dd>{utilization.toFixed(2)}</dd>
           </div>
           <div data-tone={stats.lag > 40 ? "alert" : undefined}>
-            <dt>Consumer lag</dt>
+            <dt>Waiting in Kafka</dt>
             <dd>{stats.lag}</dd>
           </div>
           <div>
-            <dt>Throughput</dt>
+            <dt>Applied per second</dt>
             <dd>
               {stats.throughput.toFixed(1)}
               <small>/s</small>
             </dd>
           </div>
           <div>
-            <dt>Latency p50 / p95</dt>
+            <dt>Delay, typical / slowest 5%</dt>
             <dd>
               {stats.p50.toFixed(2)}
               <small>s</small> / {stats.p95.toFixed(2)}
@@ -749,7 +749,7 @@ export default function PipelineSim() {
 
         <div className="pipeline-log" aria-hidden>
           <p className="pipeline-log-title">
-            Commit log
+            Applied changes
             <span>
               <i className="legend legend-insert" /> insert
               <i className="legend legend-update" /> update
@@ -770,7 +770,7 @@ export default function PipelineSim() {
                 <span className="log-latency">{Math.round(entry.latency * 1000)}ms</span>
               </li>
             ))}
-            {log.length === 0 && <li className="log-empty">Waiting for the first commit…</li>}
+            {log.length === 0 && <li className="log-empty">Waiting for the first change…</li>}
           </ol>
         </div>
       </div>

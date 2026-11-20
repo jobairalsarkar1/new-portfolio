@@ -32,9 +32,8 @@ export default function Hero() {
 
           <div className="hero-aside">
             <p className="hero-statement">
-              I build software for operations that{" "}
-              <em>can’t afford to stop</em>: hospital platforms, change data
-              pipelines, and the interfaces people use to run their day.
+              I build software for work that <em>can’t stop</em>: hospital
+              systems, data pipelines, and the screens people use every day.
             </p>
             <div className="hero-actions">
               <a href="#work" className="button button-solid">

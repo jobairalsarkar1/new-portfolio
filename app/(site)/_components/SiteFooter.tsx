@@ -7,10 +7,9 @@ export default function SiteFooter() {
     <footer className="footer">
       <div className="container footer-inner">
         <p className="footer-colophon">
-          Set in Inter. The surface at the top of the home page is a damped
-          wave equation solved with finite differences and drawn as ridge lines
-          in perspective. It runs live in your browser, nothing is
-          prerecorded.
+          Set in Inter. The moving surface at the top of the home page is real
+          physics: the equation for waves on water, solved live in your browser
+          and drawn in 3D. Nothing is prerecorded.
         </p>
 
         <div className="footer-bottom">

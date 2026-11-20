@@ -418,7 +418,7 @@ export default function WaveField() {
         <span className="wave-stats">
           E <span ref={energyRef}>0.000</span>
           <span className="dot-sep" />
-          grid <span ref={gridRef}>—</span>
+          grid <span ref={gridRef}>0×0</span>
         </span>
         <span className="wave-hint">
           <span className="hint-fine">Move across the surface. Click to drop.</span>

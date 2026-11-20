@@ -23,20 +23,20 @@ export const homeSections = navigation.filter((item) => item.href.startsWith("/#
 
 export const principles = [
   {
-    title: "Understand the operation first",
-    text: "Before writing code I map who does the work, what data they touch, and where it hurts. Redesigning hospital scheduling taught me that the right flow beats the clever one.",
+    title: "Understand the work first",
+    text: "Before I write code, I learn who does the work, what information they use, and where they get stuck. Redesigning hospital scheduling taught me that a clear flow beats a clever one.",
   },
   {
-    title: "Modernize without stopping the floor",
-    text: "Legacy systems carry real operations. I prefer incremental migrations, like streaming changes from Oracle into PostgreSQL, so nobody notices the ground moving.",
+    title: "Change systems without stopping them",
+    text: "Old systems still run real work. I prefer moving them step by step, like copying changes from Oracle to PostgreSQL as they happen, so nobody's day is interrupted.",
   },
   {
-    title: "Types from database to button",
-    text: "Shared types across the stack with TypeScript, tRPC and Prisma turn whole categories of bugs into compile errors and make large codebases safe to change.",
+    title: "Catch mistakes before users do",
+    text: "With TypeScript, tRPC and Prisma, the database, the server and the screens all agree on the shape of the data. Many bugs show up while I'm coding instead of in front of users.",
   },
   {
-    title: "Own it all the way to production",
-    text: "Requirements, architecture, deployment, and the conversation after launch. Freelancing taught me scope, tradeoffs, and shipping things people actually use.",
+    title: "Own it from start to finish",
+    text: "From the first conversation to launch and the support after it. Freelancing taught me to manage scope, make tradeoffs, and ship things people actually use.",
   },
 ];
 

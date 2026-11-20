@@ -18,11 +18,11 @@ export const metadata: Metadata = {
 };
 
 const contents = [
-  { id: "constraint", label: "The constraint" },
-  { id: "capture", label: "Capture changes, not tables" },
-  { id: "ordering", label: "Order matters, per row" },
-  { id: "queue", label: "A pipeline is a queue" },
-  { id: "model", label: "Try the model" },
+  { id: "problem", label: "The problem" },
+  { id: "capture", label: "Copy the changes, not the tables" },
+  { id: "ordering", label: "Changes must arrive in order" },
+  { id: "queue", label: "Every pipeline is a queue" },
+  { id: "model", label: "Try it yourself" },
   { id: "left-out", label: "What the model leaves out" },
 ];
 
@@ -76,87 +76,100 @@ export default function CdcNote() {
 
         <div className="article-body">
           <div className="prose">
-            <h2 id="constraint">The constraint</h2>
+            <h2 id="problem">The problem</h2>
             <p>
-              A hospital does not have a maintenance window. Appointments,
-              admissions, billing and lab orders are written all day and all
-              night. At FringeCore_ we are building a new Hospital Information
-              System and ERP for Asgar Ali Hospital on PostgreSQL, while parts of
-              the existing system still write to Oracle.
+              A hospital never closes. Staff book appointments, admit patients,
+              create bills and order lab tests all day and all night. Every one
+              of those actions is saved in a database.
             </p>
             <p>
-              A big bang migration would mean freezing the old system, copying
-              everything, and hoping the cutover goes well. Instead, both
-              databases live side by side for a while. New modules move to
-              PostgreSQL one at a time, and they need to see what the old
-              modules write, quickly and correctly.
-            </p>
-
-            <h2 id="capture">Capture changes, not tables</h2>
-            <p>
-              Copying tables on a schedule is simple, but it puts load on the
-              source, misses intermediate states, and is always a little stale.
-              Change data capture works differently: it reads committed changes
-              from the database log and turns every insert, update and delete
-              into an event.
+              At FringeCore_ we are building a new hospital system for Asgar Ali
+              Hospital. The new system saves its data in PostgreSQL. Parts of
+              the old system still save their data in Oracle.
             </p>
             <p>
-              Each event carries the operation, the primary key of the row, and
-              the new values. Those events are published to Kafka, and consumers
-              on the other side apply them to PostgreSQL. The source database
-              keeps doing its job and barely notices.
+              We can&apos;t switch everything off for a weekend and move it all
+              at once. So for a while, both databases run side by side and we
+              move the system over one part at a time. While that happens, the
+              new parts need to see what the old parts write, quickly and
+              correctly.
             </p>
 
-            <h2 id="ordering">Order matters, per row</h2>
+            <h2 id="capture">Copy the changes, not the tables</h2>
             <p>
-              Suppose an appointment is created and then rescheduled a minute
-              later. If the update is applied before the insert, PostgreSQL ends
-              up with the wrong time, or no appointment at all. Changes to the
-              same row must be applied in the order they happened.
+              The simple approach is to copy whole tables every few minutes.
+              That is slow, it puts extra load on the old database, and the copy
+              is always a little out of date.
             </p>
             <p>
-              Kafka only guarantees order inside a partition, so every event is
-              keyed by the primary key of its row. The key decides the
-              partition:
+              Change data capture, or CDC, is smarter. Every database keeps a
+              log of each change it saves, a bit like a diary. CDC reads that
+              diary and turns every new entry into a small message: this record
+              was added, this record was changed, or this record was deleted.
+            </p>
+            <p>
+              Those messages go into Kafka, a system built to carry a large
+              stream of messages without losing any. On the other side, small
+              programs called consumers read each message and make the same
+              change in PostgreSQL.
+            </p>
+
+            <h2 id="ordering">Changes must arrive in order</h2>
+            <p>
+              Imagine a patient books an appointment and then moves it to a
+              later time. If the move is applied before the booking, the new
+              database ends up with the wrong time, or with no appointment at
+              all. Changes to the same record have to be applied in the order
+              they happened.
+            </p>
+            <p>
+              Kafka splits messages into several lanes, called partitions.
+              Inside one lane the order is guaranteed, but across lanes it is
+              not. So we send every change for the same record into the same
+              lane, using the record&apos;s ID to pick it:
             </p>
           </div>
 
           <figure className="formula" data-reveal>
             <span>
-              partition = hash(<var>key</var>) mod <var>P</var>
+              lane = hash(<var>record ID</var>) mod <var>number of lanes</var>
             </span>
             <figcaption>
-              Every change to the same row lands in the same partition and is
-              read by one consumer, in order. Different rows spread across{" "}
-              <var>P</var> partitions and are processed in parallel.
+              In plain words: turn the record&apos;s ID into a number and use
+              the remainder to choose a lane. The same record always lands in
+              the same lane, so its changes stay in order. Different records
+              spread across the lanes, so many changes can be applied at the
+              same time.
             </figcaption>
           </figure>
 
           <div className="prose">
-            <h2 id="queue">A pipeline is a queue</h2>
+            <h2 id="queue">Every pipeline is a queue</h2>
             <p>
-              Each partition behaves like a queue with a single server in front
-              of it. If changes arrive at a rate of <var>λ</var> per second and
-              each consumer can apply <var>μ</var> per second, the number that
-              decides everything is the utilization:
+              Think of the checkout at a supermarket. Customers arrive at some
+              rate, and each cashier serves them at some speed. A pipeline works
+              the same way. Changes arrive at a rate we call <var>λ</var>{" "}
+              (lambda), and each consumer applies them at a speed we call{" "}
+              <var>μ</var> (mu). With <var>P</var> lanes and one consumer per
+              lane, the question is how busy the consumers are:
             </p>
           </div>
 
           <figure className="formula" data-reveal>
             <span>
-              <var>ρ</var> = <var>λ</var> / (<var>P</var> · <var>μ</var>)
+              <var>ρ</var> = <var>λ</var> / (<var>P</var> × <var>μ</var>)
             </span>
             <figcaption>
-              Below 1 the consumers keep up. At 1 or above there is no steady
-              state: the backlog grows until something changes.
+              ρ (rho) is how busy the consumers are. Below 1, they keep up. At 1
+              or above, the line only gets longer.
             </figcaption>
           </figure>
 
           <div className="prose">
             <p>
-              The interesting part is what happens before you reach 1. With
-              random arrivals and random service times, an M/M/1 queue, the
-              average time an event spends in the system is:
+              The surprising part is that the line gets long well before ρ
+              reaches 1. In the classic queue model, the average time a change
+              spends waiting and being applied is:
             </p>
           </div>
 
@@ -165,32 +178,33 @@ export default function CdcNote() {
               <var>W</var> = 1 / (<var>μ</var> − <var>λ</var> / <var>P</var>)
             </span>
             <figcaption>
-              Waiting time is not linear in load. Going from 50% to 90%
-              utilization makes the average wait five times longer, which is
-              why consumer lag is the first number worth watching.
+              If the consumers go from half busy to 90% busy, the average wait
+              becomes five times longer. That is why the number to watch is the
+              lag: how many changes are still waiting.
             </figcaption>
           </figure>
 
           <div className="prose">
-            <h2 id="model">Try the model</h2>
+            <h2 id="model">Try it yourself</h2>
             <p>
-              The model below runs in your browser. Changes arrive from Oracle as
-              a Poisson process, are partitioned by key, and are applied by
-              three consumers that each handle six events per second. Some
-              things to try:
+              The model below runs in your browser. Changes leave Oracle at
+              random moments, get sorted into three lanes by record ID, and
+              three consumers apply them to PostgreSQL. Each consumer handles 6
+              changes per second, so together they can handle 18. Things to
+              try:
             </p>
             <ul>
               <li>
-                Raise the arrival rate past 18 events per second and watch the
-                lag climb without stopping.
+                Push the rate above 18 changes per second and watch the waiting
+                line grow without stopping.
               </li>
               <li>
-                Stop the consumers, as if a deploy took them down, then start
-                them again and watch the backlog drain.
+                Stop the consumers, as if they were being updated, then start
+                them again and watch the backlog clear.
               </li>
               <li>
-                Run a batch import at a moderate rate and see the burst ripple
-                through latency.
+                Press batch import to send 45 changes at once and watch the
+                delay jump.
               </li>
             </ul>
           </div>
@@ -198,42 +212,42 @@ export default function CdcNote() {
           <figure className="article-figure" id="model-figure" data-reveal>
             <PipelineSim />
             <figcaption className="caption">
-              A simplified model written for this page. It does not use code or
-              data from the hospital&apos;s systems.
+              A simplified model written for this page. It does not use any code
+              or data from the hospital&apos;s systems.
             </figcaption>
           </figure>
 
           <div className="prose">
             <h2 id="left-out">What the model leaves out</h2>
             <p>
-              The model keeps two ideas in focus: ordering per key, and
-              capacity. A production pipeline has to handle a lot more:
+              The model shows two ideas: keeping each record&apos;s changes in
+              order, and having enough capacity. A real pipeline needs more:
             </p>
             <ul>
               <li>
-                <strong>Idempotent writes.</strong> After a crash, consumers
-                replay events from their last committed offset, so applying the
-                same event twice must be safe.
+                <strong>Safe repeats.</strong> If a consumer crashes, it starts
+                again from the last change it confirmed, so some changes get
+                applied twice. Applying the same change twice must do no harm.
               </li>
               <li>
-                <strong>Schema mapping.</strong> Oracle and PostgreSQL disagree
-                on types, defaults and naming, and every table needs a clear
-                mapping.
+                <strong>Translating between databases.</strong> Oracle and
+                PostgreSQL store some kinds of data differently, so every table
+                needs clear rules for how its data is converted.
               </li>
               <li>
-                <strong>Deletes and bad events.</strong> Deletes need tombstones,
-                and events that cannot be applied need somewhere to go instead of
-                blocking a partition forever.
+                <strong>Deletes and broken messages.</strong> A delete needs its
+                own kind of message, and a message that can&apos;t be applied
+                must be set aside instead of blocking its lane forever.
               </li>
               <li>
-                <strong>Observability.</strong> Lag per partition, throughput,
-                and end to end latency, with alerts before ρ gets close to 1.
+                <strong>Monitoring.</strong> Lag per lane, speed, and total
+                delay, with alerts long before ρ gets close to 1.
               </li>
             </ul>
             <p>
-              None of this is glamorous, but it is what lets a hospital move to
-              a new platform one module at a time while the people using it
-              never notice.
+              None of this is flashy. It is what lets a hospital move to a new
+              system one piece at a time while the people using it never
+              notice.
             </p>
           </div>
 

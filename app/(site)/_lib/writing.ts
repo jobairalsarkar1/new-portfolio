@@ -14,7 +14,7 @@ export const notes: Note[] = [
     slug: "oracle-to-postgres-cdc",
     title: "Keeping two hospital databases in sync without stopping the hospital",
     summary:
-      "How change data capture, Kafka partitions, and a little queueing theory move data from Oracle to PostgreSQL while staff keep working. With a live model you can push until it breaks.",
+      "How we copy every change from an old Oracle database into a new PostgreSQL one while the hospital keeps running, explained in plain words. With a live model you can play with.",
     context: "From my work at FringeCore_",
     published: "2026-11-20",
     readingTime: "7 min read",

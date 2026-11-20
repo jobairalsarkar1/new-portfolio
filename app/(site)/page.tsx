@@ -31,7 +31,7 @@ export default async function Home() {
                 <em>and the clients in between.</em>
               </>
             }
-            lead="Four chapters, one thread: software that real operations depend on. Open any of them for the full story."
+            lead="Four roles with one thing in common: software that real businesses depend on. Open any role to read the full story."
           />
           <ExperienceList items={experience} now={Date.now()} />
           <FeaturedNote />

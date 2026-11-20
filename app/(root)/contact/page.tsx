@@ -111,7 +111,7 @@ const Contact = () => {
           Have a project idea, a business challenge, or just need a skilled
           developer to bring your vision to life? I specialize in building
           modern, scalable, and reliable software solutions. Whether it’s a web
-          app, an API, or a full-stack project — let’s discuss how I can help
+          app, an API, or a full-stack project, let’s discuss how I can help
           turn your ideas into reality.
         </p>
       </div>
@@ -162,7 +162,7 @@ const Contact = () => {
             {/* Message */}
             <textarea
               name="message"
-              placeholder="Tell me about your project, goals, or challenges — I’ll get back to you with solutions."
+              placeholder="Tell me about your project, goals, or challenges. I’ll get back to you with solutions."
               rows={5}
               required
               value={form.message}
