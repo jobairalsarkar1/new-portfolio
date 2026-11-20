@@ -8,7 +8,8 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 A simple, single column portfolio with one crafted centerpiece, plus an older archived version and a private dashboard for managing content.
 
-- A database drawn entirely with text characters, rendered in real time like the classic spinning donut and lit by the cursor
+- A database rendered inside the intro paragraph: its letters light up in the shape of a turning database, lit by the cursor, the same way the classic spinning donut is drawn
+- A git style graph of my career that appears when hovering the Experience heading
 - Live details: local time in Dhaka with a guess at what I am doing, and how long I have been shipping software
 - Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)

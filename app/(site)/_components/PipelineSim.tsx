@@ -703,7 +703,7 @@ export default function PipelineSim() {
 
           <label className="rate-control">
             <span>
-              Changes per second (λ) <strong>{rate}</strong>
+              Changes per second <strong>{rate}</strong>
             </span>
             <input
               type="range"
@@ -718,9 +718,9 @@ export default function PipelineSim() {
         <dl className="pipeline-metrics">
           <div data-tone={utilization >= 1 ? "alert" : undefined}>
             <dt>
-              How busy <span className="symbol">ρ</span>
+              How busy
             </dt>
-            <dd>{utilization.toFixed(2)}</dd>
+            <dd>{Math.round(utilization * 100)}%</dd>
           </div>
           <div data-tone={stats.lag > 40 ? "alert" : undefined}>
             <dt>Waiting in Kafka</dt>

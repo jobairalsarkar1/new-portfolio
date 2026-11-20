@@ -15,6 +15,20 @@ export const metadata: Metadata = {
   },
 };
 
+const laneExample = [
+  { change: "Appointment #48213 is booked", lane: 1 },
+  { change: "Patient #10577 updates their address", lane: 3 },
+  { change: "Appointment #48213 moves to 4 pm", lane: 1 },
+  { change: "Bill #92004 is paid", lane: 2 },
+];
+
+const waitExample = [
+  { busy: "50%", times: 1 },
+  { busy: "75%", times: 2 },
+  { busy: "90%", times: 5 },
+  { busy: "95%", times: 10 },
+];
+
 export default function CdcNote() {
   return (
     <article className="article">
@@ -77,21 +91,26 @@ export default function CdcNote() {
             <p>
               Kafka splits messages into several lanes, called partitions.
               Inside one lane the order is guaranteed, but across lanes it is
-              not. So we send every change for the same record into the same
-              lane, using the record&apos;s ID to pick it:
+              not. So every change is sent to a lane picked from the record&apos;s
+              ID. The same record always gets the same lane:
             </p>
           </div>
 
-          <figure className="formula">
-            <span>
-              lane = hash(<var>record ID</var>) mod <var>number of lanes</var>
-            </span>
+          <figure className="example">
+            <ol className="lane-example">
+              {laneExample.map((row) => (
+                <li key={row.change}>
+                  <span>{row.change}</span>
+                  <span className="lane-chip" data-lane={row.lane}>
+                    Lane {row.lane}
+                  </span>
+                </li>
+              ))}
+            </ol>
             <figcaption>
-              In plain words: turn the record&apos;s ID into a number and use
-              the remainder to choose a lane. The same record always lands in
-              the same lane, so its changes stay in order. Different records
-              spread across the lanes, so many changes can be applied at the
-              same time.
+              Both changes to appointment #48213 go to lane 1, so they are
+              applied in the right order. Other records use other lanes and are
+              handled at the same time.
             </figcaption>
           </figure>
 
@@ -100,39 +119,51 @@ export default function CdcNote() {
             <p>
               Think of the checkout at a supermarket. Customers arrive at some
               rate, and each cashier serves them at some speed. A pipeline works
-              the same way. Changes arrive at a rate we call <var>λ</var>{" "}
-              (lambda), and each consumer applies them at a speed we call{" "}
-              <var>μ</var> (mu). With <var>P</var> lanes and one consumer per
-              lane, the question is how busy the consumers are:
+              the same way: changes arrive, and consumers apply them. What
+              matters is how busy the consumers are.
             </p>
           </div>
 
-          <figure className="formula">
-            <span>
-              <var>ρ</var> = <var>λ</var> / (<var>P</var> × <var>μ</var>)
-            </span>
+          <figure className="example">
+            <p className="example-title">8 changes arrive each second</p>
+            <div className="meter" role="img" aria-label="Consumers are 44% busy">
+              <span style={{ width: "44%" }} />
+            </div>
+            <p className="meter-scale">
+              <span>Three consumers can apply 18 per second</span>
+              <strong>44% busy</strong>
+            </p>
             <figcaption>
-              ρ (rho) is how busy the consumers are. Below 1, they keep up. At 1
-              or above, the line only gets longer.
+              While the consumers are less than fully busy, they keep up. Once
+              more changes arrive than they can apply, the waiting line grows
+              and never shrinks on its own.
             </figcaption>
           </figure>
 
           <div className="prose">
             <p>
-              The surprising part is that the line gets long well before ρ
-              reaches 1. In the classic queue model, the average time a change
-              spends waiting and being applied is:
+              The surprising part is that the line gets long well before the
+              consumers are fully busy. This is how the average wait grows as
+              they get busier:
             </p>
           </div>
 
-          <figure className="formula">
-            <span>
-              <var>W</var> = 1 / (<var>μ</var> − <var>λ</var> / <var>P</var>)
-            </span>
+          <figure className="example">
+            <ol className="bars">
+              {waitExample.map((row) => (
+                <li key={row.busy}>
+                  <span className="bars-label">{row.busy} busy</span>
+                  <span className="bars-track">
+                    <span style={{ width: `${row.times * 10}%` }} />
+                  </span>
+                  <span className="bars-value">{row.times}× the wait</span>
+                </li>
+              ))}
+            </ol>
             <figcaption>
-              If the consumers go from half busy to 90% busy, the average wait
-              becomes five times longer. That is why the number to watch is the
-              lag: how many changes are still waiting.
+              Going from half busy to 90% busy makes the average wait five times
+              longer. That is why the number to watch is the lag: how many
+              changes are still waiting.
             </figcaption>
           </figure>
 
@@ -193,7 +224,7 @@ export default function CdcNote() {
               </li>
               <li>
                 <strong>Monitoring.</strong> Lag per lane, speed, and total
-                delay, with alerts long before ρ gets close to 1.
+                delay, with alerts long before the consumers are fully busy.
               </li>
             </ul>
             <p>

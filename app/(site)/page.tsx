@@ -1,6 +1,7 @@
 import Link from "next/link";
-import AsciiDatabase from "./_components/AsciiDatabase";
+import CareerGraph from "./_components/CareerGraph";
 import ContactForm from "./_components/ContactForm";
+import LitText from "./_components/LitText";
 import LiveStatus from "./_components/LiveStatus";
 import WorkList from "./_components/WorkList";
 import { profile, toolbox } from "./_lib/content";
@@ -9,6 +10,11 @@ import { getWorkItems } from "./_lib/projects";
 import { formatDate, noteHref, notes } from "./_lib/writing";
 
 export const revalidate = 300;
+
+const intro = [
+  "I build software for work that can’t stop. Right now that is a hospital information system and ERP for Asgar Ali Hospital, where I work across the frontend, the backend, and the data pipeline that keeps an old Oracle database and a new PostgreSQL one in sync.",
+  "Before that I built a marketplace for Picture TV, worked on AI video tools at Logic Matrix, and shipped web apps for freelance clients. I care about clear data models, systems that keep running while they change, and screens that make people’s work easier.",
+];
 
 const links = [
   { label: "GitHub", href: profile.github, external: true },
@@ -27,15 +33,15 @@ export default async function Home() {
         <p className="intro-role">
           {profile.role} at {profile.company}, Dhaka
         </p>
-        <p>
-          I build software for work that can&apos;t stop. Right now that is a
-          hospital information system and ERP for Asgar Ali Hospital, where I
-          work across the frontend, the backend, and the data pipeline that
-          keeps an old Oracle database and a new PostgreSQL one in sync.
-        </p>
-        <p>
-          Before that I built a marketplace for Picture TV, worked on AI video
-          tools at Logic Matrix, and shipped web apps for freelance clients.
+        <LitText paragraphs={intro} />
+        <p className="lit-hint">
+          <span className="hint-fine">
+            A database is turning inside the text above. Move your cursor to
+            shine a light on it.
+          </span>
+          <span className="hint-touch">
+            Look closely: a database is turning inside the text above.
+          </span>
         </p>
         <ul className="intro-links">
           {links.map((link) => (
@@ -52,11 +58,10 @@ export default async function Home() {
         </ul>
       </section>
 
-      <AsciiDatabase />
       <LiveStatus />
 
       <section id="experience" className="home-section">
-        <h2>Experience</h2>
+        <CareerGraph items={experience} now={Date.now()} />
         <ol className="roles">
           {experience.map((item) => (
             <li key={item.company}>
