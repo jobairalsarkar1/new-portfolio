@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "./modern/modern.css";
 import Script from "next/script";
+import { themeScript } from "./(site)/_lib/theme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,6 +73,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3f2ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0c" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -81,6 +88,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {/* Google Analytics Script */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SN9KDQZJD3"

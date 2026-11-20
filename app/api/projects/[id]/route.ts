@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
@@ -7,6 +8,11 @@ function generateSlug(name: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
+}
+
+function refreshPortfolio() {
+  revalidatePath("/");
+  revalidatePath("/work/[slug]", "page");
 }
 
 async function requireAdmin() {
@@ -122,6 +128,7 @@ export async function PUT(
       include: { skills: true },
     });
 
+    refreshPortfolio();
     return NextResponse.json({ success: true, data: updatedProject });
   } catch (error) {
     console.error("PUT /api/projects/[id] error:", error);
@@ -147,6 +154,7 @@ export async function DELETE(
     const { id } = await context.params;
 
     await prisma.project.delete({ where: { id } });
+    refreshPortfolio();
 
     return NextResponse.json({ success: true, data: { id } });
   } catch (error) {

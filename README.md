@@ -6,36 +6,38 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 ## Overview
 
-This project includes two public portfolio experiences and a private dashboard for managing content.
+This project includes the public portfolio, an older archived version, and a private dashboard for managing content.
 
-- Modern portfolio homepage with an interactive visual background
-- Older `/about`, `/projects`, `/contact`, and `/v1` pages kept for archive and supporting routes
-- Project and skill data managed through API routes and Prisma
+- Editorial portfolio homepage with light and dark themes
+- Hero surface driven by a damped 2D wave equation, solved with finite differences and drawn in perspective
+- Interactive Kafka/CDC pipeline simulation (Poisson arrivals, keyed partitions, M/M/1 consumers)
+- Case study pages rendered from markdown stored in the database
+- Command menu (`⌘K` / `Ctrl K`) for navigation and quick actions
+- Older `/about`, `/projects`, `/contact`, and `/v1` pages kept as an archive
 - Dashboard for managing projects, skills, images, users, and contact messages
-- Contact form with saved messages and email delivery
-- Resume download from the hero section
 
-## Current Public Experience
+## Public Experience
 
-The main homepage uses the modern portfolio flow:
+The homepage is built from these sections:
 
-1. Hero section with resume download
-2. Categorized skills and stack overview
-3. Experience section with detailed work stories
-4. Selected work section with expandable project cards
-5. Contact section
+1. Hero with the live wave field, résumé download, and local time
+2. System: the pipeline simulation with live metrics and a commit log
+3. Experience: an expandable timeline drawn on a shared time axis
+4. Work: project list with a spring-animated cursor preview
+5. Approach: working principles and toolbox
+6. Contact form, saved to the database and delivered by email
 
-The modern page is powered by components in:
-
-```txt
-app/modern/components
-```
-
-The root homepage reuses the same modern experience:
+Everything for the public site lives in:
 
 ```txt
-app/page.tsx
+app/(site)
+  _components   UI and the two simulations (WaveField, PipelineSim)
+  _lib          content, experience data, project queries, theme helpers
+  site.css      design tokens and styles for both themes
+  work/[slug]   case study page
 ```
+
+Pages are statically generated and revalidated every five minutes. Creating, editing, or deleting a project from the dashboard revalidates them right away.
 
 ## Dashboard
 
@@ -91,11 +93,11 @@ Project descriptions are stored as markdown in the database and rendered on publ
 ## Key Routes
 
 ```txt
-/                         Modern portfolio homepage
-/modern                   Modern portfolio route
+/                         Portfolio homepage
+/work/[slug]              Case study page
 /about                    Older about page
 /projects                 Project archive
-/projects/[slug]          Project detail page
+/projects/[slug]          Older project detail page
 /contact                  Older contact page
 /v1                       Older 3D portfolio page
 /jas-dashboard            Dashboard home
@@ -130,10 +132,10 @@ The app expects environment variables for database access, auth, Cloudinary, and
 ```txt
 DATABASE_URL=
 AUTH_SECRET=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
 GMAIL_SMTP_USER=
 GMAIL_APP_PASSWORD=
 CONTACT_RECEIVER_EMAIL=

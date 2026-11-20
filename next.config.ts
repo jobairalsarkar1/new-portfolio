@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [{ source: "/modern", destination: "/", permanent: true }];
+  },
   images: {
     remotePatterns: [
       {
@@ -31,7 +34,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.unsplash.com" }
     ]
   }
-  /* config options here */
 };
 
 export default nextConfig;

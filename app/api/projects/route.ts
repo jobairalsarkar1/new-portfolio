@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
@@ -15,6 +16,11 @@ export async function GET() {
     console.error("GET /api/projects error:", error);
     return NextResponse.json({ success: false, error: "Failed to fetch projects" }, { status: 500 });
   }
+}
+
+function refreshPortfolio() {
+  revalidatePath("/");
+  revalidatePath("/work/[slug]", "page");
 }
 
 // Utility function to create slugs
@@ -62,6 +68,7 @@ export async function POST(req: Request) {
       include: { skills: true },
     });
 
+    refreshPortfolio();
     return NextResponse.json({ success: true, data: newProject }, { status: 201 });
   } catch (error) {
     console.error("POST /api/projects error:", error);
