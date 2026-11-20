@@ -8,10 +8,10 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 A simple, single column portfolio with one crafted centerpiece, plus an older archived version and a private dashboard for managing content.
 
-- Living words in the intro: a few words come alive on hover or tap (a heartbeat, packets on a pipeline, two databases syncing, a TV switching on, a video playhead)
+- Living words in the intro: a few words come alive on hover or tap (a heartbeat, packets on a pipeline, two databases syncing, a TV switching on, a video playhead on Redaxify)
 - A text art chart of my career behind the icon next to the Experience heading, printed with block characters
 - The previous design is kept at `/v2`
-- Live details: local time in Dhaka with a guess at what I am doing, and how long I have been shipping software
+- Live details: local time in Dhaka and how far it is from the visitor, and how long I have been building software
 - Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
 - Case study pages rendered from markdown stored in the database

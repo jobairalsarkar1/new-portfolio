@@ -5,24 +5,31 @@ import { profile } from "../_lib/content";
 
 const CAREER_START = new Date(Date.UTC(2023, 5, 1));
 
+const DHAKA_OFFSET_MINUTES = 6 * 60;
+
 function describeDhaka(now: Date) {
-  const parts = new Intl.DateTimeFormat("en-GB", {
+  const time = new Intl.DateTimeFormat("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
-    weekday: "short",
     hourCycle: "h23",
     timeZone: profile.timeZone,
-  }).formatToParts(now);
-  const get = (type: string) => parts.find((part) => part.type === type)?.value ?? "";
-  const hour = Number(get("hour"));
-  const weekend = get("weekday") === "Fri" || get("weekday") === "Sat";
+  }).format(now);
+  const weekday = new Intl.DateTimeFormat("en-GB", {
+    weekday: "long",
+    timeZone: profile.timeZone,
+  }).format(now);
 
-  let guess = "probably winding down";
-  if (hour < 7) guess = "probably asleep";
-  else if (hour < 10) guess = "probably starting the day";
-  else if (hour < 19) guess = weekend ? "probably taking the day off" : "probably at work";
+  // Dhaka has no daylight saving, so the gap to the visitor is a fixed sum.
+  const difference = DHAKA_OFFSET_MINUTES + now.getTimezoneOffset();
+  const hours = Math.floor(Math.abs(difference) / 60);
+  const minutes = Math.abs(difference) % 60;
+  const amount = [hours && `${hours} hour${hours === 1 ? "" : "s"}`, minutes && `${minutes} minutes`]
+    .filter(Boolean)
+    .join(" and ");
+  const relation =
+    difference === 0 ? "the same time as you" : `${amount} ${difference > 0 ? "ahead of" : "behind"} you`;
 
-  return { time: `${get("hour")}:${get("minute")}`, guess };
+  return { time, weekday, relation };
 }
 
 function describeCareer(now: Date) {
@@ -55,8 +62,8 @@ export default function LiveStatus() {
         <dd>
           {dhaka ? (
             <>
-              It is <span className="status-time">{dhaka.time}</span> in Dhaka,
-              so I am {dhaka.guess}.
+              It is <span className="status-time">{dhaka.time}</span> on{" "}
+              {dhaka.weekday} in Dhaka, {dhaka.relation}.
             </>
           ) : (
             "Based in Dhaka, Bangladesh."
