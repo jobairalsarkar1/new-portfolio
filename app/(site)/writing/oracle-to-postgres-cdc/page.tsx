@@ -49,14 +49,14 @@ export default function CdcNote() {
               of those actions is saved in a database.
             </p>
             <p>
-              At FringeCore_ we are building a new hospital system for Asgar Ali
-              Hospital. The new system saves its data in PostgreSQL. Parts of
-              the old system still save their data in Oracle.
+              At FringeCore_ I work on a new hospital system for Asgar Ali
+              Hospital. The new system saves its data in PostgreSQL, while parts
+              of the old system still save their data in Oracle.
             </p>
             <p>
-              We can&apos;t switch everything off for a weekend and move it all
-              at once. So for a while, both databases run side by side and we
-              move the system over one part at a time. While that happens, the
+              A hospital can&apos;t switch everything off for a weekend and move it all
+              at once. So for a while, both databases run side by side and the
+              system moves over one part at a time. While that happens, the
               new parts need to see what the old parts write, quickly and
               correctly.
             </p>
@@ -68,14 +68,14 @@ export default function CdcNote() {
               is always a little out of date.
             </p>
             <p>
-              Change data capture, or CDC, is smarter. Every database keeps a
-              log of each change it saves, a bit like a diary. CDC reads that
+              Change data capture, or CDC, is a better fit here. Databases like
+              Oracle keep a log of every change they save, a bit like a diary. CDC reads that
               diary and turns every new entry into a small message: this record
               was added, this record was changed, or this record was deleted.
             </p>
             <p>
-              Those messages go into Kafka, a system built to carry a large
-              stream of messages without losing any. On the other side, small
+              Those messages go into Kafka, a system built to carry large
+              streams of messages reliably. On the other side, small
               programs called consumers read each message and make the same
               change in PostgreSQL.
             </p>
@@ -161,8 +161,8 @@ export default function CdcNote() {
               ))}
             </ol>
             <figcaption>
-              Going from half busy to 90% busy makes the average wait five times
-              longer. That is why the number to watch is the lag: how many
+              In the standard queueing model, going from half busy to 90% busy
+              makes the average wait five times longer. That is why the number to watch is the lag: how many
               changes are still waiting.
             </figcaption>
           </figure>

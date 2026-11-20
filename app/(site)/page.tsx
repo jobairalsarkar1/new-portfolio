@@ -32,22 +32,20 @@ export default async function Home() {
         </p>
         <div className="intro-text">
           <p>
-            I build software for work that{" "}
-            <LiveWord kind="pulse">can’t stop</LiveWord>. Right now that is a
-            hospital information system and ERP for Asgar Ali Hospital, where I
-            work across the frontend, the backend, and the{" "}
-            <LiveWord kind="flow">data pipeline</LiveWord> that keeps an old
-            Oracle database and a new PostgreSQL one{" "}
-            <LiveWord kind="sync">in sync</LiveWord>. I have also worked on{" "}
-            <LiveWord kind="tv">Ekhon TV</LiveWord>, the news site of
-            Bangladesh’s first business television channel.
+            At FringeCore_ I work on a{" "}
+            <LiveWord kind="pulse">hospital information system</LiveWord> and
+            ERP for Asgar Ali Hospital, across the frontend, the backend, and the{" "}
+            <LiveWord kind="flow">data pipeline</LiveWord> that keeps an older
+            Oracle database and a newer PostgreSQL one{" "}
+            <LiveWord kind="sync">in sync</LiveWord> during the migration. I have
+            also worked on <LiveWord kind="tv">Ekhon TV</LiveWord>, a
+            Bangladeshi news platform.
           </p>
           <p>
-            Before that I built a marketplace for Picture TV, worked on{" "}
-            <LiveWord kind="scan">AI video tools</LiveWord> at Logic Matrix,
-            and shipped web apps for freelance clients. I care about clear data
-            models, systems that keep running while they change, and screens
-            that make people’s work easier.
+            Before that I built a marketplace for Picture TV on contract, worked
+            on <LiveWord kind="scan">AI video features</LiveWord> at Logic
+            Matrix as an intern, and built web apps for freelance clients. Most
+            of my work is in TypeScript, React, Node.js and PostgreSQL.
           </p>
         </div>
         <p className="live-hint">
@@ -104,7 +102,7 @@ export default async function Home() {
                 {item.deepDive && (
                   <p>
                     <Link href={item.deepDive} className="inline-link">
-                      Read how the Oracle to PostgreSQL sync works
+                      Read my write-up on keeping Oracle and PostgreSQL in sync
                     </Link>
                     , with a live model you can play with.
                   </p>

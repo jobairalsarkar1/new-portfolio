@@ -56,7 +56,7 @@ export default function LiveStatus() {
           {dhaka ? (
             <>
               It is <span className="status-time">{dhaka.time}</span> in Dhaka,
-              I am {dhaka.guess}.
+              so I am {dhaka.guess}.
             </>
           ) : (
             "Based in Dhaka, Bangladesh."
@@ -64,10 +64,10 @@ export default function LiveStatus() {
         </dd>
       </div>
       <div>
-        <dt>Shipping</dt>
+        <dt>Since</dt>
         <dd>
-          Building software for clients and teams since June 2023
-          {now ? `, ${describeCareer(now)} so far.` : "."}
+          Building software professionally since June 2023
+          {now ? `, ${describeCareer(now)}.` : "."}
         </dd>
       </div>
     </dl>

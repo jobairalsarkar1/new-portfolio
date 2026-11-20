@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { Experience } from "../_lib/experience";
 
-const RIGHT = 16;
-const TOP = 66;
+const BLOCKS = "▁▂▃▄▅▆▇█";
 
 function monthIndex(value: string) {
   const [year, month] = value.split("-").map(Number);
@@ -32,26 +31,51 @@ function RidgeIcon() {
   );
 }
 
-// Each role is a ridge that rises when it started and falls when it ended,
-// stacked like a ridgeline plot. Width is time, and a little texture on top
-// keeps the ridges from looking like plain bars.
+type Run = { text: string; tone: "base" | "high" };
+
+// The career as text: every role is a row of block characters that rise while
+// the role lasted, like a sparkline. Opening it prints the rows left to right.
 export default function CareerGraph({ items, now }: { items: Experience[]; now: number }) {
   const [open, setOpen] = useState(false);
-  const [compact, setCompact] = useState(false);
+  const [columns, setColumns] = useState(64);
+  const [progress, setProgress] = useState(0);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const probeRef = useRef<HTMLSpanElement>(null);
   const id = useId();
 
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 560px)");
-    const update = () => setCompact(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
+    const panel = panelRef.current;
+    const probe = probeRef.current;
+    if (!panel || !probe) return;
+    const measure = () => {
+      const charWidth = probe.getBoundingClientRect().width / 10 || 7.8;
+      setColumns(Math.floor((panel.clientWidth - 36) / charWidth));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(panel);
+    return () => observer.disconnect();
   }, []);
 
-  const WIDTH = compact ? 340 : 640;
-  const LABELS = compact ? 0 : 150;
-  const ROW = compact ? 66 : 44;
-  const RIDGE = compact ? 38 : 46;
+  useEffect(() => {
+    if (!open) {
+      setProgress(0);
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setProgress(1);
+      return;
+    }
+    let frame = 0;
+    const start = performance.now();
+    const tick = (time: number) => {
+      const value = Math.min(1, (time - start) / 1100);
+      setProgress(value);
+      if (value < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
 
   const today = new Date(now);
   const nowIndex = today.getUTCFullYear() * 12 + today.getUTCMonth();
@@ -61,7 +85,7 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
       const end = item.end ? monthIndex(item.end) : nowIndex;
       const months = item.end ? end - start + 1 : nowIndex - start;
       return {
-        ...item,
+        company: item.company,
         startMonth: start,
         endMonth: item.end ? end + 1 : end + 6,
         months: Math.max(1, months),
@@ -70,23 +94,53 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
     })
     .sort((a, b) => a.startMonth - b.startMonth);
 
+  const compact = columns < 56;
+  const labelWidth = compact ? 14 : 16;
+  const lengthWidth = compact ? 12 : 13;
+  const width = Math.max(16, columns - labelWidth - lengthWidth);
   const first = roles[0].startMonth - 3;
   const last = nowIndex + 1;
-  const x = (month: number) => LABELS + ((month - first) / (last - first)) * (WIDTH - LABELS - RIGHT);
-  const height = TOP + (roles.length - 1) * ROW + (compact ? 54 : 40);
+  const monthAt = (column: number) => first + ((column + 0.5) / width) * (last - first);
+  const columnOf = (month: number) => Math.round(((month - first) / (last - first)) * width);
+
+  const rows = roles.map((role, index) => {
+    const reveal = Math.max(0, Math.min(1, (progress - index * 0.09) / 0.64));
+    const shown = Math.floor(width * reveal);
+    const runs: Run[] = [];
+    for (let column = 0; column < width; column++) {
+      let character = " ";
+      let tone: Run["tone"] = "base";
+      if (column < shown) {
+        const month = monthAt(column);
+        const rise = smoothStep(month - role.startMonth) * smoothStep(role.endMonth - month);
+        const texture = 0.8 + 0.2 * Math.sin(month * 1.3 + index * 2.1) * Math.sin(month * 0.47 + index);
+        const level = Math.round(rise * texture * (BLOCKS.length - 1));
+        character = BLOCKS[level];
+        tone = level > 0 ? "high" : "base";
+      }
+      const lastRun = runs[runs.length - 1];
+      if (lastRun && lastRun.tone === tone) lastRun.text += character;
+      else runs.push({ text: character, tone });
+    }
+    return { role, runs, done: reveal >= 1 };
+  });
+
   const years: number[] = [];
   for (let year = Math.ceil(first / 12); year * 12 <= last; year++) years.push(year);
 
-  const ridge = (role: (typeof roles)[number], index: number, base: number) => {
-    const points: string[] = [];
-    for (let month = first; month <= last; month += 0.25) {
-      const rise = smoothStep(month - role.startMonth) * smoothStep(role.endMonth - month);
-      const texture = 0.84 + 0.16 * Math.sin(month * 1.3 + index * 2.1) * Math.sin(month * 0.47 + index);
-      const y = base - RIDGE * rise * texture;
-      points.push(`${x(month).toFixed(1)},${y.toFixed(1)}`);
-    }
-    return points;
-  };
+  const yearGap = (12 / (last - first)) * width;
+  const axis = "─".repeat(width).split("");
+  const labels = " ".repeat(width).split("");
+  years.forEach((year) => {
+    const column = columnOf(year * 12);
+    if (column < 0 || column >= width) return;
+    axis[column] = "┴";
+    (yearGap < 6 ? `'${String(year).slice(2)}` : String(year))
+      .split("")
+      .forEach((digit, offset) => {
+        if (column + offset < labels.length) labels[column + offset] = digit;
+      });
+  });
 
   return (
     <div
@@ -109,64 +163,39 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
         </button>
       </h2>
 
-      <div className="career-panel" id={id} role="region" aria-label="Career over time">
-        <div className="career-scroll">
-          <svg viewBox={`0 0 ${WIDTH} ${height}`} className="career-svg" aria-hidden>
-            {years.map((year) => (
-              <g key={year} className="career-year">
-                <line x1={x(year * 12)} x2={x(year * 12)} y1={TOP - RIDGE - 6} y2={height - 24} />
-                <text x={x(year * 12) + 5} y={height - 8}>
-                  {year}
-                </text>
-              </g>
-            ))}
-
-            <g className="career-now">
-              <line x1={x(nowIndex + 0.6)} x2={x(nowIndex + 0.6)} y1={TOP - RIDGE - 6} y2={height - 24} />
-              <text x={x(nowIndex + 0.6)} y={TOP - RIDGE - 12} textAnchor="end">
-                now
-              </text>
-            </g>
-
-            {roles.map((role, index) => {
-              const base = TOP + index * ROW;
-              const points = ridge(role, index, base);
-              const outline = `M ${points.join(" L ")}`;
-              const area = `${outline} L ${x(last).toFixed(1)},${base + 1} L ${x(first).toFixed(1)},${base + 1} Z`;
-
-              return (
-                <g
-                  key={role.company}
-                  className="career-row"
-                  data-current={role.current}
-                  style={{ "--delay": `${index * 110}ms` } as React.CSSProperties}
-                >
-                  {compact ? (
-                    <text className="career-name" x={0} y={base + 17}>
-                      {role.company}
-                      <tspan className="career-length" dx={6}>
-                        {formatSpan(role.months)}
-                      </tspan>
-                    </text>
-                  ) : (
-                    <>
-                      <text className="career-name" x={0} y={base - 8}>
-                        {role.company}
-                      </text>
-                      <text className="career-length" x={0} y={base + 8}>
-                        {formatSpan(role.months)}
-                      </text>
-                    </>
-                  )}
-                  <g className="career-ridge">
-                    <path className="career-area" d={area} />
-                    <path className="career-line" d={outline} />
-                  </g>
-                </g>
-              );
-            })}
-          </svg>
-        </div>
+      <div className="career-panel" id={id} ref={panelRef} role="region" aria-label="Career over time">
+        <span className="career-probe" ref={probeRef} aria-hidden>
+          ▁▁▁▁▁▁▁▁▁▁
+        </span>
+        <pre className="career-ascii" aria-hidden>
+          {rows.map(({ role, runs, done }) => (
+            <span key={role.company} className="career-line" data-current={role.current}>
+              <span className="career-label">{role.company.padEnd(labelWidth).slice(0, labelWidth)}</span>
+              {runs.map((run, i) => (
+                <span key={i} className={`career-${run.tone}`}>
+                  {run.text}
+                </span>
+              ))}
+              <span className="career-length">{done ? `  ${formatSpan(role.months)}` : ""}</span>
+              {role.current && done && <span className="career-cursor">▌</span>}
+              {"\n"}
+            </span>
+          ))}
+          <span className="career-axis">
+            {" ".repeat(labelWidth)}
+            {axis.join("")}
+            {"  now\n"}
+            {" ".repeat(labelWidth)}
+            {labels.join("")}
+          </span>
+        </pre>
+        <ul className="sr-only">
+          {roles.map((role) => (
+            <li key={role.company}>
+              {role.company}, {formatSpan(role.months)}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

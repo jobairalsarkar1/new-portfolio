@@ -16,10 +16,10 @@ export const notes: Note[] = [
     title: "Keeping two hospital databases in sync without stopping the hospital",
     short: "CDC deep dive",
     summary:
-      "How we copy every change from an old Oracle database into a new PostgreSQL one while the hospital keeps running, explained in plain words. With a live model you can play with.",
+      "How change data capture and Kafka can copy every change from an old Oracle database into a new PostgreSQL one while a hospital keeps running. Explained in plain words, with a live model you can play with.",
     context: "From my work at FringeCore_",
     published: "2026-11-20",
-    readingTime: "7 min read",
+    readingTime: "4 min read",
     topics: ["CDC", "Kafka", "PostgreSQL", "Oracle", "Queueing"],
     interactive: true,
   },
