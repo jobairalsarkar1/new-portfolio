@@ -6,24 +6,58 @@ import FeaturedNote from "./_components/FeaturedNote";
 import Hero from "./_components/Hero";
 import Reveal from "./_components/Reveal";
 import SectionHeading from "./_components/SectionHeading";
+import SystemMap from "./_components/SystemMap";
 import WorkList from "./_components/WorkList";
 import { dailyDrivers, principles, profile, toolbox } from "./_lib/content";
 import { experience } from "./_lib/experience";
+import { buildGraph } from "./_lib/graph";
 import { getWorkItems } from "./_lib/projects";
+import { notes } from "./_lib/writing";
 
 export const revalidate = 300;
 
 export default async function Home() {
   const work = await getWorkItems();
+  const graph = buildGraph({
+    name: profile.name,
+    role: profile.role,
+    location: profile.location,
+    experience,
+    projects: work,
+    notes,
+  });
 
   return (
     <>
       <Hero />
 
-      <section id="experience" className="page-section">
+      <section id="map" className="page-section">
         <div className="container">
           <SectionHeading
             index="01"
+            label="Map"
+            title={
+              <>
+                Everything I have worked on, <em>connected.</em>
+              </>
+            }
+            lead={
+              <>
+                Each dot is a role, a project, a skill or a piece of writing,
+                linked by where they were used. Drag things around, point at a
+                skill to see where I used it, or click anything to read more.
+                Prefer a simple list? <a href="#experience">Skip to the list view.</a>
+              </>
+            }
+          />
+          <SystemMap graph={graph} />
+        </div>
+      </section>
+
+      <section id="experience" className="page-section">
+        <div className="container">
+          <SectionHeading
+            index="02"
             label="Experience"
             title={
               <>
@@ -41,7 +75,7 @@ export default async function Home() {
       <section id="work" className="page-section">
         <div className="container">
           <SectionHeading
-            index="02"
+            index="03"
             label="Work"
             title={
               <>
@@ -57,7 +91,7 @@ export default async function Home() {
       <section id="approach" className="page-section">
         <div className="container">
           <SectionHeading
-            index="03"
+            index="04"
             label="Approach"
             title={
               <>
@@ -103,7 +137,7 @@ export default async function Home() {
         <div className="container contact-grid">
           <div className="contact-intro" data-reveal>
             <p className="eyebrow">
-              <span>04</span>Contact
+              <span>05</span>Contact
             </p>
             <h2>
               Have a system that needs to <em>hold up?</em>

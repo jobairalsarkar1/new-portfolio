@@ -12,6 +12,7 @@ export const profile = {
 };
 
 export const navigation = [
+  { id: "map", label: "Map", href: "/#map" },
   { id: "experience", label: "Experience", href: "/#experience" },
   { id: "work", label: "Work", href: "/#work" },
   { id: "writing", label: "Writing", href: "/writing" },

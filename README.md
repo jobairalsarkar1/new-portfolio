@@ -21,10 +21,11 @@ This project includes the public portfolio, an older archived version, and a pri
 The homepage is built from these sections:
 
 1. Hero with the live wave field, résumé download, and local time
-2. Experience: an expandable timeline on a shared time axis, linking to the CDC deep dive
-3. Work: project list with a spring-animated cursor preview
-4. Approach: working principles and toolbox
-5. Contact form, saved to the database and delivered by email
+2. Map: a force directed graph of roles, projects, skills and writing, built from the same data as the rest of the site, with an inspector panel
+3. Experience: an expandable timeline on a shared time axis, linking to the CDC deep dive
+4. Work: project list with a spring-animated cursor preview
+5. Approach: working principles and toolbox
+6. Contact form, saved to the database and delivered by email
 
 Notes live under `/writing`. They are plain pages in `app/(site)/writing`, registered in `app/(site)/_lib/writing.ts`.
 

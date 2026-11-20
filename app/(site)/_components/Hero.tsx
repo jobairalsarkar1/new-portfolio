@@ -36,8 +36,8 @@ export default function Hero() {
               systems, data pipelines, and the screens people use every day.
             </p>
             <div className="hero-actions">
-              <a href="#work" className="button button-solid">
-                Selected work <FiArrowDown aria-hidden />
+              <a href="#map" className="button button-solid">
+                Explore the map <FiArrowDown aria-hidden />
               </a>
               <a href={profile.resume} className="button" download>
                 Résumé <FiDownload aria-hidden />

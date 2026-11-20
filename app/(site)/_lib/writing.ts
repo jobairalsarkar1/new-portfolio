@@ -1,6 +1,7 @@
 export type Note = {
   slug: string;
   title: string;
+  short: string;
   summary: string;
   context: string;
   published: string;
@@ -13,6 +14,7 @@ export const notes: Note[] = [
   {
     slug: "oracle-to-postgres-cdc",
     title: "Keeping two hospital databases in sync without stopping the hospital",
+    short: "CDC deep dive",
     summary:
       "How we copy every change from an old Oracle database into a new PostgreSQL one while the hospital keeps running, explained in plain words. With a live model you can play with.",
     context: "From my work at FringeCore_",
