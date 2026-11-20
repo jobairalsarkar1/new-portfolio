@@ -8,7 +8,7 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 A simple, single column portfolio with one crafted centerpiece, plus an older archived version and a private dashboard for managing content.
 
-- A source lens on the intro paragraph: a spring driven lens follows the cursor and shows the paragraph as the code that describes it
+- Living words in the intro: a few words come alive on hover or tap (a heartbeat, packets on a pipeline, two databases syncing, a TV switching on, a video playhead)
 - A ridgeline chart of my career behind the icon next to the Experience heading
 - The previous design is kept at `/v2`
 - Live details: local time in Dhaka with a guess at what I am doing, and how long I have been shipping software

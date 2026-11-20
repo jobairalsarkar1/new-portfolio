@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FiFileText, FiMail } from "react-icons/fi";
 import CareerGraph from "./_components/CareerGraph";
 import ContactForm from "./_components/ContactForm";
-import SourceLens from "./_components/SourceLens";
+import LiveWord from "./_components/LiveWord";
 import LiveStatus from "./_components/LiveStatus";
 import WorkList from "./_components/WorkList";
 import { profile, toolbox } from "./_lib/content";
@@ -11,16 +13,11 @@ import { formatDate, noteHref, notes } from "./_lib/writing";
 
 export const revalidate = 300;
 
-const intro = [
-  "I build software for work that can’t stop. Right now that is a hospital information system and ERP for Asgar Ali Hospital, where I work across the frontend, the backend, and the data pipeline that keeps an old Oracle database and a new PostgreSQL one in sync. I have also worked on Ekhon TV, the news site of Bangladesh’s first business television channel.",
-  "Before that I built a marketplace for Picture TV, worked on AI video tools at Logic Matrix, and shipped web apps for freelance clients. I care about clear data models, systems that keep running while they change, and screens that make people’s work easier.",
-];
-
 const links = [
-  { label: "GitHub", href: profile.github, external: true },
-  { label: "LinkedIn", href: profile.linkedin, external: true },
-  { label: "Email", href: `mailto:${profile.email}` },
-  { label: "Résumé", href: profile.resume, download: true },
+  { label: "GitHub", href: profile.github, external: true, icon: <FaGithub aria-hidden /> },
+  { label: "LinkedIn", href: profile.linkedin, external: true, icon: <FaLinkedin aria-hidden /> },
+  { label: "Email", href: `mailto:${profile.email}`, icon: <FiMail aria-hidden /> },
+  { label: "Résumé", href: profile.resume, download: true, icon: <FiFileText aria-hidden /> },
 ];
 
 export default async function Home() {
@@ -33,10 +30,29 @@ export default async function Home() {
         <p className="intro-role">
           {profile.role} at {profile.company}, Dhaka
         </p>
-        <SourceLens paragraphs={intro} />
-        <p className="lens-hint">
-          There is more to this paragraph than it seems.
-          <span className="hint-touch"> Tap it.</span>
+        <div className="intro-text">
+          <p>
+            I build software for work that{" "}
+            <LiveWord kind="pulse">can’t stop</LiveWord>. Right now that is a
+            hospital information system and ERP for Asgar Ali Hospital, where I
+            work across the frontend, the backend, and the{" "}
+            <LiveWord kind="flow">data pipeline</LiveWord> that keeps an old
+            Oracle database and a new PostgreSQL one{" "}
+            <LiveWord kind="sync">in sync</LiveWord>. I have also worked on{" "}
+            <LiveWord kind="tv">Ekhon TV</LiveWord>, the news site of
+            Bangladesh’s first business television channel.
+          </p>
+          <p>
+            Before that I built a marketplace for Picture TV, worked on{" "}
+            <LiveWord kind="scan">AI video tools</LiveWord> at Logic Matrix,
+            and shipped web apps for freelance clients. I care about clear data
+            models, systems that keep running while they change, and screens
+            that make people’s work easier.
+          </p>
+        </div>
+        <p className="live-hint">
+          Some of these words are alive.
+          <span className="hint-touch"> Tap the dotted ones.</span>
         </p>
         <ul className="intro-links">
           {links.map((link) => (
@@ -46,6 +62,7 @@ export default async function Home() {
                 {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})}
                 {...(link.download ? { download: true } : {})}
               >
+                {link.icon}
                 {link.label}
               </a>
             </li>
