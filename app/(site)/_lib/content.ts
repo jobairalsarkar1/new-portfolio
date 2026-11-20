@@ -32,6 +32,7 @@ export const toolbox = [
     title: "Backend & systems",
     items: [
       "Node.js",
+      "NestJS",
       "tRPC",
       "Express",
       "Django",
@@ -49,6 +50,7 @@ export const toolbox = [
   {
     title: "Cloud & delivery",
     items: [
+      "AWS",
       "Docker",
       "Turborepo",
       "Azure",

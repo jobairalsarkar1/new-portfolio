@@ -1,13 +1,10 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import type { Experience } from "../_lib/experience";
 
-const WIDTH = 620;
-const LANE = 34;
-const TOP = 30;
-const LEFT = 14;
-const RIGHT = 70;
+const RIGHT = 16;
+const TOP = 66;
 
 function monthIndex(value: string) {
   const [year, month] = value.split("-").map(Number);
@@ -23,11 +20,38 @@ function formatSpan(months: number) {
   return parts.join(" ");
 }
 
-// Career as a git history: one main line, and a branch for every role that
-// forks off when it started and merges back when it ended.
+const smoothStep = (value: number) => 1 / (1 + Math.exp(-value * 2.2));
+
+function RidgeIcon() {
+  return (
+    <svg className="ridge-icon" viewBox="0 0 24 24" aria-hidden>
+      <path d="M2 9c3 0 4-4 6-4s3 4 6 4 4-2 8-2" />
+      <path d="M2 14c3 0 4-3 6-3s3 3 6 3 4-3 8-3" />
+      <path d="M2 19c3 0 4-4 6-4s3 4 6 4 4-1 8-1" />
+    </svg>
+  );
+}
+
+// Each role is a ridge that rises when it started and falls when it ended,
+// stacked like a ridgeline plot. Width is time, and a little texture on top
+// keeps the ridges from looking like plain bars.
 export default function CareerGraph({ items, now }: { items: Experience[]; now: number }) {
   const [open, setOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
   const id = useId();
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 560px)");
+    const update = () => setCompact(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  const WIDTH = compact ? 340 : 640;
+  const LABELS = compact ? 0 : 150;
+  const ROW = compact ? 66 : 44;
+  const RIDGE = compact ? 38 : 46;
 
   const today = new Date(now);
   const nowIndex = today.getUTCFullYear() * 12 + today.getUTCMonth();
@@ -36,20 +60,33 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
       const start = monthIndex(item.start);
       const end = item.end ? monthIndex(item.end) : nowIndex;
       const months = item.end ? end - start + 1 : nowIndex - start;
-      return { ...item, startIndex: start, endIndex: end, months: Math.max(1, months) };
+      return {
+        ...item,
+        startMonth: start,
+        endMonth: item.end ? end + 1 : end + 6,
+        months: Math.max(1, months),
+        current: !item.end,
+      };
     })
-    .sort((a, b) => a.startIndex - b.startIndex);
+    .sort((a, b) => a.startMonth - b.startMonth);
 
-  const first = Math.min(...roles.map((role) => role.startIndex)) - 2;
-  const span = nowIndex - first + 1;
-  const x = (month: number) => LEFT + ((month - first) / span) * (WIDTH - LEFT - RIGHT);
-  const mainY = TOP;
-  const height = TOP + roles.length * LANE + 44;
+  const first = roles[0].startMonth - 3;
+  const last = nowIndex + 1;
+  const x = (month: number) => LABELS + ((month - first) / (last - first)) * (WIDTH - LABELS - RIGHT);
+  const height = TOP + (roles.length - 1) * ROW + (compact ? 54 : 40);
   const years: number[] = [];
-  for (let year = Math.ceil(first / 12); year * 12 <= nowIndex; year++) years.push(year);
+  for (let year = Math.ceil(first / 12); year * 12 <= last; year++) years.push(year);
 
-  const total = nowIndex - roles[0].startIndex;
-  const longest = roles.reduce((best, role) => (role.months > best.months ? role : best));
+  const ridge = (role: (typeof roles)[number], index: number, base: number) => {
+    const points: string[] = [];
+    for (let month = first; month <= last; month += 0.25) {
+      const rise = smoothStep(month - role.startMonth) * smoothStep(role.endMonth - month);
+      const texture = 0.84 + 0.16 * Math.sin(month * 1.3 + index * 2.1) * Math.sin(month * 0.47 + index);
+      const y = base - RIDGE * rise * texture;
+      points.push(`${x(month).toFixed(1)},${y.toFixed(1)}`);
+    }
+    return points;
+  };
 
   return (
     <div
@@ -59,79 +96,76 @@ export default function CareerGraph({ items, now }: { items: Experience[]; now: 
       onMouseLeave={() => setOpen(false)}
     >
       <h2>
+        Experience
         <button
           type="button"
           className="career-trigger"
           aria-expanded={open}
           aria-controls={id}
+          aria-label="Show my career over time"
           onClick={() => setOpen((value) => !value)}
         >
-          Experience
-          <span className="career-hint">see it as a graph</span>
+          <RidgeIcon />
         </button>
       </h2>
 
-      <div className="career-panel" id={id} role="region" aria-label="Career timeline">
-        <p className="career-summary">
-          {formatSpan(total)} of work across {roles.length} roles. The longest was{" "}
-          {longest.company}, {formatSpan(longest.months)}.
-        </p>
-
+      <div className="career-panel" id={id} role="region" aria-label="Career over time">
         <div className="career-scroll">
-        <svg viewBox={`0 0 ${WIDTH} ${height}`} className="career-svg" aria-hidden>
-          {years.map((year) => (
-            <g key={year} className="career-year">
-              <line x1={x(year * 12)} x2={x(year * 12)} y1={TOP - 14} y2={height - 26} />
-              <text x={x(year * 12) + 4} y={height - 10}>
-                {year}
+          <svg viewBox={`0 0 ${WIDTH} ${height}`} className="career-svg" aria-hidden>
+            {years.map((year) => (
+              <g key={year} className="career-year">
+                <line x1={x(year * 12)} x2={x(year * 12)} y1={TOP - RIDGE - 6} y2={height - 24} />
+                <text x={x(year * 12) + 5} y={height - 8}>
+                  {year}
+                </text>
+              </g>
+            ))}
+
+            <g className="career-now">
+              <line x1={x(nowIndex + 0.6)} x2={x(nowIndex + 0.6)} y1={TOP - RIDGE - 6} y2={height - 24} />
+              <text x={x(nowIndex + 0.6)} y={TOP - RIDGE - 12} textAnchor="end">
+                now
               </text>
             </g>
-          ))}
 
-          <line className="career-main" x1={x(first)} x2={x(nowIndex) + 8} y1={mainY} y2={mainY} />
-          <text className="career-main-label" x={x(first)} y={mainY - 10}>
-            main
-          </text>
+            {roles.map((role, index) => {
+              const base = TOP + index * ROW;
+              const points = ridge(role, index, base);
+              const outline = `M ${points.join(" L ")}`;
+              const area = `${outline} L ${x(last).toFixed(1)},${base + 1} L ${x(first).toFixed(1)},${base + 1} Z`;
 
-          {roles.map((role, index) => {
-            const laneY = TOP + (index + 1) * LANE;
-            const x1 = x(role.startIndex);
-            const x2 = x(role.endIndex);
-            const curve = Math.min(16, (x2 - x1) / 3);
-            const current = !role.end;
-            const path = current
-              ? `M ${x1} ${mainY} C ${x1 + curve} ${mainY}, ${x1} ${laneY}, ${x1 + curve} ${laneY} L ${x2 + 8} ${laneY}`
-              : `M ${x1} ${mainY} C ${x1 + curve} ${mainY}, ${x1} ${laneY}, ${x1 + curve} ${laneY} L ${x2 - curve} ${laneY} C ${x2} ${laneY}, ${x2 - curve} ${mainY}, ${x2} ${mainY}`;
-
-            return (
-              <g
-                key={role.company}
-                className="career-branch"
-                data-current={current}
-                style={{ "--delay": `${index * 120}ms` } as React.CSSProperties}
-              >
-                <path d={path} pathLength={1} />
-                <circle cx={x1} cy={mainY} r={3.5} />
-                {current ? (
-                  <circle className="career-head" cx={x2 + 8} cy={laneY} r={4.5} />
-                ) : (
-                  <circle cx={x2} cy={mainY} r={3.5} />
-                )}
-                {x1 > 150 ? (
-                  <text x={x1 - 10} y={laneY + 4.5} textAnchor="end">
-                    {role.company}
-                    <tspan dx={6}>{formatSpan(role.months)}</tspan>
-                  </text>
-                ) : (
-                  <text x={x1 + curve + 6} y={laneY - 8}>
-                    {role.company}
-                    <tspan dx={6}>{formatSpan(role.months)}</tspan>
-                  </text>
-                )}
-              </g>
-            );
-          })}
-        </svg>
+              return (
+                <g
+                  key={role.company}
+                  className="career-row"
+                  data-current={role.current}
+                  style={{ "--delay": `${index * 110}ms` } as React.CSSProperties}
+                >
+                  {compact ? (
+                    <text className="career-name" x={0} y={base + 17}>
+                      {role.company}
+                      <tspan className="career-length" dx={6}>
+                        {formatSpan(role.months)}
+                      </tspan>
+                    </text>
+                  ) : (
+                    <>
+                      <text className="career-name" x={0} y={base - 8}>
+                        {role.company}
+                      </text>
+                      <text className="career-length" x={0} y={base + 8}>
+                        {formatSpan(role.months)}
+                      </text>
+                    </>
+                  )}
+                  <g className="career-ridge">
+                    <path className="career-area" d={area} />
+                    <path className="career-line" d={outline} />
+                  </g>
+                </g>
+              );
+            })}
+          </svg>
         </div>
       </div>
     </div>

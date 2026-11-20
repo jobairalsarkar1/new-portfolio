@@ -8,8 +8,9 @@ The site presents my work as a Full Stack Software Engineer focused on scalable 
 
 A simple, single column portfolio with one crafted centerpiece, plus an older archived version and a private dashboard for managing content.
 
-- A database rendered inside the intro paragraph: its letters light up in the shape of a turning database, lit by the cursor, the same way the classic spinning donut is drawn
-- A git style graph of my career that appears when hovering the Experience heading
+- A source lens on the intro paragraph: a spring driven lens follows the cursor and shows the paragraph as the code that describes it
+- A ridgeline chart of my career behind the icon next to the Experience heading
+- The previous design is kept at `/v2`
 - Live details: local time in Dhaka with a guess at what I am doing, and how long I have been shipping software
 - Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
@@ -92,7 +93,8 @@ Project descriptions are stored as markdown in the database and rendered on publ
 /projects                 Project archive
 /projects/[slug]          Older project detail page
 /contact                  Older contact page
-/v1                       Older 3D portfolio page
+/v1                       First 3D portfolio
+/v2                       Previous design
 /jas-dashboard            Dashboard home
 /jas-dashboard/projects   Project management
 ```

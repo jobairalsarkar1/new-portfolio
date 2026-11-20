@@ -9,7 +9,7 @@ export default function SiteFooter() {
         Next.js. Press <kbd>⌘K</kbd> to get around.
       </p>
       <p>
-        Looking for the old site? <Link href="/v1">Visit version one</Link>.
+        Looking for the previous design? <Link href="/v2">Visit version two</Link>.
       </p>
     </footer>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CareerGraph from "./_components/CareerGraph";
 import ContactForm from "./_components/ContactForm";
-import LitText from "./_components/LitText";
+import SourceLens from "./_components/SourceLens";
 import LiveStatus from "./_components/LiveStatus";
 import WorkList from "./_components/WorkList";
 import { profile, toolbox } from "./_lib/content";
@@ -12,7 +12,7 @@ import { formatDate, noteHref, notes } from "./_lib/writing";
 export const revalidate = 300;
 
 const intro = [
-  "I build software for work that can’t stop. Right now that is a hospital information system and ERP for Asgar Ali Hospital, where I work across the frontend, the backend, and the data pipeline that keeps an old Oracle database and a new PostgreSQL one in sync.",
+  "I build software for work that can’t stop. Right now that is a hospital information system and ERP for Asgar Ali Hospital, where I work across the frontend, the backend, and the data pipeline that keeps an old Oracle database and a new PostgreSQL one in sync. I have also worked on Ekhon TV, the news site of Bangladesh’s first business television channel.",
   "Before that I built a marketplace for Picture TV, worked on AI video tools at Logic Matrix, and shipped web apps for freelance clients. I care about clear data models, systems that keep running while they change, and screens that make people’s work easier.",
 ];
 
@@ -33,15 +33,10 @@ export default async function Home() {
         <p className="intro-role">
           {profile.role} at {profile.company}, Dhaka
         </p>
-        <LitText paragraphs={intro} />
-        <p className="lit-hint">
-          <span className="hint-fine">
-            A database is turning inside the text above. Move your cursor to
-            shine a light on it.
-          </span>
-          <span className="hint-touch">
-            Look closely: a database is turning inside the text above.
-          </span>
+        <SourceLens paragraphs={intro} />
+        <p className="lens-hint">
+          There is more to this paragraph than it seems.
+          <span className="hint-touch"> Tap it.</span>
         </p>
         <ul className="intro-links">
           {links.map((link) => (
@@ -71,6 +66,24 @@ export default async function Home() {
                   {item.company} <span>{item.role}</span>
                 </h3>
                 <p>{item.note}</p>
+                {item.products && (
+                  <p className="role-products">
+                    Worked on{" "}
+                    {item.products.map((product, index) => (
+                      <span key={product.name}>
+                        {index > 0 && (index === item.products!.length - 1 ? " and " : ", ")}
+                        {product.href ? (
+                          <a href={product.href} target="_blank" rel="noreferrer" className="inline-link">
+                            {product.name}
+                          </a>
+                        ) : (
+                          product.name
+                        )}
+                      </span>
+                    ))}
+                    .
+                  </p>
+                )}
                 {item.deepDive && (
                   <p>
                     <Link href={item.deepDive} className="inline-link">
