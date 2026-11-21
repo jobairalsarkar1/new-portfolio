@@ -6,6 +6,7 @@ const ITERATIONS = 18;
 const VORTICITY = 5;
 const DYE_FADE = 0.995;
 const VELOCITY_FADE = 0.995;
+const INVISIBLE = 0.005;
 
 // Jos Stam's "stable fluids": velocities are carried along by themselves,
 // then corrected so the water never compresses. Vorticity confinement adds
@@ -167,18 +168,26 @@ export function startInk({ canvas, colors, onTheme }: CanvasSetup) {
     [dye0, dye] = [dye, dye0];
     advect(0, dye, dye0, dt);
 
-    let ink = 0;
-    let motion = 0;
+    let darkest = 0;
     for (let k = 0; k < size; k++) {
       dye[k] *= DYE_FADE;
       u[k] *= VELOCITY_FADE;
       v[k] *= VELOCITY_FADE;
-      ink += dye[k];
-      motion += Math.abs(u[k]) + Math.abs(v[k]);
+      darkest = Math.max(darkest, dye[k]);
     }
 
     render();
-    frame = ink > 0.5 || motion > 0.5 ? requestAnimationFrame(step) : 0;
+    // Vorticity confinement keeps feeding the swirls, so the water never
+    // quite comes to rest on its own. Once the ink is too faint to see,
+    // calm it and stop.
+    if (darkest > INVISIBLE) {
+      frame = requestAnimationFrame(step);
+    } else {
+      frame = 0;
+      u.fill(0);
+      v.fill(0);
+      dye.fill(0);
+    }
   };
 
   const wake = () => {

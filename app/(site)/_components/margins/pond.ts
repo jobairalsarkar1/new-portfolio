@@ -5,6 +5,8 @@ const CELL = 3;
 const COURANT = 0.42;
 const DAMPING = 0.986;
 const SHADE = 10;
+// Below this height a ripple changes a pixel by less than 1%.
+const STILL = 0.01 / (4 * SHADE);
 
 // A still pond: the damped 2D wave equation on a grid. Each pixel is lit by
 // the slope of the surface under it, which is what makes ripples read as
@@ -53,7 +55,7 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
   };
 
   const step = () => {
-    let energy = 0;
+    let tallest = 0;
     for (let y = 1; y < H - 1; y++) {
       for (let x = 1; x < W - 1; x++) {
         const i = y * W + x;
@@ -61,11 +63,11 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
         const laplacian = current[i - 1] + current[i + 1] + current[i - W] + current[i + W] - 4 * u;
         const value = u + (u - previous[i]) * DAMPING * sponge[i] + COURANT * laplacian;
         next[i] = value;
-        energy += Math.abs(value);
+        tallest = Math.max(tallest, Math.abs(value));
       }
     }
     [previous, current, next] = [current, next, previous];
-    return energy;
+    return tallest;
   };
 
   const render = () => {
@@ -92,9 +94,10 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
 
   let frame = 0;
   const loop = () => {
-    const energy = step() + step();
+    step();
+    const tallest = step();
     render();
-    frame = energy > 0.5 ? requestAnimationFrame(loop) : 0;
+    frame = tallest > STILL ? requestAnimationFrame(loop) : 0;
     if (!frame) {
       current.fill(0);
       previous.fill(0);

@@ -8,6 +8,12 @@ import { excerpt, getProject, getProjects } from "../../_lib/projects";
 
 export const revalidate = 300;
 
+// Each case study is rendered on its first visit and then served from the
+// cache, instead of querying the database on every request.
+export function generateStaticParams() {
+  return [];
+}
+
 type PageProps = {
   params: Promise<{ slug: string }>;
 };

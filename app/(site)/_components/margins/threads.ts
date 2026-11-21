@@ -7,6 +7,8 @@ const GRAVITY = 0.12;
 const FRICTION = 0.982;
 const REACH = 36;
 const STIFFNESS = 6;
+// Points moving slower than this (pixels per frame) look still.
+const STILL = 0.02;
 
 const NOTES = 14;
 
@@ -57,7 +59,7 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
   const pointer = { x: -999, y: -999, vx: 0, vy: 0, active: false };
 
   const step = () => {
-    let motion = 0;
+    let fastest = 0;
     for (const thread of threads) {
       const { xs, ys, px, py } = thread;
       for (let s = 1; s <= SEGMENTS; s++) {
@@ -67,7 +69,7 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
         py[s] = ys[s];
         xs[s] += vx;
         ys[s] += vy + GRAVITY;
-        motion += Math.abs(vx) + Math.abs(vy);
+        fastest = Math.max(fastest, Math.abs(vx), Math.abs(vy));
 
         if (pointer.active) {
           const dx = xs[s] - pointer.x;
@@ -101,7 +103,9 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
         }
       }
     }
-    return motion;
+    pointer.vx *= 0.5;
+    pointer.vy *= 0.5;
+    return fastest;
   };
 
   const trace = (thread: Thread) => {
@@ -145,13 +149,17 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
     context.globalAlpha = 1;
   };
 
+  // A swinging string pauses at the top of every swing, so wait for half a
+  // second of stillness before going to sleep.
   let frame = 0;
+  let calm = 0;
   const loop = () => {
-    const motion = step();
+    calm = step() > STILL ? 0 : calm + 1;
     render();
-    frame = motion > 0.4 || pointer.active ? requestAnimationFrame(loop) : 0;
+    frame = calm < 30 ? requestAnimationFrame(loop) : 0;
   };
   const wake = () => {
+    calm = 0;
     if (!frame) frame = requestAnimationFrame(loop);
   };
 

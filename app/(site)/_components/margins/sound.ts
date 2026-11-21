@@ -69,11 +69,13 @@ export function restoreSound() {
   return forget;
 }
 
-function output(pan: number) {
+function output(pan: number, source?: AudioScheduledSourceNode) {
   const ctx = context!;
   const panner = ctx.createStereoPanner();
   panner.pan.value = pan;
   panner.connect(master!);
+  // Disconnect once the sound has finished so its nodes can be freed.
+  if (source) source.onended = () => panner.disconnect();
   return panner;
 }
 
@@ -129,7 +131,7 @@ export function pluck(frequency: number, strength: number, pan: number) {
   source.buffer = stringBuffer(frequency);
   const gain = ctx.createGain();
   gain.gain.value = Math.min(0.5, 0.12 + strength * 0.08);
-  source.connect(gain).connect(output(pan));
+  source.connect(gain).connect(output(pan, source));
   source.start();
 }
 
@@ -149,7 +151,7 @@ export function drop(size: number, pan: number) {
   toneGain.gain.setValueAtTime(0.0001, now);
   toneGain.gain.exponentialRampToValueAtTime(Math.min(0.55, 0.2 * size), now + 0.004);
   toneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
-  tone.connect(toneGain).connect(output(pan));
+  tone.connect(toneGain).connect(output(pan, tone));
   tone.start(now);
   tone.stop(now + 0.25);
 
@@ -162,7 +164,7 @@ export function drop(size: number, pan: number) {
   const splashGain = ctx.createGain();
   splashGain.gain.setValueAtTime(0.12 * size, now);
   splashGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
-  splash.connect(band).connect(splashGain).connect(output(pan));
+  splash.connect(band).connect(splashGain).connect(output(pan, splash));
   splash.start(now);
 }
 
