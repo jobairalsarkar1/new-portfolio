@@ -115,6 +115,9 @@ function stringBuffer(frequency: number) {
     // Weighting toward the newer sample keeps more brightness, like steel.
     data[i] = (0.62 * a + 0.38 * b) * 0.9965;
   }
+  // Low strings are still ringing when the buffer ends, so fade them out.
+  const tail = Math.floor(ctx.sampleRate * 0.4);
+  for (let i = 0; i < tail; i++) data[length - 1 - i] *= i / tail;
   strings.set(key, buffer);
   return buffer;
 }
