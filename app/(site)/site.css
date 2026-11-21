@@ -1101,6 +1101,16 @@ html[data-theme="dark"]:has(.site) {
     box-shadow 0.2s;
 }
 
+.field input {
+  height: 40px;
+  padding: 0 12px;
+}
+
+.field textarea {
+  min-height: 140px;
+  padding: 10px 12px;
+}
+
 .field input::placeholder,
 .field textarea::placeholder {
   color: var(--fg-subtle);
