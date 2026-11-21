@@ -15,7 +15,7 @@ A simple, single column portfolio with one crafted centerpiece, plus an older ar
 - Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
 - Case study pages rendered from markdown stored in the database
-- Game of Life in the empty margins: moving the cursor throws gliders, a click drops an R-pentomino, and it dies back to calm when the cursor goes quiet
+- A live change log in the margins: the visitor's own actions become CDC events on the right and are applied to their "visitor" row on the left, all inside the browser
 - Command menu (`⌘K` / `Ctrl K`), light and dark themes
 - Older `/about`, `/projects`, `/contact`, and `/v1` pages kept as an archive
 
