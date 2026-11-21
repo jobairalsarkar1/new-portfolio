@@ -1,5 +1,5 @@
 import type { CanvasSetup } from "./canvas";
-import { noteFor, panFor, pluck } from "./sound";
+import { chime, noteFor, panFor } from "./sound";
 
 const GAP = 9;
 const SEGMENTS = 34;
@@ -8,7 +8,7 @@ const FRICTION = 0.982;
 const REACH = 36;
 const STIFFNESS = 6;
 
-const NOTES = 14;
+const NOTES = 10;
 
 type Thread = {
   restX: number;
@@ -18,13 +18,13 @@ type Thread = {
   py: Float32Array;
   length: number;
   note: number;
-  plucked: number;
+  struck: number;
 };
 
-// A curtain of hanging strings. Every string is a chain of points joined by
+// A curtain of wind chimes. Every chime is a chain of points joined by
 // fixed-length links (Verlet integration), pinned at the top and pulled down
 // by gravity, so brushing through them makes them sway and settle naturally.
-// With sound on, each one rings when it is crossed, lower for longer strings.
+// With sound on, each one rings when it is crossed, lower for longer chimes.
 export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
   const context = canvas.getContext("2d")!;
   const width = canvas.clientWidth;
@@ -46,7 +46,7 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
       xs[s] = restX;
       ys[s] = 8 + s * length;
     }
-    threads.push({ restX, xs, ys, px: xs.slice(), py: ys.slice(), length, note: 0, plucked: 0 });
+    threads.push({ restX, xs, ys, px: xs.slice(), py: ys.slice(), length, note: 0, struck: 0 });
   }
   const byLength = [...threads].sort((a, b) => b.length - a.length);
   byLength.forEach((thread, rank) => {
@@ -161,9 +161,9 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
     const strength = Math.min(4, (right - left) / 6);
     for (const thread of threads) {
       if (thread.restX < left || thread.restX >= right) continue;
-      if (y > 8 + thread.length * SEGMENTS || time - thread.plucked < 90) continue;
-      thread.plucked = time;
-      pluck(thread.note, strength, pan);
+      if (y > 8 + thread.length * SEGMENTS || time - thread.struck < 90) continue;
+      thread.struck = time;
+      chime(thread.note, strength, pan);
     }
   };
 
