@@ -8,7 +8,7 @@ const PENTATONIC = [0, 3, 5, 7, 10];
 let context: AudioContext | null = null;
 let master: GainNode | null = null;
 let enabled = false;
-const chimes = new Map<number, AudioBuffer>();
+const strings = new Map<number, AudioBuffer>();
 
 export function soundEnabled() {
   return enabled;
@@ -88,63 +88,44 @@ function ready() {
   return enabled && context !== null && context.state === "running";
 }
 
-// Notes on a pentatonic scale from D5, so any sweep sounds musical.
+// Notes on a pentatonic scale, so any sweep across the strings sounds musical.
 export function noteFor(step: number) {
   const octave = Math.floor(step / PENTATONIC.length);
   const degree = PENTATONIC[((step % PENTATONIC.length) + PENTATONIC.length) % PENTATONIC.length];
-  return 587.33 * 2 ** (octave + degree / 12);
+  return 146.83 * 2 ** (octave + degree / 12);
 }
 
-// A metal rod hanging free rings at overtones that are not whole multiples
-// of its pitch (2.76, 5.40 and 8.93 times it). That uneven spread is what
-// makes a chime sound like a bell rather than a guitar string. The higher
-// overtones also fade faster, so the strike is bright and the tail is pure.
-const OVERTONES = [
-  { ratio: 1, level: 1, fade: 2.8 },
-  { ratio: 2.756, level: 0.45, fade: 1.1 },
-  { ratio: 5.404, level: 0.2, fade: 0.45 },
-  { ratio: 8.933, level: 0.08, fade: 0.2 },
-];
-
-function chimeBuffer(frequency: number) {
+// Karplus-Strong: a burst of noise fed through a delay line one period long,
+// averaged a little on every pass. The averaging is the string losing its
+// high harmonics, which is why the result sounds plucked.
+function stringBuffer(frequency: number) {
   const key = Math.round(frequency);
-  const cached = chimes.get(key);
+  const cached = strings.get(key);
   if (cached) return cached;
 
   const ctx = context!;
-  const rate = ctx.sampleRate;
-  const buffer = ctx.createBuffer(1, Math.floor(rate * 4), rate);
+  const length = Math.floor(ctx.sampleRate * 2.4);
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
   const data = buffer.getChannelData(0);
-  for (const { ratio, level, fade } of OVERTONES) {
-    const pitch = frequency * ratio;
-    if (pitch > rate * 0.45) continue;
-    const phase = Math.random() * Math.PI * 2;
-    for (let i = 0; i < data.length; i++) {
-      const t = i / rate;
-      data[i] += level * Math.exp(-t / fade) * Math.sin(2 * Math.PI * pitch * t + phase);
-    }
+  const period = Math.max(2, Math.round(ctx.sampleRate / frequency));
+  for (let i = 0; i < period; i++) data[i] = Math.random() * 2 - 1;
+  for (let i = period; i < length; i++) {
+    const a = data[i - period];
+    const b = data[i - period + 1] ?? a;
+    // Weighting toward the newer sample keeps more brightness, like steel.
+    data[i] = (0.62 * a + 0.38 * b) * 0.9965;
   }
-  // The few milliseconds of contact when something knocks the rod.
-  for (let i = 0; i < rate * 0.004; i++) data[i] += (Math.random() * 2 - 1) * 0.3 * (1 - i / (rate * 0.004));
-  for (let i = 0; i < 64; i++) data[i] *= i / 64;
-  const tail = Math.floor(rate * 1.2);
-  for (let i = 0; i < tail; i++) data[data.length - 1 - i] *= 0.5 - 0.5 * Math.cos((Math.PI * i) / tail);
-  chimes.set(key, buffer);
+  strings.set(key, buffer);
   return buffer;
 }
 
-let lastChime = 0;
-
-export function chime(frequency: number, strength: number, pan: number) {
+export function pluck(frequency: number, strength: number, pan: number) {
   if (!ready()) return;
-  const now = performance.now();
-  if (now - lastChime < 35) return;
-  lastChime = now;
   const ctx = context!;
   const source = ctx.createBufferSource();
-  source.buffer = chimeBuffer(frequency);
+  source.buffer = stringBuffer(frequency);
   const gain = ctx.createGain();
-  gain.gain.value = Math.min(0.22, 0.06 + strength * 0.04);
+  gain.gain.value = Math.min(0.5, 0.12 + strength * 0.08);
   source.connect(gain).connect(output(pan));
   source.start();
 }

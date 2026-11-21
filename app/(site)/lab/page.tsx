@@ -24,8 +24,8 @@ const experiments: { id: ExperimentId; name: string; note: string; status: strin
   },
   {
     id: "threads",
-    name: "Wind chimes",
-    note: "Verlet chains under gravity. With sound on, each one rings like a metal rod, with uneven overtones that make it sound like a bell. Longer chimes ring lower.",
+    name: "Strings",
+    note: "Verlet chains under gravity, plucked with Karplus-Strong synthesis. Brush through them; longer strings ring lower.",
     status: "In the margins, 08:00 to 16:00",
   },
 ];

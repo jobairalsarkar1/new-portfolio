@@ -15,13 +15,13 @@ const CHANGE_EVENT = "margins-change";
 
 export const EFFECTS: { id: Effect; label: string; from: number }[] = [
   { id: "pond", label: "Pond", from: 0 },
-  { id: "threads", label: "Wind chimes", from: 8 },
+  { id: "threads", label: "Strings", from: 8 },
   { id: "ink", label: "Ink in water", from: 16 },
 ];
 
 const starters = { ink: startInk, pond: startPond, threads: startThreads };
 
-// The day is split into three blocks: a calm pond overnight, wind chimes
+// The day is split into three blocks: a calm pond overnight, strings
 // through the day, ink in the evening.
 export function effectForHour(hour: number): Effect {
   return [...EFFECTS].reverse().find((effect) => hour >= effect.from)!.id;
