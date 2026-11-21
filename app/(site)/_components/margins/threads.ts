@@ -1,4 +1,5 @@
 import type { CanvasSetup } from "./canvas";
+import { noteFor, panFor, pluck } from "./sound";
 
 const GAP = 9;
 const SEGMENTS = 34;
@@ -7,11 +8,23 @@ const FRICTION = 0.982;
 const REACH = 36;
 const STIFFNESS = 6;
 
-type Thread = { restX: number; xs: Float32Array; ys: Float32Array; px: Float32Array; py: Float32Array; length: number };
+const NOTES = 14;
 
-// A curtain of silk threads. Every thread is a chain of points joined by
+type Thread = {
+  restX: number;
+  xs: Float32Array;
+  ys: Float32Array;
+  px: Float32Array;
+  py: Float32Array;
+  length: number;
+  note: number;
+  plucked: number;
+};
+
+// A curtain of hanging strings. Every string is a chain of points joined by
 // fixed-length links (Verlet integration), pinned at the top and pulled down
 // by gravity, so brushing through them makes them sway and settle naturally.
+// With sound on, each one rings when it is crossed, lower for longer strings.
 export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
   const context = canvas.getContext("2d")!;
   const width = canvas.clientWidth;
@@ -33,8 +46,13 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
       xs[s] = restX;
       ys[s] = 8 + s * length;
     }
-    threads.push({ restX, xs, ys, px: xs.slice(), py: ys.slice(), length });
+    threads.push({ restX, xs, ys, px: xs.slice(), py: ys.slice(), length, note: 0, plucked: 0 });
   }
+  const byLength = [...threads].sort((a, b) => b.length - a.length);
+  byLength.forEach((thread, rank) => {
+    thread.note = noteFor(Math.round((rank / Math.max(1, byLength.length - 1)) * NOTES));
+  });
+  const pan = panFor(canvas);
 
   const pointer = { x: -999, y: -999, vx: 0, vy: 0, active: false };
 
@@ -137,10 +155,23 @@ export function startThreads({ canvas, colors, onTheme }: CanvasSetup) {
     if (!frame) frame = requestAnimationFrame(loop);
   };
 
+  const strum = (from: number, to: number, y: number, time: number) => {
+    const left = Math.min(from, to);
+    const right = Math.max(from, to);
+    const strength = Math.min(4, (right - left) / 6);
+    for (const thread of threads) {
+      if (thread.restX < left || thread.restX >= right) continue;
+      if (y > 8 + thread.length * SEGMENTS || time - thread.plucked < 90) continue;
+      thread.plucked = time;
+      pluck(thread.note, strength, pan);
+    }
+  };
+
   const onMove = (event: PointerEvent) => {
     const bounds = canvas.getBoundingClientRect();
     const x = event.clientX - bounds.left;
     const y = event.clientY - bounds.top;
+    if (pointer.active) strum(pointer.x, x, y, event.timeStamp);
     pointer.vx = pointer.active ? x - pointer.x : 0;
     pointer.vy = pointer.active ? y - pointer.y : 0;
     pointer.x = x;

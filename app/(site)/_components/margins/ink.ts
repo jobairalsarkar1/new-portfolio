@@ -1,4 +1,5 @@
 import { readColor, type CanvasSetup } from "./canvas";
+import { panFor, stir } from "./sound";
 
 const CELL = 5;
 const ITERATIONS = 18;
@@ -30,6 +31,7 @@ export function startInk({ canvas, colors, onTheme }: CanvasSetup) {
   const divergence = new Float32Array(size);
   const curl = new Float32Array(size);
   const image = context.createImageData(W, H);
+  const pan = panFor(canvas);
 
   let palette = { bg: [0, 0, 0] as readonly number[], ink: [0, 0, 0] as readonly number[] };
   const readPalette = () => {
@@ -196,6 +198,7 @@ export function startInk({ canvas, colors, onTheme }: CanvasSetup) {
       const speed = Math.hypot(dx, dy);
       if (speed > 0.05) {
         splat(x, y, dx * 1.2, dy * 1.2, Math.min(1, 0.35 + speed * 0.1));
+        stir(speed, pan);
         wake();
       }
     }

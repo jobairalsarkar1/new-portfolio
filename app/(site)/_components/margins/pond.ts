@@ -1,4 +1,5 @@
 import { readColor, type CanvasSetup } from "./canvas";
+import { drop as plop, panFor, trickle } from "./sound";
 
 const CELL = 3;
 const COURANT = 0.42;
@@ -26,6 +27,7 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
     }
   }
   const image = context.createImageData(W, H);
+  const pan = panFor(canvas);
 
   let palette = { bg: [0, 0, 0] as readonly number[], light: [0, 0, 0] as readonly number[], dark: [0, 0, 0] as readonly number[] };
   const readPalette = () => {
@@ -115,6 +117,7 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
       for (let s = 1; s <= steps; s++) {
         drop(last.x + ((x - last.x) * s) / steps, last.y + ((y - last.y) * s) / steps, (-Math.min(0.9, speed * 0.5) / steps) * 3, 2.4);
       }
+      trickle(speed, pan);
       wake();
     }
     last = { x, y, time: event.timeStamp };
@@ -125,6 +128,7 @@ export function startPond({ canvas, colors, onTheme }: CanvasSetup) {
   const onDown = (event: PointerEvent) => {
     const bounds = canvas.getBoundingClientRect();
     drop(event.clientX - bounds.left, event.clientY - bounds.top, -3, 3);
+    plop(1, pan);
     wake();
   };
 

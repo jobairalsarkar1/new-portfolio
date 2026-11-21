@@ -9,12 +9,14 @@ import {
   FiExternalLink,
   FiMail,
   FiSearch,
+  FiVolume2,
 } from "react-icons/fi";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineSwatch } from "react-icons/hi2";
 import { navigation, profile } from "../_lib/content";
 import { toggleTheme } from "../_lib/theme";
 import { EFFECTS, setMarginMode } from "./margins/Margins";
+import { setSound, soundEnabled } from "./margins/sound";
 
 type Command = {
   id: string;
@@ -77,10 +79,18 @@ export default function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         id: `margins-${effect.id}`,
         group: "Actions",
         label: `Margins: ${effect.label}`,
-        keywords: "background margin effect ink pond threads",
+        keywords: "background margin effect ink pond strings threads",
         icon: <HiOutlineSwatch />,
         run: () => setMarginMode(effect.id as "auto" | "ink" | "pond" | "threads"),
       })),
+      {
+        id: "margin-sound",
+        group: "Actions",
+        label: "Margins: Turn sound on or off",
+        keywords: "audio sound music strings water mute",
+        icon: <FiVolume2 />,
+        run: () => setSound(!soundEnabled()),
+      },
       {
         id: "copy-email",
         group: "Actions",

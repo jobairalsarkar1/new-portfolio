@@ -307,6 +307,23 @@ html[data-theme="dark"]:has(.site) {
   color: var(--bg);
 }
 
+.margin-switch .margin-sound,
+.margin-switch .margin-sound[aria-pressed="true"] {
+  display: grid;
+  place-items: center;
+  margin-left: 2px;
+  padding: 4px 8px;
+  border-left: 1px solid var(--line);
+  border-radius: 0 999px 999px 0;
+  background: none;
+  color: var(--fg-muted);
+  font-size: 13px;
+}
+
+.margin-switch .margin-sound[aria-pressed="true"] {
+  color: var(--accent);
+}
+
 
 .site-header {
   display: flex;
@@ -1491,6 +1508,25 @@ html[data-theme="dark"]:has(.site) {
 
 .lab-panel strong {
   color: var(--fg);
+}
+
+.lab-sound {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-top: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--bg-raised);
+  color: var(--fg-muted);
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.lab-sound:hover,
+.lab-sound[aria-pressed="true"] {
+  color: var(--accent);
 }
 
 .lab-status {

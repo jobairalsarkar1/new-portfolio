@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SoundToggle from "../_components/margins/SoundToggle";
 import Experiment, { type ExperimentId } from "./Experiment";
 
 export const metadata: Metadata = {
@@ -12,19 +13,19 @@ const experiments: { id: ExperimentId; name: string; note: string; status: strin
   {
     id: "ink",
     name: "Ink in water",
-    note: "Stable fluids with vorticity confinement. Move through it slowly, then quickly.",
+    note: "Stable fluids with vorticity confinement. Move through it slowly, then quickly. Stirring makes a soft rush.",
     status: "In the margins, 16:00 to 24:00",
   },
   {
     id: "pond",
     name: "Pond",
-    note: "Damped wave equation, lit by the slope of the surface. Drag like a finger, click for a pebble.",
+    note: "Damped wave equation, lit by the slope of the surface. Drag like a finger, click for a pebble. Drops ring like real air bubbles.",
     status: "In the margins, 00:00 to 08:00",
   },
   {
     id: "threads",
-    name: "Silk threads",
-    note: "Verlet chains under gravity. Brush through the curtain and watch it settle.",
+    name: "Strings",
+    note: "Verlet chains under gravity, plucked with Karplus-Strong synthesis. Brush through them; longer strings ring lower.",
     status: "In the margins, 08:00 to 16:00",
   },
 ];
@@ -36,8 +37,10 @@ export default function LabPage() {
         <h1>Lab</h1>
         <p>
           Experiments for this site, kept in one place. Each one stays still
-          until you touch it.
+          until you touch it. Every sound is synthesized live, nothing is
+          recorded.
         </p>
+        <SoundToggle className="lab-sound" />
       </section>
 
       <div className="lab-grid">

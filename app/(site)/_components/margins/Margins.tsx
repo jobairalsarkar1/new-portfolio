@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createSetup } from "./canvas";
+import SoundToggle from "./SoundToggle";
 import { startInk } from "./ink";
 import { startPond } from "./pond";
 import { startThreads } from "./threads";
@@ -14,13 +15,13 @@ const CHANGE_EVENT = "margins-change";
 
 export const EFFECTS: { id: Effect; label: string; from: number }[] = [
   { id: "pond", label: "Pond", from: 0 },
-  { id: "threads", label: "Silk threads", from: 8 },
+  { id: "threads", label: "Strings", from: 8 },
   { id: "ink", label: "Ink in water", from: 16 },
 ];
 
 const starters = { ink: startInk, pond: startPond, threads: startThreads };
 
-// The day is split into three blocks: a calm pond overnight, silk threads
+// The day is split into three blocks: a calm pond overnight, strings
 // through the day, ink in the evening.
 export function effectForHour(hour: number): Effect {
   return [...EFFECTS].reverse().find((effect) => hour >= effect.from)!.id;
@@ -110,6 +111,7 @@ export default function Margins() {
             {option === "auto" ? "Auto" : EFFECTS.find((item) => item.id === option)!.label}
           </button>
         ))}
+        <SoundToggle className="margin-sound" />
       </div>
     </>
   );
