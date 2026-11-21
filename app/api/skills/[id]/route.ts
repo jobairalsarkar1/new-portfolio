@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdmin } from "@/lib/isAdmin";
 import { prisma } from "@/lib/prisma";
 
 // GET one skill
@@ -37,6 +38,10 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!(await isAdmin())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await context.params;
 
     await prisma.skill.delete({ where: { id } });
