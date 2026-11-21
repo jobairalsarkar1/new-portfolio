@@ -240,7 +240,7 @@ html[data-theme="dark"]:has(.site) {
   margin-inline: auto;
 }
 
-.filings {
+.margin-canvas {
   position: fixed;
   inset: 0;
   z-index: -1;
