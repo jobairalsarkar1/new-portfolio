@@ -107,7 +107,7 @@ export default async function WorkPage({ params }: PageProps) {
           alt={project.name}
           fill
           priority
-          sizes="(max-width: 960px) 100vw, 920px"
+          sizes="(max-width: 720px) 100vw, 680px"
           placeholder="blur"
           blurDataURL={getCloudinaryBlurUrl(image)}
         />

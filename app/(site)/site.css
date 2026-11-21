@@ -1477,14 +1477,13 @@ html[data-theme="dark"]:has(.site) {
 
 .article-cover {
   position: relative;
-  width: min(100vw - 32px, 920px);
+  width: 100%;
   aspect-ratio: 16 / 9;
-  margin: 36px 0 0 50%;
+  margin-top: 32px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--bg-raised);
-  transform: translateX(-50%);
 }
 
 .article-cover img {
