@@ -43,7 +43,7 @@ export default function ContactForm() {
       <div className="field-row">
         <label className="field">
           <span>Name</span>
-          <input name="name" autoComplete="name" required placeholder="Ada Lovelace" />
+          <input name="name" autoComplete="name" required placeholder="Your name" />
         </label>
         <label className="field">
           <span>Email</span>
@@ -52,17 +52,17 @@ export default function ContactForm() {
             type="email"
             autoComplete="email"
             required
-            placeholder="you@company.com"
+            placeholder="you@example.com"
           />
         </label>
       </div>
       <label className="field">
-        <span>What are you working on?</span>
+        <span>Message</span>
         <textarea
           name="message"
           required
           rows={5}
-          placeholder="A system to build, a migration to plan, a product to ship…"
+          placeholder="Hi Jobair, …"
         />
       </label>
 
