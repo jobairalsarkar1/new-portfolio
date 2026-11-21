@@ -14,6 +14,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineSwatch } from "react-icons/hi2";
 import { navigation, profile } from "../_lib/content";
 import { toggleTheme } from "../_lib/theme";
+import { EFFECTS, setMarginMode } from "./margins/Margins";
 
 type Command = {
   id: string;
@@ -72,6 +73,14 @@ export default function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         icon: <HiOutlineSwatch />,
         run: () => toggleTheme(),
       },
+      ...[{ id: "auto", label: "Auto (changes with the time of day)" }, ...EFFECTS].map<Command>((effect) => ({
+        id: `margins-${effect.id}`,
+        group: "Actions",
+        label: `Margins: ${effect.label}`,
+        keywords: "background margin effect ink pond threads",
+        icon: <HiOutlineSwatch />,
+        run: () => setMarginMode(effect.id as "auto" | "ink" | "pond" | "threads"),
+      })),
       {
         id: "copy-email",
         group: "Actions",
@@ -131,7 +140,9 @@ export default function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         label: "Previous design (version two)",
         keywords: "old archive v2 modern",
         icon: <FiExternalLink />,
-        run: () => router.push("/v2"),
+        run: () => {
+          window.open("/v2", "_blank", "noopener");
+        },
       },
       {
         id: "v1",
@@ -139,7 +150,9 @@ export default function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         label: "First portfolio (version one)",
         keywords: "old archive v1 3d",
         icon: <FiExternalLink />,
-        run: () => router.push("/v1"),
+        run: () => {
+          window.open("/v1", "_blank", "noopener");
+        },
       },
     ];
   }, [pathname, router]);

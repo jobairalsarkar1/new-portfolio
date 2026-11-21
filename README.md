@@ -15,7 +15,7 @@ A simple, single column portfolio with one crafted centerpiece, plus an older ar
 - Experience, work (from the database), writing, stack, and contact on one page
 - Writing section, starting with an interactive Kafka/CDC deep dive (Poisson arrivals, keyed partitions, M/M/1 consumers)
 - Case study pages rendered from markdown stored in the database
-- A live change log in the margins: the visitor's own actions become CDC events on the right and are applied to their "visitor" row on the left, all inside the browser
+- Three margin effects that react to the cursor and rotate with the visitor's time of day: a pond overnight (wave equation), silk threads by day (Verlet chains), and ink in water in the evening (stable fluids). Visitors can pick one from the switcher or the command menu
 - Command menu (`⌘K` / `Ctrl K`), light and dark themes
 - Older `/about`, `/projects`, `/contact`, and `/v1` pages kept as an archive
 

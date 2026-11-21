@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { profile } from "../_lib/content";
 
@@ -20,7 +19,11 @@ export default function SiteFooter() {
         </div>
       </div>
       <p>
-        Looking for the previous design? <Link href="/v2">Visit version two</Link>.
+        Looking for the previous design?{" "}
+        <a href="/v2" target="_blank" rel="noopener">
+          Visit version two
+        </a>
+        .
       </p>
     </footer>
   );

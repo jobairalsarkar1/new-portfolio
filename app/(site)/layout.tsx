@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import SiteFooter from "./_components/SiteFooter";
-import ChangeLog from "./_components/ChangeLog";
+import Margins from "./_components/margins/Margins";
 import SiteHeader from "./_components/SiteHeader";
 import "./site.css";
 
@@ -29,7 +29,7 @@ export default function SiteLayout({
 }) {
   return (
     <div className={`site ${inter.variable}`}>
-      <ChangeLog />
+      <Margins />
       <a href="#main" className="skip-link">
         Skip to content
       </a>
