@@ -37,9 +37,11 @@ export default async function Home() {
             ERP for Asgar Ali Hospital, across the frontend, the backend, and the{" "}
             <LiveWord kind="flow">data pipeline</LiveWord> that keeps an older
             Oracle database and a newer PostgreSQL one{" "}
-            <LiveWord kind="sync">in sync</LiveWord> during the migration. I have
-            also worked on <LiveWord kind="tv">Ekhon TV</LiveWord>, a
-            Bangladeshi news platform.
+            <LiveWord kind="sync">in sync</LiveWord> during the migration. I also
+            work on a retail and supply chain ERP and on{" "}
+            <LiveWord kind="tv">Ekhon TV</LiveWord>, a Bangladeshi news site, and
+            I led the build of a{" "}
+            <LiveWord kind="ledger">group accounting system</LiveWord>.
           </p>
           <p>
             Before that I built the web platform for{" "}

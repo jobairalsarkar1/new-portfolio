@@ -627,6 +627,183 @@ html[data-theme="dark"]:has(.site) {
   font-size: 9px;
 }
 
+/* group accounting system: a debit tips the scale, the credit levels it */
+.live-ledger {
+  display: block;
+  width: 160px;
+  height: 62px;
+  overflow: visible;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ledger-stand,
+.ledger-pan line,
+.ledger-pan path {
+  stroke: var(--fg-muted);
+  stroke-width: 1.2;
+}
+
+.ledger-stand {
+  fill: var(--bg);
+}
+
+.ledger-beam {
+  stroke: var(--fg);
+  stroke-width: 1.6;
+  transform-box: view-box;
+  transform-origin: 80px 12px;
+  animation: ledger-beam 2.6s var(--ease) forwards;
+}
+
+.ledger-pivot {
+  fill: var(--accent);
+}
+
+.ledger-pan-debit {
+  animation: ledger-pan-debit 2.6s var(--ease) forwards;
+}
+
+.ledger-pan-credit {
+  animation: ledger-pan-credit 2.6s var(--ease) forwards;
+}
+
+.ledger-weight {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.ledger-pan-debit .ledger-weight {
+  animation: ledger-drop-debit 2.6s var(--ease) forwards;
+}
+
+.ledger-pan-credit .ledger-weight {
+  animation: ledger-drop-credit 2.6s var(--ease) forwards;
+}
+
+.live-ledger text {
+  fill: var(--fg-subtle);
+  stroke: none;
+  font-size: 9px;
+}
+
+.live-ledger .ledger-balanced {
+  fill: var(--accent-ink);
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0;
+  animation: ledger-balanced 2.6s ease forwards;
+}
+
+/* The beam settles like a damped pendulum: a little past level, then back. */
+@keyframes ledger-beam {
+  0%,
+  12% {
+    transform: rotate(0deg);
+  }
+  24%,
+  50% {
+    transform: rotate(-8deg);
+  }
+  62% {
+    transform: rotate(2.4deg);
+  }
+  70% {
+    transform: rotate(-1deg);
+  }
+  77% {
+    transform: rotate(0.4deg);
+  }
+  84%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes ledger-pan-debit {
+  0%,
+  12% {
+    transform: translateY(0);
+  }
+  24%,
+  50% {
+    transform: translateY(7px);
+  }
+  62% {
+    transform: translateY(-2px);
+  }
+  70% {
+    transform: translateY(0.9px);
+  }
+  77% {
+    transform: translateY(-0.35px);
+  }
+  84%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ledger-pan-credit {
+  0%,
+  12% {
+    transform: translateY(0);
+  }
+  24%,
+  50% {
+    transform: translateY(-7px);
+  }
+  62% {
+    transform: translateY(2px);
+  }
+  70% {
+    transform: translateY(-0.9px);
+  }
+  77% {
+    transform: translateY(0.35px);
+  }
+  84%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ledger-drop-debit {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  12%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ledger-drop-credit {
+  0%,
+  38% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  50%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ledger-balanced {
+  0%,
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* Ekhon TV: switches on like an old television */
 .live[data-kind="tv"][data-active="true"] .live-text {
   display: inline-block;

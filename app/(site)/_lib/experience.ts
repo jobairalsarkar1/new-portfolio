@@ -19,18 +19,25 @@ export const experience: Experience[] = [
     role: "Software Engineer",
     duration: "Nov 2025 to Present",
     place: "Dhaka, Bangladesh",
-    note: "Contributing to a Hospital Information System and ERP platform for Asgar Ali Hospital across frontend, backend, shared application layers, tRPC APIs, PostgreSQL, Oracle, and Kafka/CDC migration work.",
+    note: "Full stack engineer on four systems: a hospital information system and ERP, a retail and supply chain ERP, a group accounting system, and the Ekhon TV news site.",
     overview:
-      "At FringeCore_, I work as a full stack software engineer contributing to a modern Hospital Information System and ERP platform for Asgar Ali Hospital. The work involves close collaboration with business stakeholders and design teams to turn complex operational requirements into scalable and user focused software solutions.\n\nI work within a monorepo architecture across frontend, backend, and shared application layers using TypeScript, React, Node.js, PostgreSQL, and Oracle. A major part of the system uses tRPC for end to end type safe procedures and communication between the frontend and backend, improving maintainability, consistency, and developer experience across the platform.\n\nOne of the more technically challenging parts of the project has been contributing to an ongoing Oracle to PostgreSQL migration. To support gradual modernization without disrupting existing hospital operations, I worked on a CDC based synchronization pipeline using Kafka that keeps data consistent between legacy Oracle systems and newer PostgreSQL driven modules.\n\nI have also worked extensively on improving operational workflows, particularly around patient appointments and scheduling systems. This involved redesigning complex flows into more streamlined and user friendly experiences that reduce operational friction for both patients and staff.\n\nBeyond feature development, I actively participate in discussions around system architecture, data flow, scalability, and long term maintainability. The role has given me strong exposure to enterprise level systems, legacy modernization challenges, and building software that directly supports critical real world operations.",
+      "At FringeCore_ I work across several systems for organizations in Bangladesh, from a hospital to a retail chain to a TV news channel.\n\n" +
+      "The largest is the Hospital Information System and ERP for Asgar Ali Hospital. It is a TypeScript monorepo with React on the frontend and tRPC procedures on a Node.js backend, so types are checked all the way from the database to the screen. I work across the frontend, the backend and the shared layers, and have spent a lot of time on patient appointments and scheduling, turning complex flows into simpler ones for patients and staff.\n\n" +
+      "The hospital is moving from an older Oracle database to PostgreSQL without stopping daily operations. I worked on the change data capture pipeline, built on Kafka, that keeps both databases in sync while modules move over one at a time.\n\n" +
+      "On a retail and supply chain ERP that runs a retail chain's shops and warehouses, I work on B2B sales, from bulk partner orders through approval to dispatch and invoices, and on the partner API that outside systems use to place orders and settle returns. I built the vendor ledger and payable bills, the team performance dashboard, and the reports the analytics team works from, and I work on its deployment on AWS with monitoring and backups.\n\n" +
+      "I also led the build of a group accounting system: multi-company, double-entry bookkeeping for a group of companies, from the general ledger to consolidation and financial statements. It was built with an AI agent workflow that I directed. I set the plan, made the accounting and design decisions, reviewed and approved every change, and deployed it to AWS. The database refuses entries that do not balance, voucher numbers have no gaps, and the audit log is tamper-evident.\n\n" +
+      "On Ekhon TV, the website of a Bangladeshi TV news channel, I work on the site's pages and its article search, and I build the advertising that funds it: ad network integrations, sponsor campaigns, and placements that fit any screen and fall back to news when an ad does not load.",
     signal: "Hospital systems",
     start: "2025-11",
     end: null,
     deepDive: "/writing/oracle-to-postgres-cdc",
     products: [
       { name: "Asgar Ali Hospital HIS and ERP" },
+      { name: "a Retail and Supply Chain ERP" },
+      { name: "a Group Accounting System" },
       { name: "Ekhon TV", href: "https://ekhon.tv" },
     ],
-    stack: ["TypeScript", "React", "Node.js", "tRPC", "PostgreSQL", "Oracle", "Kafka/CDC", "Monorepo"],
+    stack: ["TypeScript", "React", "Node.js", "tRPC", "NestJS", "PostgreSQL", "Oracle", "Kafka/CDC", "Kysely", "Prisma", "Redis", "Astro", "AWS"],
   },
   {
     company: "Picture TV",

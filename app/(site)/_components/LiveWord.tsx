@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-type Kind = "pulse" | "flow" | "sync" | "tv" | "scan" | "flash";
+type Kind = "pulse" | "flow" | "sync" | "tv" | "scan" | "flash" | "ledger";
 
 function Timecode() {
   const [frames, setFrames] = useState(0);
@@ -43,6 +43,33 @@ function SyncScene() {
         ))}
         <text x="18" y="42" textAnchor="middle">Oracle</text>
         <text x="138" y="42" textAnchor="middle">PostgreSQL</text>
+      </svg>
+    </span>
+  );
+}
+
+// Double-entry bookkeeping in two seconds: a debit tips the scale, the
+// matching credit brings it back level.
+function LedgerScene() {
+  return (
+    <span className="live-pop">
+      <svg viewBox="0 0 160 62" className="live-ledger" aria-hidden>
+        <path className="ledger-stand" d="M80 12 V44 M70 46 H90 L80 40 Z" />
+        <line className="ledger-beam" x1="30" y1="12" x2="130" y2="12" />
+        <circle className="ledger-pivot" cx="80" cy="12" r="2.2" />
+        <g className="ledger-pan ledger-pan-debit">
+          <line x1="30" y1="12" x2="30" y2="24" />
+          <path d="M17 24 Q30 31 43 24" />
+          <rect className="ledger-weight" x="24" y="17" width="12" height="7" rx="1.5" />
+        </g>
+        <g className="ledger-pan ledger-pan-credit">
+          <line x1="130" y1="12" x2="130" y2="24" />
+          <path d="M117 24 Q130 31 143 24" />
+          <rect className="ledger-weight" x="124" y="17" width="12" height="7" rx="1.5" />
+        </g>
+        <text x="30" y="43" textAnchor="middle">Debit ৳5,000</text>
+        <text x="130" y="43" textAnchor="middle">Credit ৳5,000</text>
+        <text className="ledger-balanced" x="80" y="59" textAnchor="middle">Balanced</text>
       </svg>
     </span>
   );
@@ -108,6 +135,7 @@ export default function LiveWord({ kind, children }: { kind: Kind; children: Rea
       )}
       {active && kind === "sync" && <SyncScene />}
       {active && kind === "scan" && <Timecode />}
+      {active && kind === "ledger" && <LedgerScene />}
       {active && kind === "flash" && (
         <span className="live-pop live-exposure" aria-hidden>
           ISO 400 · 1/250 · f/2.8
