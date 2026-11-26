@@ -26,7 +26,7 @@ export const toolbox = [
   },
   {
     title: "Frontend",
-    items: ["React", "Next.js", "Astro", "Electron", "Tailwind CSS", "Three.js"],
+    items: ["React", "Next.js", "React Native", "Astro", "Electron", "Tailwind CSS", "Three.js"],
   },
   {
     title: "Backend & systems",

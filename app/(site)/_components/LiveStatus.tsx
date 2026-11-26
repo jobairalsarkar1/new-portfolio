@@ -77,6 +77,16 @@ export default function LiveStatus() {
           {now ? `, ${describeCareer(now)}.` : "."}
         </dd>
       </div>
+      <div>
+        <dt>Open to</dt>
+        <dd>
+          Freelance projects.{" "}
+          <a href="#contact" className="inline-link">
+            Get in touch
+          </a>
+          .
+        </dd>
+      </div>
     </dl>
   );
 }

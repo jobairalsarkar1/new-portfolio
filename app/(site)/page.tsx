@@ -167,11 +167,12 @@ export default async function Home() {
       <section id="contact" className="home-section">
         <h2>Contact</h2>
         <p>
-          The quickest way to reach me is{" "}
+          I&rsquo;m open to freelance projects. Tell me what you want to build
+          and roughly when you need it. Email{" "}
           <a href={`mailto:${profile.email}`} className="inline-link">
             {profile.email}
-          </a>
-          . Or leave a message here and it lands in the same inbox.
+          </a>{" "}
+          or use the form below.
         </p>
         <ContactForm />
       </section>
