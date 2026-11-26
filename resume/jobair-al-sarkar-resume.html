@@ -215,21 +215,38 @@
     <h2>Projects</h2>
     <section class="job">
       <h3>
-        Envkeyring – Encrypted Environment Variable Manager CLI |
+        Envkeyring – Encrypted .env Handoff CLI |
         <a href="https://www.npmjs.com/package/envkeyring">npmjs.com/package/envkeyring</a>
       </h3>
       <ul>
         <li>
-          Built a Node.js and TypeScript CLI for encrypted environment variable management across teams and
-          monorepos.
+          Built and published a Node.js and TypeScript CLI that keeps a team's real .env values encrypted in the
+          repository and restores them with one key, with monorepo support.
         </li>
         <li>
-          Implemented AES-256-GCM encryption with secure key derivation, keeping sensitive values protected while
-          configuration metadata remains version controlled.
+          Encrypted values with AES-256-GCM and scrypt key derivation, and signed vault metadata with Ed25519 so
+          unauthorized updates are visible.
         </li>
         <li>
-          Designed init, seal, unlock, and reseal workflows with filesystem-based project discovery to simplify team
-          environment setup and secret sharing.
+          Added a doctor command that scans code for environment variables and reports any missing from the
+          committed example files, plus key rotation and .gitignore checks.
+        </li>
+      </ul>
+    </section>
+
+    <section class="job">
+      <h3>
+        Shellwave – Terminal YouTube Audio Player |
+        <a href="https://www.npmjs.com/package/shellwave">npmjs.com/package/shellwave</a>
+      </h3>
+      <ul>
+        <li>
+          Built and published a terminal app in TypeScript with React and Ink that searches YouTube and plays audio
+          with keyboard controls, auto-play and local playlists.
+        </li>
+        <li>
+          Supported search without an API key or through the YouTube Data API, and playback through yt-dlp with mpv
+          or ffplay on Linux, macOS and Windows.
         </li>
       </ul>
     </section>
