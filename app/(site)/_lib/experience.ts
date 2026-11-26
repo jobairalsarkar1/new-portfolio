@@ -44,7 +44,7 @@ export const experience: Experience[] = [
     role: "Full Stack Developer",
     duration: "Jun 2025 to Jan 2026",
     place: "New York, Remote",
-    note: "Built a content driven marketplace platform from the ground up with image and video selling, event booking, blogging, JWT magic links, role based access, Stripe payments, Cloudinary uploads, and admin tooling.",
+    note: "Built the web platform for a New York media company from the ground up: an image and video marketplace, event booking, a blog, magic link sign-in with roles, Stripe payments, and the admin dashboard.",
     overview:
       "At Picture TV, a New York media company, I worked as a full stack developer on contract and built their web platform from the ground up: a marketplace for buying and selling images and videos, with event booking and a blog.\n\n" +
       "I planned the structure of the system and built its core features with Next.js, React, Tailwind CSS, Prisma and MongoDB, using Stripe for payments and Cloudinary for media.\n\n" +
@@ -60,7 +60,7 @@ export const experience: Experience[] = [
     role: "Software Engineer Intern",
     duration: "Feb 2025 to May 2025",
     place: "Virginia, Remote",
-    note: "Built and maintained full stack features with Next.js, React, Express, PostgreSQL, and Prisma while contributing to Azure AI Video Indexer, Stripe subscriptions, Cloudflare delivery, and backend scalability work.",
+    note: "Built full stack features for Redaxify with Next.js, Express, and PostgreSQL, integrated Azure AI Video Indexer and Azure OpenAI, and implemented Stripe subscriptions and faster media delivery with Cloudflare.",
     overview:
       "During my internship at Logic Matrix I built full stack features for Redaxify, an AI platform for redacting and indexing video and documents, using Next.js, React, Express.js, Tailwind CSS, PostgreSQL and Prisma.\n\n" +
       "I integrated Azure AI Video Indexer and Azure OpenAI for transcription, summaries and automated insights about each video, with secure Azure Storage for uploads and playback.\n\n" +
@@ -76,7 +76,7 @@ export const experience: Experience[] = [
     role: "Full Stack Developer",
     duration: "Jun 2023 to Oct 2024",
     place: "Remote",
-    note: "Delivered end to end web applications for clients using Next.js, React, Node.js, PostgreSQL, MongoDB, authentication systems, admin dashboards, Stripe payments, and Cloudinary media handling.",
+    note: "Built web applications for clients from the first requirements to launch, with sign-in, admin dashboards, Stripe payments, and media uploads, using Next.js, React, Node.js, PostgreSQL, and MongoDB.",
     overview:
       "Before joining engineering teams, I worked as a freelance full stack developer and built web applications for clients, from the first requirements through architecture, development, deployment and handover.\n\n" +
       "Most of the work used Next.js, React, Node.js, Prisma, MongoDB and PostgreSQL. Depending on the project, I built sign-in systems, admin dashboards, Stripe payment flows and Cloudinary media handling.",
