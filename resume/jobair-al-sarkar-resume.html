@@ -1,0 +1,247 @@
+<!doctype html>
+<!--
+  Source for public/assets/resume/jobair-al-sarkar-resume.pdf.
+  Rebuild the PDF after editing:
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --no-pdf-header-footer \
+    --print-to-pdf=public/assets/resume/jobair-al-sarkar-resume.pdf resume/jobair-al-sarkar-resume.html
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jobair Al Sarkar - Resume</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 15mm 17mm 14mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: #111;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10.2pt;
+        line-height: 1.38;
+      }
+
+      a {
+        color: #1558b0;
+        text-decoration: none;
+      }
+
+      header {
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 21pt;
+        line-height: 1.15;
+      }
+
+      .title {
+        margin: 2px 0 3px;
+        font-size: 11pt;
+        font-weight: 700;
+      }
+
+      .contact {
+        margin: 0;
+      }
+
+      .summary {
+        margin: 7px 0 0;
+      }
+
+      h2 {
+        margin: 13px 0 6px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #111;
+        font-size: 12.5pt;
+      }
+
+      .job {
+        margin-bottom: 9px;
+        break-inside: avoid;
+      }
+
+      .job h3 {
+        margin: 0;
+        font-size: 10.6pt;
+      }
+
+      .meta {
+        margin: 0 0 2px;
+      }
+
+      ul {
+        margin: 2px 0 0;
+        padding-left: 17px;
+      }
+
+      li {
+        margin-bottom: 2px;
+        padding-left: 3px;
+      }
+
+      .skills p {
+        margin: 0 0 2px;
+      }
+
+      .stack {
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Jobair Al Sarkar</h1>
+      <p class="title">Full Stack Software Engineer</p>
+      <p class="contact">
+        Dhaka, Bangladesh | +880 1766 961460 |
+        <a href="mailto:jobair.a.sarkar@gmail.com">jobair.a.sarkar@gmail.com</a>
+      </p>
+      <p class="contact">
+        <a href="https://github.com/jobairalsarkar1">github.com/jobairalsarkar1</a> |
+        <a href="https://linkedin.com/in/jobair-al-sarkar">linkedin.com/in/jobair-al-sarkar</a> |
+        <a href="https://jobairalsarkar.com">jobairalsarkar.com</a>
+      </p>
+    </header>
+
+    <p class="summary">
+      Full Stack Software Engineer with 3 years of experience building production web applications, backend
+      services, and data workflows. Experienced with TypeScript and Node.js systems, React and Next.js
+      interfaces, PostgreSQL and Oracle databases, and a Kafka-based CDC pipeline. Delivered software across healthcare, retail and supply chain, accounting, digital media, and SaaS products.
+    </p>
+
+    <h2>Experience</h2>
+
+    <section class="job">
+      <h3>Software Engineer</h3>
+      <p class="meta"><strong>FringeCore</strong> | Full-time | Dhaka, Bangladesh (On-site) | Nov 2025 – Present</p>
+      <ul>
+        <li>
+          Delivered and stabilized 3 core Hospital Information System modules for Asgar Ali Hospital (appointment management, patient registration, and user access control) using React and tRPC, resolving cross-module defects and slow application and database flows in key hospital workflows.
+        </li>
+        <li>
+          Built a Kafka-based CDC pipeline that streams changes from Oracle into PostgreSQL, supporting a phased migration while existing hospital operations remained online.
+        </li>
+        <li>
+          Built the desktop-style React app shell, where each hospital workflow opens in its own tab and keeps its state, and an Electron auto-update workflow using a Cloudflare Worker for release metadata and a Docker/Traefik download service for Windows and Linux installers.
+        </li>
+        <li>
+          Built the vendor ledger and payable bills module, the team performance KPI dashboard, and partner REST APIs for orders and returns in a retail and supply chain ERP running in production (React, tRPC, Kysely, PostgreSQL), and worked on B2B sales approval flows and AWS deployment.
+        </li>
+        <li>
+          Owned the build of a multi-company, double-entry accounting system (NestJS, Prisma, PostgreSQL) using an AI
+          agent workflow: planned the work, made the accounting and design decisions, reviewed and approved every
+          change, and deployed it to AWS, with database-enforced balanced entries and a tamper-evident audit log.
+        </li>
+        <li>
+          Built ad network integrations and sponsor campaigns, and worked on page and search features, for the
+          Ekhon TV news website (Astro, Cloudflare).
+        </li>
+      </ul>
+    </section>
+
+    <section class="job">
+      <h3>Full Stack Developer</h3>
+      <p class="meta"><strong>Picture TV</strong> | Contract | New York, United States (Remote) | Jun 2025 – Jan 2026</p>
+      <ul>
+        <li>
+          Built a digital media marketplace for buying and selling images and videos using React, Next.js, Node.js,
+          Prisma, and MongoDB.
+        </li>
+        <li>
+          Implemented authentication and role-based access using JWT and magic links, plus Stripe payment flows.
+        </li>
+        <li>
+          Developed administration and content management workflows for users, events, blogs, and uploaded media,
+          and contributed to media delivery optimization.
+        </li>
+      </ul>
+    </section>
+
+    <section class="job">
+      <h3>Software Engineer Intern</h3>
+      <p class="meta"><strong>Logic Matrix LLC</strong> | Full-time | Manassas, Virginia, United States (Remote) | Feb 2025 – May 2025</p>
+      <ul>
+        <li>
+          Developed full-stack features for <a href="https://redaxify.com">Redaxify</a>, an AI platform for
+          redacting and indexing video and documents, using Next.js, React, Express.js, TypeScript, PostgreSQL, and
+          Prisma.
+        </li>
+        <li>
+          Integrated Azure AI Video Indexer and Azure OpenAI for transcription, summarization, and automated media
+          insights, with secure Azure Storage workflows for uploads and playback.
+        </li>
+        <li>
+          Implemented role-based access, authentication, and Stripe subscription billing, and improved media
+          delivery performance using Cloudflare.
+        </li>
+      </ul>
+    </section>
+
+    <section class="job">
+      <h3>Full Stack Developer</h3>
+      <p class="meta"><strong>Self-Employed</strong> | Freelance | Jun 2023 – Oct 2024</p>
+      <ul>
+        <li>
+          Delivered full-stack web applications for international clients using Next.js, React, Node.js, PostgreSQL,
+          and MongoDB.
+        </li>
+        <li>
+          Built authentication, administration, and payment workflows and managed delivery from requirements and
+          architecture through deployment and client handoff.
+        </li>
+      </ul>
+    </section>
+
+    <h2>Technical Skills</h2>
+    <section class="skills">
+      <p><strong>Languages:</strong> TypeScript, JavaScript, Python, Java, C#</p>
+      <p><strong>Frontend:</strong> React, Next.js, Astro, Electron, Tailwind CSS</p>
+      <p><strong>Backend:</strong> Node.js, Express.js, NestJS, tRPC, .NET, Prisma, Kysely, REST APIs</p>
+      <p>
+        <strong>Data and Architecture:</strong> PostgreSQL, MongoDB, Oracle, Redis, Kafka, CDC pipelines, monorepo
+        architecture, system design
+      </p>
+      <p><strong>Cloud and DevOps:</strong> AWS, Azure, Cloudflare Workers, Docker, Traefik, Git, CI/CD</p>
+    </section>
+
+    <h2>Projects</h2>
+    <section class="job">
+      <h3>
+        Envkeyring – Encrypted Environment Variable Manager CLI |
+        <a href="https://www.npmjs.com/package/envkeyring">npmjs.com/package/envkeyring</a>
+      </h3>
+      <ul>
+        <li>
+          Built a Node.js and TypeScript CLI for encrypted environment variable management across teams and
+          monorepos.
+        </li>
+        <li>
+          Implemented AES-256-GCM encryption with secure key derivation, keeping sensitive values protected while
+          configuration metadata remains version controlled.
+        </li>
+        <li>
+          Designed init, seal, unlock, and reseal workflows with filesystem-based project discovery to simplify team
+          environment setup and secret sharing.
+        </li>
+      </ul>
+    </section>
+
+    <h2>Education</h2>
+    <section class="job">
+      <h3>Bachelor of Science in Computer Science</h3>
+      <p class="meta">BRAC University, Bangladesh | Oct 2021 – Sep 2025</p>
+      <p class="meta">
+        <strong>Relevant Coursework:</strong> Operating Systems, Software Engineering, System Design, Data Structures
+        and Algorithms
+      </p>
+    </section>
+  </body>
+</html>

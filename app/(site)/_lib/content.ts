@@ -26,7 +26,7 @@ export const toolbox = [
   },
   {
     title: "Frontend",
-    items: ["React", "Next.js", "React Native", "Tailwind CSS", "Three.js"],
+    items: ["React", "Next.js", "Astro", "Electron", "Tailwind CSS", "Three.js"],
   },
   {
     title: "Backend & systems",
@@ -35,17 +35,16 @@ export const toolbox = [
       "NestJS",
       "tRPC",
       "Express",
-      "Django",
-      "Flask",
       ".NET",
       "Prisma",
+      "Kysely",
       "Kafka / CDC pipelines",
       "Monorepo architecture",
     ],
   },
   {
     title: "Data",
-    items: ["PostgreSQL", "Oracle", "MongoDB", "MySQL"],
+    items: ["PostgreSQL", "Oracle", "MongoDB", "MySQL", "Redis"],
   },
   {
     title: "Cloud & delivery",

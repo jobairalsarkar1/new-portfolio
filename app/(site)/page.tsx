@@ -35,12 +35,12 @@ export default async function Home() {
             At FringeCore_ I work on a{" "}
             <LiveWord kind="pulse">hospital information system</LiveWord> and
             ERP for Asgar Ali Hospital, across the frontend, the backend, and the{" "}
-            <LiveWord kind="flow">data pipeline</LiveWord> that keeps an older
-            Oracle database and a newer PostgreSQL one{" "}
-            <LiveWord kind="sync">in sync</LiveWord> during the migration. I also
+            <LiveWord kind="flow">data pipeline</LiveWord> that keeps a newer
+            PostgreSQL database <LiveWord kind="sync">in sync</LiveWord> with an
+            older Oracle one during the migration. I also
             work on a retail and supply chain ERP and on{" "}
             <LiveWord kind="tv">Ekhon TV</LiveWord>, a Bangladeshi news site, and
-            I led the build of a{" "}
+            I owned the build of a{" "}
             <LiveWord kind="ledger">group accounting system</LiveWord>.
           </p>
           <p>
