@@ -1049,6 +1049,42 @@ html[data-theme="dark"]:has(.site) {
   content: "−";
 }
 
+.work-more {
+  margin-top: 18px;
+}
+
+.work-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--fg-muted);
+  font-size: 15px;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s;
+}
+
+.work-more summary:hover {
+  color: var(--fg);
+}
+
+.work-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.work-more summary::after {
+  content: "+";
+  color: var(--fg-subtle);
+}
+
+.work-more[open] summary::after {
+  content: "−";
+}
+
+.work-more[open] .work {
+  margin-top: 14px;
+}
+
 .role-story {
   margin-top: 12px;
   padding-left: 14px;

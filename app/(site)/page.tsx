@@ -8,7 +8,7 @@ import LiveStatus from "./_components/LiveStatus";
 import WorkList from "./_components/WorkList";
 import { profile, toolbox } from "./_lib/content";
 import { experience } from "./_lib/experience";
-import { getWorkItems } from "./_lib/projects";
+import { EARLIER_BELOW, getWorkItems } from "./_lib/projects";
 import { formatDate, noteHref, notes } from "./_lib/writing";
 
 export const revalidate = 300;
@@ -22,6 +22,8 @@ const links = [
 
 export default async function Home() {
   const work = await getWorkItems();
+  const mainWork = work.filter((item) => item.priority >= EARLIER_BELOW);
+  const earlierWork = work.filter((item) => item.priority < EARLIER_BELOW);
 
   return (
     <>
@@ -129,7 +131,13 @@ export default async function Home() {
 
       <section id="work" className="home-section">
         <h2>Work</h2>
-        <WorkList items={work} />
+        <WorkList items={mainWork} />
+        {earlierWork.length > 0 && (
+          <details className="work-more">
+            <summary>Earlier and smaller projects ({earlierWork.length})</summary>
+            <WorkList items={earlierWork} startAt={mainWork.length} />
+          </details>
+        )}
       </section>
 
       <section id="writing" className="home-section">

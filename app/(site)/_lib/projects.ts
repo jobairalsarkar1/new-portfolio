@@ -8,7 +8,12 @@ export type WorkItem = {
   coverImage: string;
   excerpt: string;
   skills: string[];
+  priority: number;
 };
+
+// Projects below this priority are listed under "Earlier and smaller
+// projects". Change a project's priority in the dashboard to move it.
+export const EARLIER_BELOW = 55;
 
 // Locally and during the build a missing database should not break the page.
 // In production, throwing keeps the last good cached page instead of caching
@@ -75,5 +80,6 @@ export async function getWorkItems(): Promise<WorkItem[]> {
     coverImage: project.coverImage,
     excerpt: excerpt(project.description),
     skills: project.skills.map((skill) => skill.name),
+    priority: project.priority,
   }));
 }

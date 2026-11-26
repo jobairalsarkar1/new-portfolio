@@ -10,7 +10,7 @@ const STIFFNESS = 210;
 const DAMPING = 21;
 const PREVIEW_WIDTH = 400;
 
-export default function WorkList({ items }: { items: WorkItem[] }) {
+export default function WorkList({ items, startAt = 0 }: { items: WorkItem[]; startAt?: number }) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<number | null>(null);
   const target = useRef({ x: 0, y: 0 });
@@ -84,7 +84,7 @@ export default function WorkList({ items }: { items: WorkItem[] }) {
               }}
               onFocus={() => setActive(null)}
             >
-              <span className="work-index">{String(index + 1).padStart(2, "0")}</span>
+              <span className="work-index">{String(startAt + index + 1).padStart(2, "0")}</span>
               <span className="work-thumb">
                 <Image src={item.coverImage} alt="" fill sizes="(max-width: 720px) 92vw, 220px" />
               </span>
